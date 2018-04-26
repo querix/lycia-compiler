@@ -1,0 +1,5115 @@
+<Content>
+    <Rule value="ascii" uses="number" usedBy=",format,">
+        <Expression>
+            <Terminating_Rule value="number" />
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="number" />
+            <UsedBy_Terminated value="format" />
+        </Properties>
+        <Called>
+            <T v="number" />
+        </Called>
+        <Caller>
+            <C v="format">
+                <T v="sequence" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="attribute" uses="attributeName" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@attribute" />
+                        <String value="attribute" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="attributeName" />
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="attributeName" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="attributeName">
+                <C v="parameter" c="2">
+                    <T v="name" c="3" />
+                    <T v="string" c="4" />
+                </C>
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="attributeName" uses="parameter" usedBy=",attribute,">
+        <Expression>
+            <Terminating_Rule value="parameter" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="parameter" />
+            <UsedBy_Terminated value="attribute" />
+        </Properties>
+        <Called>
+            <C v="parameter">
+                <T v="name" c="2" />
+                <T v="string" c="3" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="attribute">
+                <C v="option" c="2">
+                    <T v="sequence" c="4" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="5" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="cfg_path" uses="filePath" usedBy=",parserSet,">
+        <Expression>
+            <Terminating_Rule value="filePath" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="not phrased">
+            <Uses_Terminated value="filePath" />
+            <UsedBy_Terminated value="parserSet" />
+        </Properties>
+        <Called>
+            <C v="filePath">
+                <T v="name" c="2" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="parserSet">
+                <C v="option" c="2">
+                    <T v="sequence" c="4" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="5" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="collection" uses="tagName" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@collection" />
+                        <String value="collection" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="tagName" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="tagName" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="tagName" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="tagName">
+                <C v="parameter" c="2">
+                    <T v="name" c="3" />
+                    <T v="string" c="4" />
+                </C>
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="configuration" uses="fileName" usedBy=",parserSet,">
+        <Expression>
+            <Terminating_Rule value="fileName" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="not phrased">
+            <Uses_Terminated value="fileName" />
+            <UsedBy_Terminated value="parserSet" />
+        </Properties>
+        <Called>
+            <C v="fileName">
+                <T v="name" c="2" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="parserSet">
+                <C v="option" c="2">
+                    <T v="sequence" c="4" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="5" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="dedend" uses="number" usedBy=",format,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <Character_Single value="D" />
+                        <Character_Single value="d" />
+                    </OrInclusive>
+                </Sub>
+                <Terminating_Rule value="number" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="not phrased">
+            <Uses_Terminated value="number" />
+            <UsedBy_Terminated value="format" />
+        </Properties>
+        <Called>
+            <T v="number" />
+        </Called>
+        <Caller>
+            <C v="format">
+                <T v="sequence" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="destination" uses="tagName" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@destination" />
+                        <String value="destination" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="tagName" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="tagName" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="tagName" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="tagName">
+                <C v="parameter" c="2">
+                    <T v="name" c="3" />
+                    <T v="string" c="4" />
+                </C>
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="drop" uses="tagName" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@drop" />
+                        <String value="drop" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="tagName" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="tagName" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="tagName" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="tagName">
+                <C v="parameter" c="2">
+                    <T v="name" c="3" />
+                    <T v="string" c="4" />
+                </C>
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="dstName" uses="fileName" usedBy=",ifOlderAs,ifNotExist,">
+        <Expression>
+            <Terminating_Rule value="fileName" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="not phrased">
+            <Uses_Terminated value="fileName" />
+            <UsedBy_Terminated value="ifOlderAs" />
+            <UsedBy_Terminated value="ifNotExist" />
+        </Properties>
+        <Called>
+            <C v="fileName">
+                <T v="name" c="2" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="ifOlderAs">
+                <C v="option" c="3">
+                    <T v="sequence" c="5" />
+                </C>
+                <C v="onlyOnce" c="4">
+                    <R v="sequence" c="6" />
+                </C>
+            </C>
+            <C v="ifNotExist">
+                <C v="option" c="7" />
+                <C v="onlyOnce" c="8" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="dstntnStack" uses="stackName" usedBy=",stackPushSize,">
+        <Expression>
+            <Terminating_Rule value="stackName" />
+        </Expression>
+        <Properties leafLevel="3" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="stackName" />
+            <UsedBy_Terminated value="stackPushSize" />
+        </Properties>
+        <Called>
+            <C v="stackName">
+                <C v="parameter" c="2">
+                    <T v="name" c="3" />
+                    <T v="string" c="4" />
+                </C>
+            </C>
+        </Called>
+        <Caller>
+            <C v="stackPushSize">
+                <C v="option" c="2">
+                    <T v="sequence" c="4" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="5" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="dstPath" uses="filePath" usedBy=",ifOlderAs,ifNotExist,">
+        <Expression>
+            <Terminating_Rule value="filePath" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="not phrased">
+            <Uses_Terminated value="filePath" />
+            <UsedBy_Terminated value="ifOlderAs" />
+            <UsedBy_Terminated value="ifNotExist" />
+        </Properties>
+        <Called>
+            <C v="filePath">
+                <T v="name" c="2" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="ifOlderAs">
+                <C v="option" c="3">
+                    <T v="sequence" c="5" />
+                </C>
+                <C v="onlyOnce" c="4">
+                    <R v="sequence" c="6" />
+                </C>
+            </C>
+            <C v="ifNotExist">
+                <C v="option" c="7" />
+                <C v="onlyOnce" c="8" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="fileName" uses="name" usedBy=",dstName,xmlSave,configuration,grammar,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="name" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="." />
+                            <Terminating_Rule value="name" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrOneOf>
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="4" characterLevel="not phrased">
+            <Uses_Terminated value="name" />
+            <UsedBy_Terminated value="dstName" />
+            <UsedBy_Terminated value="xmlSave" />
+            <UsedBy_Terminated value="configuration" />
+            <UsedBy_Terminated value="grammar" />
+        </Properties>
+        <Called>
+            <T v="name" />
+        </Called>
+        <Caller>
+            <C v="dstName">
+                <C v="ifOlderAs" c="5">
+                    <C v="option" c="7">
+                        <T v="sequence" c="9" />
+                    </C>
+                    <C v="onlyOnce" c="8">
+                        <R v="sequence" c="10" />
+                    </C>
+                </C>
+                <C v="ifNotExist" c="6">
+                    <R v="option" c="11" />
+                    <R v="onlyOnce" c="12" />
+                </C>
+            </C>
+            <C v="xmlSave">
+                <C v="option" c="13" />
+                <C v="onlyOnce" c="14" />
+            </C>
+            <C v="configuration">
+                <C v="parserSet" c="15">
+                    <C v="option" c="16" />
+                    <C v="onlyOnce" c="17" />
+                </C>
+            </C>
+            <C v="grammar">
+                <C v="parserSet" c="18" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="filePath" uses="name" usedBy=",dstPath,xmlSave,cfg_path,grm_path,">
+        <Expression>
+            <OneOrMoreOf>
+                <Sub>
+                    <Sequence>
+                        <Terminating_Rule value="name" />
+                        <Character_Single value="/" />
+                    </Sequence>
+                </Sub>
+            </OneOrMoreOf>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="4" characterLevel="not phrased">
+            <Uses_Terminated value="name" />
+            <UsedBy_Terminated value="dstPath" />
+            <UsedBy_Terminated value="xmlSave" />
+            <UsedBy_Terminated value="cfg_path" />
+            <UsedBy_Terminated value="grm_path" />
+        </Properties>
+        <Called>
+            <T v="name" />
+        </Called>
+        <Caller>
+            <C v="dstPath">
+                <C v="ifOlderAs" c="5">
+                    <C v="option" c="7">
+                        <T v="sequence" c="9" />
+                    </C>
+                    <C v="onlyOnce" c="8">
+                        <R v="sequence" c="10" />
+                    </C>
+                </C>
+                <C v="ifNotExist" c="6">
+                    <R v="option" c="11" />
+                    <R v="onlyOnce" c="12" />
+                </C>
+            </C>
+            <C v="xmlSave">
+                <C v="option" c="13" />
+                <C v="onlyOnce" c="14" />
+            </C>
+            <C v="cfg_path">
+                <C v="parserSet" c="15">
+                    <C v="option" c="16" />
+                    <C v="onlyOnce" c="17" />
+                </C>
+            </C>
+            <C v="grm_path">
+                <C v="parserSet" c="18" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="forAll" uses="snipetName" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@forAll" />
+                        <String value="forAll" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="snipetName" />
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="snipetName" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="snipetName">
+                <C v="parameter" c="2">
+                    <T v="name" c="3" />
+                    <T v="string" c="4" />
+                </C>
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="format" uses="ascii,dedend,format_end,format_start,indend,newLine,space,tab" usedBy=",sequence,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="format_start" />
+                <Sub>
+                    <OrInclusive>
+                        <Terminating_Rule value="newLine" />
+                        <Terminating_Rule value="indend" />
+                        <Terminating_Rule value="dedend" />
+                        <Terminating_Rule value="space" />
+                        <Terminating_Rule value="tab" />
+                        <Terminating_Rule value="ascii" />
+                    </OrInclusive>
+                </Sub>
+                <Terminating_Rule value="format_end" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="2" rootLevel="1" characterLevel="not phrased">
+            <Uses_Terminated value="ascii" />
+            <Uses_Terminated value="dedend" />
+            <Uses_Terminated value="format_end" />
+            <Uses_Terminated value="format_start" />
+            <Uses_Terminated value="indend" />
+            <Uses_Terminated value="newLine" />
+            <Uses_Terminated value="space" />
+            <Uses_Terminated value="tab" />
+            <UsedBy_Terminated value="sequence" />
+        </Properties>
+        <Called>
+            <C v="ascii">
+                <T v="number" c="9" />
+            </C>
+            <C v="dedend">
+                <T v="number" c="10" />
+            </C>
+            <T v="format_end" />
+            <T v="format_start" />
+            <C v="indend">
+                <T v="number" c="11" />
+            </C>
+            <C v="newLine">
+                <T v="number" c="12" />
+            </C>
+            <C v="space">
+                <T v="number" c="13" />
+            </C>
+            <C v="tab">
+                <T v="number" c="14" />
+            </C>
+        </Called>
+        <Caller>
+            <T v="sequence" />
+        </Caller>
+    </Rule>
+    <Rule value="format_end" uses="" usedBy=",format,">
+        <Expression>
+            <String value="&gt;]" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="2" characterLevel="not phrased">
+            <UsedBy_Terminated value="format" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="format">
+                <T v="sequence" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="format_start" uses="" usedBy=",format,">
+        <Expression>
+            <String value="[&lt;" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="2" characterLevel="not phrased">
+            <UsedBy_Terminated value="format" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="format">
+                <T v="sequence" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="grammar" uses="fileName" usedBy=",parserSet,">
+        <Expression>
+            <Terminating_Rule value="fileName" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="not phrased">
+            <Uses_Terminated value="fileName" />
+            <UsedBy_Terminated value="parserSet" />
+        </Properties>
+        <Called>
+            <C v="fileName">
+                <T v="name" c="2" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="parserSet">
+                <C v="option" c="2">
+                    <T v="sequence" c="4" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="5" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="grm_path" uses="filePath" usedBy=",parserSet,">
+        <Expression>
+            <Terminating_Rule value="filePath" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="filePath" />
+            <UsedBy_Terminated value="parserSet" />
+        </Properties>
+        <Called>
+            <C v="filePath">
+                <T v="name" c="2" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="parserSet">
+                <C v="option" c="2">
+                    <T v="sequence" c="4" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="5" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="ifAbsent" uses="snipetName,tagName" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@ifAbsent" />
+                        <String value="ifAbsent" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="tagName" />
+                <Character_Single value="," />
+                <Terminating_Rule value="snipetName" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="snipetName" />
+            <Uses_Terminated value="tagName" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="snipetName">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="tagName">
+                <C v="parameter" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="ifEmpty" uses="snipetName" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@ifEmpty" />
+                        <String value="ifEmpty" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="snipetName" />
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="snipetName" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="snipetName">
+                <C v="parameter" c="2">
+                    <T v="name" c="3" />
+                    <T v="string" c="4" />
+                </C>
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="ifNotExist" uses="dstName,dstPath" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@ifNotExist" />
+                        <String value="ifNotExist" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="dstPath" />
+                </ZeroOrOneOf>
+                <Terminating_Rule value="dstName" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="dstName" />
+            <Uses_Terminated value="dstPath" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="dstName">
+                <C v="fileName" c="3">
+                    <T v="name" c="4" />
+                </C>
+            </C>
+            <C v="dstPath">
+                <C v="filePath" c="5">
+                    <T v="name" c="6" />
+                </C>
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="ifOlderAs" uses="dstName,dstPath" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@ifOlderAs" />
+                        <String value="ifOlderAs" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="dstPath" />
+                </ZeroOrOneOf>
+                <Terminating_Rule value="dstName" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="dstName" />
+            <Uses_Terminated value="dstPath" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="dstName">
+                <C v="fileName" c="3">
+                    <T v="name" c="4" />
+                </C>
+            </C>
+            <C v="dstPath">
+                <C v="filePath" c="5">
+                    <T v="name" c="6" />
+                </C>
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="ifStackEqual" uses="stackName,value" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@ifStackEqual" />
+                        <String value="ifStackEqual" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="value" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="stackName" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="stackName" />
+            <Uses_Terminated value="value" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="stackName">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="value">
+                <C v="parameter" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="ifStackUnequal" uses="stackName,value" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@ifStackUnequal" />
+                        <String value="ifStackUnequal" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="value" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="stackName" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="stackName" />
+            <Uses_Terminated value="value" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="stackName">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="value">
+                <C v="parameter" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="ifXmlEqual" uses="tagName,tagPath,value,xmlProperty" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@ifXmlEqual" />
+                        <String value="ifXmlEqual" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="value" />
+                <Character_Single value="," />
+                <Sub>
+                    <Sequence>
+                        <Terminating_Rule value="tagName" />
+                        <ZeroOrOneOf>
+                            <Terminating_Rule value="tagPath" />
+                        </ZeroOrOneOf>
+                        <ZeroOrOneOf>
+                            <Sub>
+                                <Sequence>
+                                    <Character_Single value="/" />
+                                    <Terminating_Rule value="xmlProperty" />
+                                </Sequence>
+                            </Sub>
+                        </ZeroOrOneOf>
+                    </Sequence>
+                </Sub>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="tagName" />
+            <Uses_Terminated value="tagPath" />
+            <Uses_Terminated value="value" />
+            <Uses_Terminated value="xmlProperty" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="tagName">
+                <C v="parameter" c="5">
+                    <T v="name" c="6" />
+                    <T v="string" c="7" />
+                </C>
+            </C>
+            <C v="tagPath">
+                <T v="name" c="8" />
+            </C>
+            <C v="value">
+                <C v="parameter" c="9" />
+            </C>
+            <C v="xmlProperty">
+                <T v="string" c="10" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="ifXmlExisting" uses="tagName,tagPath,xmlProperty" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@ifXmlExisting" />
+                        <String value="ifXmlExisting" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Sub>
+                    <Sequence>
+                        <Terminating_Rule value="tagName" />
+                        <ZeroOrOneOf>
+                            <Terminating_Rule value="tagPath" />
+                        </ZeroOrOneOf>
+                        <ZeroOrOneOf>
+                            <Sub>
+                                <Sequence>
+                                    <Character_Single value="/" />
+                                    <Terminating_Rule value="xmlProperty" />
+                                </Sequence>
+                            </Sub>
+                        </ZeroOrOneOf>
+                    </Sequence>
+                </Sub>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="tagName" />
+            <Uses_Terminated value="tagPath" />
+            <Uses_Terminated value="xmlProperty" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="tagName">
+                <C v="parameter" c="4">
+                    <T v="name" c="5" />
+                    <T v="string" c="6" />
+                </C>
+            </C>
+            <C v="tagPath">
+                <T v="name" c="7" />
+            </C>
+            <C v="xmlProperty">
+                <T v="string" c="8" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="ifXmlMissing" uses="tagName,tagPath,xmlProperty" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@ifXmlMissing" />
+                        <String value="ifXmlMissing" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Sub>
+                    <Sequence>
+                        <Terminating_Rule value="tagName" />
+                        <ZeroOrOneOf>
+                            <Terminating_Rule value="tagPath" />
+                        </ZeroOrOneOf>
+                        <ZeroOrOneOf>
+                            <Sub>
+                                <Sequence>
+                                    <Character_Single value="/" />
+                                    <Terminating_Rule value="xmlProperty" />
+                                </Sequence>
+                            </Sub>
+                        </ZeroOrOneOf>
+                    </Sequence>
+                </Sub>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="tagName" />
+            <Uses_Terminated value="tagPath" />
+            <Uses_Terminated value="xmlProperty" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="tagName">
+                <C v="parameter" c="4">
+                    <T v="name" c="5" />
+                    <T v="string" c="6" />
+                </C>
+            </C>
+            <C v="tagPath">
+                <T v="name" c="7" />
+            </C>
+            <C v="xmlProperty">
+                <T v="string" c="8" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="ifXmlUnequal" uses="tagName,tagPath,value,xmlProperty" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@ifXmlUnequal" />
+                        <String value="ifXmlUnequal" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="value" />
+                <Character_Single value="," />
+                <Sub>
+                    <Sequence>
+                        <Terminating_Rule value="tagName" />
+                        <ZeroOrOneOf>
+                            <Terminating_Rule value="tagPath" />
+                        </ZeroOrOneOf>
+                        <ZeroOrOneOf>
+                            <Sub>
+                                <Sequence>
+                                    <Character_Single value="/" />
+                                    <Terminating_Rule value="xmlProperty" />
+                                </Sequence>
+                            </Sub>
+                        </ZeroOrOneOf>
+                    </Sequence>
+                </Sub>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="tagName" />
+            <Uses_Terminated value="tagPath" />
+            <Uses_Terminated value="value" />
+            <Uses_Terminated value="xmlProperty" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="tagName">
+                <C v="parameter" c="5">
+                    <T v="name" c="6" />
+                    <T v="string" c="7" />
+                </C>
+            </C>
+            <C v="tagPath">
+                <T v="name" c="8" />
+            </C>
+            <C v="value">
+                <C v="parameter" c="9" />
+            </C>
+            <C v="xmlProperty">
+                <T v="string" c="10" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="indend" uses="number" usedBy=",format,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <Character_Single value="I" />
+                        <Character_Single value="i" />
+                    </OrInclusive>
+                </Sub>
+                <Terminating_Rule value="number" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="not phrased">
+            <Uses_Terminated value="number" />
+            <UsedBy_Terminated value="format" />
+        </Properties>
+        <Called>
+            <T v="number" />
+        </Called>
+        <Caller>
+            <C v="format">
+                <T v="sequence" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="linePart" uses="" usedBy=",raw_text,">
+        <Expression>
+            <OneOrMoreOf>
+                <Sub>
+                    <Exclusion>
+                        <First>
+                            <Primitive value="anychar_p" />
+                        </First>
+                        <Second>
+                            <Sub>
+                                <OrInclusive>
+                                    <Character_Single value="[" />
+                                    <Character_Single value="|" />
+                                </OrInclusive>
+                            </Sub>
+                        </Second>
+                    </Exclusion>
+                </Sub>
+            </OneOrMoreOf>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="1" characterLevel="not phrased">
+            <UsedBy_Terminated value="raw_text" />
+        </Properties>
+        <Called />
+        <Caller>
+            <T v="raw_text" />
+        </Caller>
+    </Rule>
+    <Rule value="macro" uses="name,replace" usedBy=",sequence,">
+        <Expression>
+            <Sequence>
+                <String value="[%" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Terminating_Rule value="replace" />
+                            <Character_Single value="," />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <Terminating_Rule value="name" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="replace" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Character_Single value="," />
+                </ZeroOrOneOf>
+                <String value="%]" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="4" rootLevel="1" characterLevel="phrased">
+            <Uses_Terminated value="name" />
+            <Uses_Terminated value="replace" />
+            <UsedBy_Terminated value="sequence" />
+        </Properties>
+        <Called>
+            <T v="name" />
+            <C v="replace">
+                <C v="newPart" c="3">
+                    <C v="parameter" c="6">
+                        <T v="name" c="7" />
+                        <T v="string" c="8" />
+                    </C>
+                </C>
+                <C v="oldPart" c="4">
+                    <R v="parameter" c="9" />
+                </C>
+                <T v="replaceReset" c="5" />
+            </C>
+        </Called>
+        <Caller>
+            <T v="sequence" />
+        </Caller>
+    </Rule>
+    <Rule value="name" uses="" usedBy=",snipet_name,parameter,tagPath,newPath,fileName,filePath,macro,">
+        <Expression>
+            <Sub>
+                <Sequence>
+                    <Sub>
+                        <OrInclusive>
+                            <Character_Range value1="a" value2="z" />
+                            <Character_Range value1="A" value2="Z" />
+                            <Character_Single value="_" />
+                        </OrInclusive>
+                    </Sub>
+                    <ZeroOrMoreOf>
+                        <Sub>
+                            <OrInclusive>
+                                <Character_Range value1="a" value2="z" />
+                                <Character_Range value1="A" value2="Z" />
+                                <Character_Range value1="0" value2="9" />
+                                <Character_Single value="_" />
+                            </OrInclusive>
+                        </Sub>
+                    </ZeroOrMoreOf>
+                </Sequence>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="6" characterLevel="not phrased">
+            <UsedBy_Terminated value="snipet_name" />
+            <UsedBy_Terminated value="parameter" />
+            <UsedBy_Terminated value="tagPath" />
+            <UsedBy_Terminated value="newPath" />
+            <UsedBy_Terminated value="fileName" />
+            <UsedBy_Terminated value="filePath" />
+            <UsedBy_Terminated value="macro" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="snipet_name">
+                <T v="raw_text" c="8" />
+            </C>
+            <C v="parameter">
+                <C v="useAlsoFor" c="9">
+                    <T v="raw_text" c="22" />
+                </C>
+                <C v="tagName" c="10">
+                    <X v="snipet" c="23" />
+                    <X v="drop" c="24" />
+                    <X v="text" c="25" />
+                    <X v="collection" c="26" />
+                    <X v="destination" c="27" />
+                    <X v="useForSnipet" c="28" />
+                    <X v="useForSnipetDownwards" c="29" />
+                    <X v="ifAbsent" c="30" />
+                    <X v="xmlCopy" c="31" />
+                    <X v="xmlCut" c="32" />
+                    <X v="xmlCode" c="33" />
+                    <X v="xmlPrint" c="34" />
+                    <X v="ifXmlEqual" c="35" />
+                    <X v="ifXmlUnequal" c="36" />
+                    <X v="ifXmlExisting" c="37" />
+                    <X v="ifXmlMissing" c="38" />
+                </C>
+                <X v="newName" c="11" />
+                <X v="snipetName" c="12" />
+                <X v="value" c="13" />
+                <X v="stackName" c="14" />
+                <X v="oldPart" c="15" />
+                <X v="newPart" c="16" />
+                <X v="tagToCount" c="17" />
+                <X v="tagToSave" c="18" />
+                <X v="attributeName" c="19" />
+                <X v="textToParse" c="20" />
+                <X v="rule" c="21" />
+            </C>
+            <C v="tagPath">
+                <X v="snipet" c="39" />
+                <X v="text" c="40" />
+                <X v="xmlCopy" c="41" />
+                <X v="xmlCut" c="42" />
+                <X v="xmlCode" c="43" />
+                <X v="xmlPrint" c="44" />
+                <X v="ifXmlEqual" c="45" />
+                <X v="ifXmlUnequal" c="46" />
+                <X v="ifXmlExisting" c="47" />
+                <X v="ifXmlMissing" c="48" />
+                <X v="xmlSnipet" c="49" />
+            </C>
+            <C v="newPath">
+                <X v="xmlCreate" c="50" />
+                <X v="xmlCopy" c="51" />
+                <X v="xmlCut" c="52" />
+                <X v="xmlCode" c="53" />
+                <X v="xmlInsert" c="54" />
+                <X v="xmlSave" c="55" />
+                <X v="xmlDelete" c="56" />
+                <X v="parse" c="57" />
+            </C>
+            <C v="fileName">
+                <X v="dstName" c="58" />
+                <X v="xmlSave" c="59" />
+                <X v="configuration" c="60" />
+                <X v="grammar" c="61" />
+            </C>
+            <C v="filePath">
+                <X v="dstPath" c="62" />
+                <X v="xmlSave" c="63" />
+                <X v="cfg_path" c="64" />
+                <X v="grm_path" c="65" />
+            </C>
+            <C v="macro">
+                <T v="sequence" c="66" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="newLine" uses="number" usedBy=",format,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <Character_Single value="N" />
+                        <Character_Single value="n" />
+                    </OrInclusive>
+                </Sub>
+                <Terminating_Rule value="number" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="not phrased">
+            <Uses_Terminated value="number" />
+            <UsedBy_Terminated value="format" />
+        </Properties>
+        <Called>
+            <T v="number" />
+        </Called>
+        <Caller>
+            <C v="format">
+                <T v="sequence" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="newName" uses="parameter" usedBy=",xmlCreate,xmlCopy,xmlCut,xmlCode,xmlInsert,xmlSnipet,xmlSave,xmlDelete,parse,">
+        <Expression>
+            <Terminating_Rule value="parameter" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="not phrased">
+            <Uses_Terminated value="parameter" />
+            <UsedBy_Terminated value="xmlCreate" />
+            <UsedBy_Terminated value="xmlCopy" />
+            <UsedBy_Terminated value="xmlCut" />
+            <UsedBy_Terminated value="xmlCode" />
+            <UsedBy_Terminated value="xmlInsert" />
+            <UsedBy_Terminated value="xmlSnipet" />
+            <UsedBy_Terminated value="xmlSave" />
+            <UsedBy_Terminated value="xmlDelete" />
+            <UsedBy_Terminated value="parse" />
+        </Properties>
+        <Called>
+            <C v="parameter">
+                <T v="name" c="2" />
+                <T v="string" c="3" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="xmlCreate">
+                <C v="option" c="10">
+                    <T v="sequence" c="12" />
+                </C>
+                <C v="onlyOnce" c="11">
+                    <R v="sequence" c="13" />
+                </C>
+            </C>
+            <C v="xmlCopy">
+                <C v="option" c="14" />
+                <C v="onlyOnce" c="15" />
+            </C>
+            <C v="xmlCut">
+                <C v="option" c="16" />
+                <C v="onlyOnce" c="17" />
+            </C>
+            <C v="xmlCode">
+                <C v="option" c="18" />
+                <C v="onlyOnce" c="19" />
+            </C>
+            <C v="xmlInsert">
+                <C v="option" c="20" />
+                <C v="onlyOnce" c="21" />
+            </C>
+            <C v="xmlSnipet">
+                <C v="option" c="22" />
+                <C v="onlyOnce" c="23" />
+            </C>
+            <C v="xmlSave">
+                <C v="option" c="24" />
+                <C v="onlyOnce" c="25" />
+            </C>
+            <C v="xmlDelete">
+                <C v="option" c="26" />
+                <C v="onlyOnce" c="27" />
+            </C>
+            <C v="parse">
+                <C v="option" c="28" />
+                <C v="onlyOnce" c="29" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="newPart" uses="parameter" usedBy=",replace,">
+        <Expression>
+            <Terminating_Rule value="parameter" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="parameter" />
+            <UsedBy_Terminated value="replace" />
+        </Properties>
+        <Called>
+            <C v="parameter">
+                <T v="name" c="2" />
+                <T v="string" c="3" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="replace">
+                <C v="option" c="2">
+                    <T v="sequence" c="5" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="6" />
+                </C>
+                <C v="macro" c="4">
+                    <R v="sequence" c="7" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="newPath" uses="name" usedBy=",xmlCreate,xmlCopy,xmlCut,xmlCode,xmlInsert,xmlSave,xmlDelete,parse,">
+        <Expression>
+            <OneOrMoreOf>
+                <Sub>
+                    <Sequence>
+                        <Character_Single value="/" />
+                        <Terminating_Rule value="name" />
+                    </Sequence>
+                </Sub>
+            </OneOrMoreOf>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="3" characterLevel="not phrased">
+            <Uses_Terminated value="name" />
+            <UsedBy_Terminated value="xmlCreate" />
+            <UsedBy_Terminated value="xmlCopy" />
+            <UsedBy_Terminated value="xmlCut" />
+            <UsedBy_Terminated value="xmlCode" />
+            <UsedBy_Terminated value="xmlInsert" />
+            <UsedBy_Terminated value="xmlSave" />
+            <UsedBy_Terminated value="xmlDelete" />
+            <UsedBy_Terminated value="parse" />
+        </Properties>
+        <Called>
+            <T v="name" />
+        </Called>
+        <Caller>
+            <C v="xmlCreate">
+                <C v="option" c="9">
+                    <T v="sequence" c="11" />
+                </C>
+                <C v="onlyOnce" c="10">
+                    <R v="sequence" c="12" />
+                </C>
+            </C>
+            <C v="xmlCopy">
+                <C v="option" c="13" />
+                <C v="onlyOnce" c="14" />
+            </C>
+            <C v="xmlCut">
+                <C v="option" c="15" />
+                <C v="onlyOnce" c="16" />
+            </C>
+            <C v="xmlCode">
+                <C v="option" c="17" />
+                <C v="onlyOnce" c="18" />
+            </C>
+            <C v="xmlInsert">
+                <C v="option" c="19" />
+                <C v="onlyOnce" c="20" />
+            </C>
+            <C v="xmlSave">
+                <C v="option" c="21" />
+                <C v="onlyOnce" c="22" />
+            </C>
+            <C v="xmlDelete">
+                <C v="option" c="23" />
+                <C v="onlyOnce" c="24" />
+            </C>
+            <C v="parse">
+                <C v="option" c="25" />
+                <C v="onlyOnce" c="26" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="number" uses="" usedBy=",position,newLine,indend,dedend,space,tab,ascii,">
+        <Expression>
+            <OneOrMoreOf>
+                <Sub>
+                    <Character_Range value1="0" value2="9" />
+                </Sub>
+            </OneOrMoreOf>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="4" characterLevel="not phrased">
+            <UsedBy_Terminated value="position" />
+            <UsedBy_Terminated value="newLine" />
+            <UsedBy_Terminated value="indend" />
+            <UsedBy_Terminated value="dedend" />
+            <UsedBy_Terminated value="space" />
+            <UsedBy_Terminated value="tab" />
+            <UsedBy_Terminated value="ascii" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="position">
+                <C v="xmlInsert" c="8">
+                    <C v="option" c="9">
+                        <T v="sequence" c="11" />
+                    </C>
+                    <C v="onlyOnce" c="10">
+                        <R v="sequence" c="12" />
+                    </C>
+                </C>
+            </C>
+            <C v="newLine">
+                <C v="format" c="13">
+                    <T v="sequence" c="14" />
+                </C>
+            </C>
+            <C v="indend">
+                <C v="format" c="15" />
+            </C>
+            <C v="dedend">
+                <C v="format" c="16" />
+            </C>
+            <C v="space">
+                <C v="format" c="17" />
+            </C>
+            <C v="tab">
+                <C v="format" c="18" />
+            </C>
+            <C v="ascii">
+                <C v="format" c="19" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="oldPart" uses="parameter" usedBy=",replace,">
+        <Expression>
+            <Terminating_Rule value="parameter" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="parameter" />
+            <UsedBy_Terminated value="replace" />
+        </Properties>
+        <Called>
+            <C v="parameter">
+                <T v="name" c="2" />
+                <T v="string" c="3" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="replace">
+                <C v="option" c="2">
+                    <T v="sequence" c="5" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="6" />
+                </C>
+                <C v="macro" c="4">
+                    <R v="sequence" c="7" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="onlyOnce" uses="attribute,collection,destination,drop,forAll,ifAbsent,ifEmpty,ifNotExist,ifOlderAs,ifStackEqual,ifStackUnequal,ifXmlEqual,ifXmlExisting,ifXmlMissing,ifXmlUnequal,parse,parserSet,repeat_ifStackEqual,repeat_ifStackUnequal,replace,snipet,stackClear,stackPop,stackPopAll,stackPush,stackPushSize,stackRead,stackReadAll,statistic,tag,text,useForSnipet,useForSnipetDownwards,xmlCode,xmlCopy,xmlCreate,xmlCut,xmlDelete,xmlInsert,xmlPrint,xmlSave,xmlSnipet" usedBy=",sequence,">
+        <Expression>
+            <Sequence>
+                <String value="[!" />
+                <OneOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Sub>
+                                <OrInclusive>
+                                    <Terminating_Rule value="snipet" />
+                                    <Terminating_Rule value="replace" />
+                                    <Terminating_Rule value="drop" />
+                                    <Terminating_Rule value="text" />
+                                    <Terminating_Rule value="collection" />
+                                    <Terminating_Rule value="destination" />
+                                    <Terminating_Rule value="forAll" />
+                                    <Terminating_Rule value="statistic" />
+                                    <Terminating_Rule value="useForSnipet" />
+                                    <Terminating_Rule value="useForSnipetDownwards" />
+                                    <Terminating_Rule value="attribute" />
+                                    <Terminating_Rule value="tag" />
+                                    <Terminating_Rule value="ifAbsent" />
+                                    <Terminating_Rule value="ifEmpty" />
+                                    <Terminating_Rule value="ifOlderAs" />
+                                    <Terminating_Rule value="ifNotExist" />
+                                    <Terminating_Rule value="stackPush" />
+                                    <Terminating_Rule value="stackPushSize" />
+                                    <Terminating_Rule value="stackClear" />
+                                    <Terminating_Rule value="ifStackEqual" />
+                                    <Terminating_Rule value="ifStackUnequal" />
+                                    <Terminating_Rule value="repeat_ifStackEqual" />
+                                    <Terminating_Rule value="repeat_ifStackUnequal" />
+                                    <Terminating_Rule value="stackRead" />
+                                    <Terminating_Rule value="stackPop" />
+                                    <Terminating_Rule value="stackReadAll" />
+                                    <Terminating_Rule value="stackPopAll" />
+                                    <Terminating_Rule value="xmlCreate" />
+                                    <Terminating_Rule value="xmlCopy" />
+                                    <Terminating_Rule value="xmlCut" />
+                                    <Terminating_Rule value="xmlCode" />
+                                    <Terminating_Rule value="xmlInsert" />
+                                    <Terminating_Rule value="xmlPrint" />
+                                    <Terminating_Rule value="xmlSnipet" />
+                                    <Terminating_Rule value="xmlSave" />
+                                    <Terminating_Rule value="xmlDelete" />
+                                    <Terminating_Rule value="ifXmlEqual" />
+                                    <Terminating_Rule value="ifXmlUnequal" />
+                                    <Terminating_Rule value="ifXmlExisting" />
+                                    <Terminating_Rule value="ifXmlMissing" />
+                                    <Terminating_Rule value="parserSet" />
+                                    <Terminating_Rule value="parse" />
+                                </OrInclusive>
+                            </Sub>
+                            <ZeroOrOneOf>
+                                <Character_Single value="," />
+                            </ZeroOrOneOf>
+                        </Sequence>
+                    </Sub>
+                </OneOrMoreOf>
+                <String value="!]" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="5" rootLevel="1" characterLevel="phrased">
+            <Uses_Terminated value="attribute" />
+            <Uses_Terminated value="collection" />
+            <Uses_Terminated value="destination" />
+            <Uses_Terminated value="drop" />
+            <Uses_Terminated value="forAll" />
+            <Uses_Terminated value="ifAbsent" />
+            <Uses_Terminated value="ifEmpty" />
+            <Uses_Terminated value="ifNotExist" />
+            <Uses_Terminated value="ifOlderAs" />
+            <Uses_Terminated value="ifStackEqual" />
+            <Uses_Terminated value="ifStackUnequal" />
+            <Uses_Terminated value="ifXmlEqual" />
+            <Uses_Terminated value="ifXmlExisting" />
+            <Uses_Terminated value="ifXmlMissing" />
+            <Uses_Terminated value="ifXmlUnequal" />
+            <Uses_Terminated value="parse" />
+            <Uses_Terminated value="parserSet" />
+            <Uses_Terminated value="repeat_ifStackEqual" />
+            <Uses_Terminated value="repeat_ifStackUnequal" />
+            <Uses_Terminated value="replace" />
+            <Uses_Terminated value="snipet" />
+            <Uses_Terminated value="stackClear" />
+            <Uses_Terminated value="stackPop" />
+            <Uses_Terminated value="stackPopAll" />
+            <Uses_Terminated value="stackPush" />
+            <Uses_Terminated value="stackPushSize" />
+            <Uses_Terminated value="stackRead" />
+            <Uses_Terminated value="stackReadAll" />
+            <Uses_Terminated value="statistic" />
+            <Uses_Terminated value="tag" />
+            <Uses_Terminated value="text" />
+            <Uses_Terminated value="useForSnipet" />
+            <Uses_Terminated value="useForSnipetDownwards" />
+            <Uses_Terminated value="xmlCode" />
+            <Uses_Terminated value="xmlCopy" />
+            <Uses_Terminated value="xmlCreate" />
+            <Uses_Terminated value="xmlCut" />
+            <Uses_Terminated value="xmlDelete" />
+            <Uses_Terminated value="xmlInsert" />
+            <Uses_Terminated value="xmlPrint" />
+            <Uses_Terminated value="xmlSave" />
+            <Uses_Terminated value="xmlSnipet" />
+            <UsedBy_Terminated value="sequence" />
+        </Properties>
+        <Called>
+            <C v="attribute">
+                <X v="attributeName" c="43" />
+            </C>
+            <C v="collection">
+                <X v="tagName" c="44" />
+            </C>
+            <C v="destination">
+                <X v="tagName" c="45" />
+            </C>
+            <C v="drop">
+                <X v="tagName" c="46" />
+            </C>
+            <C v="forAll">
+                <X v="snipetName" c="47" />
+            </C>
+            <C v="ifAbsent">
+                <X v="snipetName" c="48" />
+                <X v="tagName" c="49" />
+            </C>
+            <C v="ifEmpty">
+                <X v="snipetName" c="50" />
+            </C>
+            <C v="ifNotExist">
+                <X v="dstName" c="51" />
+                <X v="dstPath" c="52" />
+            </C>
+            <C v="ifOlderAs">
+                <X v="dstName" c="53" />
+                <X v="dstPath" c="54" />
+            </C>
+            <C v="ifStackEqual">
+                <X v="stackName" c="55" />
+                <X v="value" c="56" />
+            </C>
+            <C v="ifStackUnequal">
+                <X v="stackName" c="57" />
+                <X v="value" c="58" />
+            </C>
+            <C v="ifXmlEqual">
+                <X v="tagName" c="59" />
+                <X v="tagPath" c="60" />
+                <X v="value" c="61" />
+                <X v="xmlProperty" c="62" />
+            </C>
+            <C v="ifXmlExisting">
+                <X v="tagName" c="63" />
+                <X v="tagPath" c="64" />
+                <X v="xmlProperty" c="65" />
+            </C>
+            <C v="ifXmlMissing">
+                <X v="tagName" c="66" />
+                <X v="tagPath" c="67" />
+                <X v="xmlProperty" c="68" />
+            </C>
+            <C v="ifXmlUnequal">
+                <X v="tagName" c="69" />
+                <X v="tagPath" c="70" />
+                <X v="value" c="71" />
+                <X v="xmlProperty" c="72" />
+            </C>
+            <C v="parse">
+                <X v="newName" c="73" />
+                <X v="newPath" c="74" />
+                <X v="rule" c="75" />
+                <X v="textToParse" c="76" />
+            </C>
+            <C v="parserSet">
+                <X v="cfg_path" c="77" />
+                <X v="configuration" c="78" />
+                <X v="grammar" c="79" />
+                <X v="grm_path" c="80" />
+            </C>
+            <C v="repeat_ifStackEqual">
+                <X v="stackName" c="81" />
+                <X v="value" c="82" />
+            </C>
+            <C v="repeat_ifStackUnequal">
+                <X v="stackName" c="83" />
+                <X v="value" c="84" />
+            </C>
+            <C v="replace">
+                <X v="newPart" c="85" />
+                <X v="oldPart" c="86" />
+                <T v="replaceReset" c="87" />
+            </C>
+            <C v="snipet">
+                <X v="tagName" c="88" />
+                <X v="tagPath" c="89" />
+            </C>
+            <C v="stackClear">
+                <X v="stackName" c="90" />
+            </C>
+            <C v="stackPop">
+                <X v="stackName" c="91" />
+                <X v="value" c="92" />
+            </C>
+            <C v="stackPopAll">
+                <X v="stackName" c="93" />
+                <X v="value" c="94" />
+            </C>
+            <C v="stackPush">
+                <X v="snipetName" c="95" />
+                <X v="stackName" c="96" />
+            </C>
+            <C v="stackPushSize">
+                <X v="dstntnStack" c="97" />
+                <X v="sourceStack" c="98" />
+            </C>
+            <C v="stackRead">
+                <X v="stackName" c="99" />
+                <X v="value" c="100" />
+            </C>
+            <C v="stackReadAll">
+                <X v="stackName" c="101" />
+                <X v="value" c="102" />
+            </C>
+            <C v="statistic">
+                <X v="tagToCount" c="103" />
+                <X v="tagToSave" c="104" />
+            </C>
+            <T v="tag" />
+            <C v="text">
+                <X v="tagName" c="105" />
+                <X v="tagPath" c="106" />
+            </C>
+            <C v="useForSnipet">
+                <X v="snipetName" c="107" />
+                <X v="tagName" c="108" />
+            </C>
+            <C v="useForSnipetDownwards">
+                <X v="snipetName" c="109" />
+                <X v="tagName" c="110" />
+            </C>
+            <C v="xmlCode">
+                <X v="newName" c="111" />
+                <X v="newPath" c="112" />
+                <X v="tagName" c="113" />
+                <X v="tagPath" c="114" />
+            </C>
+            <C v="xmlCopy">
+                <X v="newName" c="115" />
+                <X v="newPath" c="116" />
+                <X v="tagName" c="117" />
+                <X v="tagPath" c="118" />
+            </C>
+            <C v="xmlCreate">
+                <X v="newName" c="119" />
+                <X v="newPath" c="120" />
+                <X v="snipetName" c="121" />
+            </C>
+            <C v="xmlCut">
+                <X v="newName" c="122" />
+                <X v="newPath" c="123" />
+                <X v="tagName" c="124" />
+                <X v="tagPath" c="125" />
+            </C>
+            <C v="xmlDelete">
+                <X v="newName" c="126" />
+                <X v="newPath" c="127" />
+            </C>
+            <C v="xmlInsert">
+                <X v="newName" c="128" />
+                <X v="newPath" c="129" />
+                <X v="position" c="130" />
+            </C>
+            <C v="xmlPrint">
+                <X v="prefix" c="131" />
+                <X v="tagName" c="132" />
+                <X v="tagPath" c="133" />
+                <X v="xmlProperty" c="134" />
+            </C>
+            <C v="xmlSave">
+                <X v="fileName" c="135" />
+                <X v="filePath" c="136" />
+                <X v="newName" c="137" />
+                <X v="newPath" c="138" />
+            </C>
+            <C v="xmlSnipet">
+                <X v="newName" c="139" />
+                <X v="tagPath" c="140" />
+                <T v="tolerant" c="141" />
+            </C>
+        </Called>
+        <Caller>
+            <T v="sequence" />
+        </Caller>
+    </Rule>
+    <Rule value="option" uses="attribute,collection,destination,drop,forAll,ifAbsent,ifEmpty,ifNotExist,ifOlderAs,ifStackEqual,ifStackUnequal,ifXmlEqual,ifXmlExisting,ifXmlMissing,ifXmlUnequal,parse,parserSet,repeat_ifStackEqual,repeat_ifStackUnequal,replace,snipet,stackClear,stackPop,stackPopAll,stackPush,stackPushSize,stackRead,stackReadAll,statistic,tag,text,useForSnipet,useForSnipetDownwards,xmlCode,xmlCopy,xmlCreate,xmlCut,xmlDelete,xmlInsert,xmlPrint,xmlSave,xmlSnipet" usedBy=",sequence,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <Exclusion>
+                        <First>
+                            <Character_Single value="[" />
+                        </First>
+                        <Second>
+                            <Sub>
+                                <OrInclusive>
+                                    <String value="[&lt;" />
+                                    <String value="[!" />
+                                    <String value="[%" />
+                                </OrInclusive>
+                            </Sub>
+                        </Second>
+                    </Exclusion>
+                </Sub>
+                <OneOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Sub>
+                                <OrInclusive>
+                                    <Terminating_Rule value="snipet" />
+                                    <Terminating_Rule value="replace" />
+                                    <Terminating_Rule value="drop" />
+                                    <Terminating_Rule value="text" />
+                                    <Terminating_Rule value="collection" />
+                                    <Terminating_Rule value="destination" />
+                                    <Terminating_Rule value="forAll" />
+                                    <Terminating_Rule value="statistic" />
+                                    <Terminating_Rule value="useForSnipet" />
+                                    <Terminating_Rule value="useForSnipetDownwards" />
+                                    <Terminating_Rule value="attribute" />
+                                    <Terminating_Rule value="tag" />
+                                    <Terminating_Rule value="ifAbsent" />
+                                    <Terminating_Rule value="ifEmpty" />
+                                    <Terminating_Rule value="ifOlderAs" />
+                                    <Terminating_Rule value="ifNotExist" />
+                                    <Terminating_Rule value="stackPush" />
+                                    <Terminating_Rule value="stackPushSize" />
+                                    <Terminating_Rule value="stackClear" />
+                                    <Terminating_Rule value="ifStackEqual" />
+                                    <Terminating_Rule value="ifStackUnequal" />
+                                    <Terminating_Rule value="repeat_ifStackEqual" />
+                                    <Terminating_Rule value="repeat_ifStackUnequal" />
+                                    <Terminating_Rule value="stackRead" />
+                                    <Terminating_Rule value="stackPop" />
+                                    <Terminating_Rule value="stackReadAll" />
+                                    <Terminating_Rule value="stackPopAll" />
+                                    <Terminating_Rule value="xmlCreate" />
+                                    <Terminating_Rule value="xmlCopy" />
+                                    <Terminating_Rule value="xmlCut" />
+                                    <Terminating_Rule value="xmlCode" />
+                                    <Terminating_Rule value="xmlInsert" />
+                                    <Terminating_Rule value="xmlPrint" />
+                                    <Terminating_Rule value="xmlSnipet" />
+                                    <Terminating_Rule value="xmlSave" />
+                                    <Terminating_Rule value="xmlDelete" />
+                                    <Terminating_Rule value="ifXmlEqual" />
+                                    <Terminating_Rule value="ifXmlUnequal" />
+                                    <Terminating_Rule value="ifXmlExisting" />
+                                    <Terminating_Rule value="ifXmlMissing" />
+                                    <Terminating_Rule value="parserSet" />
+                                    <Terminating_Rule value="parse" />
+                                </OrInclusive>
+                            </Sub>
+                            <ZeroOrOneOf>
+                                <Character_Single value="," />
+                            </ZeroOrOneOf>
+                        </Sequence>
+                    </Sub>
+                </OneOrMoreOf>
+                <Character_Single value="]" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="5" rootLevel="1" characterLevel="phrased">
+            <Uses_Terminated value="attribute" />
+            <Uses_Terminated value="collection" />
+            <Uses_Terminated value="destination" />
+            <Uses_Terminated value="drop" />
+            <Uses_Terminated value="forAll" />
+            <Uses_Terminated value="ifAbsent" />
+            <Uses_Terminated value="ifEmpty" />
+            <Uses_Terminated value="ifNotExist" />
+            <Uses_Terminated value="ifOlderAs" />
+            <Uses_Terminated value="ifStackEqual" />
+            <Uses_Terminated value="ifStackUnequal" />
+            <Uses_Terminated value="ifXmlEqual" />
+            <Uses_Terminated value="ifXmlExisting" />
+            <Uses_Terminated value="ifXmlMissing" />
+            <Uses_Terminated value="ifXmlUnequal" />
+            <Uses_Terminated value="parse" />
+            <Uses_Terminated value="parserSet" />
+            <Uses_Terminated value="repeat_ifStackEqual" />
+            <Uses_Terminated value="repeat_ifStackUnequal" />
+            <Uses_Terminated value="replace" />
+            <Uses_Terminated value="snipet" />
+            <Uses_Terminated value="stackClear" />
+            <Uses_Terminated value="stackPop" />
+            <Uses_Terminated value="stackPopAll" />
+            <Uses_Terminated value="stackPush" />
+            <Uses_Terminated value="stackPushSize" />
+            <Uses_Terminated value="stackRead" />
+            <Uses_Terminated value="stackReadAll" />
+            <Uses_Terminated value="statistic" />
+            <Uses_Terminated value="tag" />
+            <Uses_Terminated value="text" />
+            <Uses_Terminated value="useForSnipet" />
+            <Uses_Terminated value="useForSnipetDownwards" />
+            <Uses_Terminated value="xmlCode" />
+            <Uses_Terminated value="xmlCopy" />
+            <Uses_Terminated value="xmlCreate" />
+            <Uses_Terminated value="xmlCut" />
+            <Uses_Terminated value="xmlDelete" />
+            <Uses_Terminated value="xmlInsert" />
+            <Uses_Terminated value="xmlPrint" />
+            <Uses_Terminated value="xmlSave" />
+            <Uses_Terminated value="xmlSnipet" />
+            <UsedBy_Terminated value="sequence" />
+        </Properties>
+        <Called>
+            <C v="attribute">
+                <X v="attributeName" c="43" />
+            </C>
+            <C v="collection">
+                <X v="tagName" c="44" />
+            </C>
+            <C v="destination">
+                <X v="tagName" c="45" />
+            </C>
+            <C v="drop">
+                <X v="tagName" c="46" />
+            </C>
+            <C v="forAll">
+                <X v="snipetName" c="47" />
+            </C>
+            <C v="ifAbsent">
+                <X v="snipetName" c="48" />
+                <X v="tagName" c="49" />
+            </C>
+            <C v="ifEmpty">
+                <X v="snipetName" c="50" />
+            </C>
+            <C v="ifNotExist">
+                <X v="dstName" c="51" />
+                <X v="dstPath" c="52" />
+            </C>
+            <C v="ifOlderAs">
+                <X v="dstName" c="53" />
+                <X v="dstPath" c="54" />
+            </C>
+            <C v="ifStackEqual">
+                <X v="stackName" c="55" />
+                <X v="value" c="56" />
+            </C>
+            <C v="ifStackUnequal">
+                <X v="stackName" c="57" />
+                <X v="value" c="58" />
+            </C>
+            <C v="ifXmlEqual">
+                <X v="tagName" c="59" />
+                <X v="tagPath" c="60" />
+                <X v="value" c="61" />
+                <X v="xmlProperty" c="62" />
+            </C>
+            <C v="ifXmlExisting">
+                <X v="tagName" c="63" />
+                <X v="tagPath" c="64" />
+                <X v="xmlProperty" c="65" />
+            </C>
+            <C v="ifXmlMissing">
+                <X v="tagName" c="66" />
+                <X v="tagPath" c="67" />
+                <X v="xmlProperty" c="68" />
+            </C>
+            <C v="ifXmlUnequal">
+                <X v="tagName" c="69" />
+                <X v="tagPath" c="70" />
+                <X v="value" c="71" />
+                <X v="xmlProperty" c="72" />
+            </C>
+            <C v="parse">
+                <X v="newName" c="73" />
+                <X v="newPath" c="74" />
+                <X v="rule" c="75" />
+                <X v="textToParse" c="76" />
+            </C>
+            <C v="parserSet">
+                <X v="cfg_path" c="77" />
+                <X v="configuration" c="78" />
+                <X v="grammar" c="79" />
+                <X v="grm_path" c="80" />
+            </C>
+            <C v="repeat_ifStackEqual">
+                <X v="stackName" c="81" />
+                <X v="value" c="82" />
+            </C>
+            <C v="repeat_ifStackUnequal">
+                <X v="stackName" c="83" />
+                <X v="value" c="84" />
+            </C>
+            <C v="replace">
+                <X v="newPart" c="85" />
+                <X v="oldPart" c="86" />
+                <T v="replaceReset" c="87" />
+            </C>
+            <C v="snipet">
+                <X v="tagName" c="88" />
+                <X v="tagPath" c="89" />
+            </C>
+            <C v="stackClear">
+                <X v="stackName" c="90" />
+            </C>
+            <C v="stackPop">
+                <X v="stackName" c="91" />
+                <X v="value" c="92" />
+            </C>
+            <C v="stackPopAll">
+                <X v="stackName" c="93" />
+                <X v="value" c="94" />
+            </C>
+            <C v="stackPush">
+                <X v="snipetName" c="95" />
+                <X v="stackName" c="96" />
+            </C>
+            <C v="stackPushSize">
+                <X v="dstntnStack" c="97" />
+                <X v="sourceStack" c="98" />
+            </C>
+            <C v="stackRead">
+                <X v="stackName" c="99" />
+                <X v="value" c="100" />
+            </C>
+            <C v="stackReadAll">
+                <X v="stackName" c="101" />
+                <X v="value" c="102" />
+            </C>
+            <C v="statistic">
+                <X v="tagToCount" c="103" />
+                <X v="tagToSave" c="104" />
+            </C>
+            <T v="tag" />
+            <C v="text">
+                <X v="tagName" c="105" />
+                <X v="tagPath" c="106" />
+            </C>
+            <C v="useForSnipet">
+                <X v="snipetName" c="107" />
+                <X v="tagName" c="108" />
+            </C>
+            <C v="useForSnipetDownwards">
+                <X v="snipetName" c="109" />
+                <X v="tagName" c="110" />
+            </C>
+            <C v="xmlCode">
+                <X v="newName" c="111" />
+                <X v="newPath" c="112" />
+                <X v="tagName" c="113" />
+                <X v="tagPath" c="114" />
+            </C>
+            <C v="xmlCopy">
+                <X v="newName" c="115" />
+                <X v="newPath" c="116" />
+                <X v="tagName" c="117" />
+                <X v="tagPath" c="118" />
+            </C>
+            <C v="xmlCreate">
+                <X v="newName" c="119" />
+                <X v="newPath" c="120" />
+                <X v="snipetName" c="121" />
+            </C>
+            <C v="xmlCut">
+                <X v="newName" c="122" />
+                <X v="newPath" c="123" />
+                <X v="tagName" c="124" />
+                <X v="tagPath" c="125" />
+            </C>
+            <C v="xmlDelete">
+                <X v="newName" c="126" />
+                <X v="newPath" c="127" />
+            </C>
+            <C v="xmlInsert">
+                <X v="newName" c="128" />
+                <X v="newPath" c="129" />
+                <X v="position" c="130" />
+            </C>
+            <C v="xmlPrint">
+                <X v="prefix" c="131" />
+                <X v="tagName" c="132" />
+                <X v="tagPath" c="133" />
+                <X v="xmlProperty" c="134" />
+            </C>
+            <C v="xmlSave">
+                <X v="fileName" c="135" />
+                <X v="filePath" c="136" />
+                <X v="newName" c="137" />
+                <X v="newPath" c="138" />
+            </C>
+            <C v="xmlSnipet">
+                <X v="newName" c="139" />
+                <X v="tagPath" c="140" />
+                <T v="tolerant" c="141" />
+            </C>
+        </Called>
+        <Caller>
+            <T v="sequence" />
+        </Caller>
+    </Rule>
+    <Rule value="parameter" uses="name,string" usedBy=",useAlsoFor,tagName,newName,snipetName,value,stackName,oldPart,newPart,tagToCount,tagToSave,attributeName,textToParse,rule,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <Terminating_Rule value="name" />
+                    <Terminating_Rule value="string" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="5" characterLevel="phrased">
+            <Uses_Terminated value="name" />
+            <Uses_Terminated value="string" />
+            <UsedBy_Terminated value="useAlsoFor" />
+            <UsedBy_Terminated value="tagName" />
+            <UsedBy_Terminated value="newName" />
+            <UsedBy_Terminated value="snipetName" />
+            <UsedBy_Terminated value="value" />
+            <UsedBy_Terminated value="stackName" />
+            <UsedBy_Terminated value="oldPart" />
+            <UsedBy_Terminated value="newPart" />
+            <UsedBy_Terminated value="tagToCount" />
+            <UsedBy_Terminated value="tagToSave" />
+            <UsedBy_Terminated value="attributeName" />
+            <UsedBy_Terminated value="textToParse" />
+            <UsedBy_Terminated value="rule" />
+        </Properties>
+        <Called>
+            <T v="name" />
+            <T v="string" />
+        </Called>
+        <Caller>
+            <C v="useAlsoFor">
+                <T v="raw_text" c="14" />
+            </C>
+            <C v="tagName">
+                <X v="snipet" c="15" />
+                <X v="drop" c="16" />
+                <X v="text" c="17" />
+                <X v="collection" c="18" />
+                <X v="destination" c="19" />
+                <X v="useForSnipet" c="20" />
+                <X v="useForSnipetDownwards" c="21" />
+                <X v="ifAbsent" c="22" />
+                <X v="xmlCopy" c="23" />
+                <X v="xmlCut" c="24" />
+                <X v="xmlCode" c="25" />
+                <X v="xmlPrint" c="26" />
+                <X v="ifXmlEqual" c="27" />
+                <X v="ifXmlUnequal" c="28" />
+                <X v="ifXmlExisting" c="29" />
+                <X v="ifXmlMissing" c="30" />
+            </C>
+            <C v="newName">
+                <X v="xmlCreate" c="31" />
+                <X v="xmlCopy" c="32" />
+                <X v="xmlCut" c="33" />
+                <X v="xmlCode" c="34" />
+                <X v="xmlInsert" c="35" />
+                <X v="xmlSnipet" c="36" />
+                <X v="xmlSave" c="37" />
+                <X v="xmlDelete" c="38" />
+                <X v="parse" c="39" />
+            </C>
+            <C v="snipetName">
+                <X v="useForSnipet" c="40" />
+                <X v="useForSnipetDownwards" c="41" />
+                <X v="forAll" c="42" />
+                <X v="ifAbsent" c="43" />
+                <X v="ifEmpty" c="44" />
+                <X v="stackPush" c="45" />
+                <X v="xmlCreate" c="46" />
+            </C>
+            <C v="value">
+                <X v="stackRead" c="47" />
+                <X v="stackReadAll" c="48" />
+                <X v="stackPop" c="49" />
+                <X v="stackPopAll" c="50" />
+                <X v="ifStackEqual" c="51" />
+                <X v="ifStackUnequal" c="52" />
+                <X v="repeat_ifStackEqual" c="53" />
+                <X v="repeat_ifStackUnequal" c="54" />
+                <X v="ifXmlEqual" c="55" />
+                <X v="ifXmlUnequal" c="56" />
+            </C>
+            <C v="stackName">
+                <X v="stackPush" c="57" />
+                <X v="stackRead" c="58" />
+                <X v="stackReadAll" c="59" />
+                <X v="stackPop" c="60" />
+                <X v="stackPopAll" c="61" />
+                <X v="ifStackEqual" c="62" />
+                <X v="ifStackUnequal" c="63" />
+                <X v="repeat_ifStackEqual" c="64" />
+                <X v="repeat_ifStackUnequal" c="65" />
+                <X v="sourceStack" c="66" />
+                <X v="dstntnStack" c="67" />
+                <X v="stackClear" c="68" />
+            </C>
+            <C v="oldPart">
+                <X v="replace" c="69" />
+            </C>
+            <C v="newPart">
+                <X v="replace" c="70" />
+            </C>
+            <C v="tagToCount">
+                <X v="statistic" c="71" />
+            </C>
+            <C v="tagToSave">
+                <X v="statistic" c="72" />
+            </C>
+            <C v="attributeName">
+                <X v="attribute" c="73" />
+            </C>
+            <C v="textToParse">
+                <X v="parse" c="74" />
+            </C>
+            <C v="rule">
+                <X v="parse" c="75" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="parse" uses="newName,newPath,rule,textToParse" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@parse" />
+                        <String value="parse" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="textToParse" />
+                <Character_Single value="," />
+                <Terminating_Rule value="rule" />
+                <Sub>
+                    <Character_Single value="," />
+                </Sub>
+                <Terminating_Rule value="newName" />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="newPath" />
+                </ZeroOrOneOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="newName" />
+            <Uses_Terminated value="newPath" />
+            <Uses_Terminated value="rule" />
+            <Uses_Terminated value="textToParse" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="newName">
+                <C v="parameter" c="5">
+                    <T v="name" c="6" />
+                    <T v="string" c="7" />
+                </C>
+            </C>
+            <C v="newPath">
+                <T v="name" c="8" />
+            </C>
+            <C v="rule">
+                <C v="parameter" c="9" />
+            </C>
+            <C v="textToParse">
+                <C v="parameter" c="10" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="parserSet" uses="cfg_path,configuration,grammar,grm_path" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@parserSet" />
+                        <String value="parserSet" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="cfg_path" />
+                </ZeroOrOneOf>
+                <Terminating_Rule value="configuration" />
+                <Character_Single value="," />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="grm_path" />
+                </ZeroOrOneOf>
+                <Terminating_Rule value="grammar" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="cfg_path" />
+            <Uses_Terminated value="configuration" />
+            <Uses_Terminated value="grammar" />
+            <Uses_Terminated value="grm_path" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="cfg_path">
+                <C v="filePath" c="5">
+                    <T v="name" c="6" />
+                </C>
+            </C>
+            <C v="configuration">
+                <C v="fileName" c="7">
+                    <T v="name" c="8" />
+                </C>
+            </C>
+            <C v="grammar">
+                <C v="fileName" c="9" />
+            </C>
+            <C v="grm_path">
+                <C v="filePath" c="10" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="position" uses="number" usedBy=",xmlInsert,">
+        <Expression>
+            <OrInclusive>
+                <String value="__BEFORE__" />
+                <String value="__AFTER__" />
+                <String value="__FIRST__" />
+                <String value="__LAST__" />
+                <Terminating_Rule value="number" />
+            </OrInclusive>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="number" />
+            <UsedBy_Terminated value="xmlInsert" />
+        </Properties>
+        <Called>
+            <T v="number" />
+        </Called>
+        <Caller>
+            <C v="xmlInsert">
+                <C v="option" c="2">
+                    <T v="sequence" c="4" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="5" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="precut" uses="" usedBy="">
+        <Expression>
+            <Sequence>
+                <String value="/*" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <AllButNotThis value2="*" />
+                    </Sub>
+                </ZeroOrMoreOf>
+                <String value="*/" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="0" characterLevel="not phrased" />
+        <Called />
+        <Caller />
+    </Rule>
+    <Rule value="prefix" uses="string" usedBy=",xmlPrint,">
+        <Expression>
+            <Terminating_Rule value="string" />
+        </Expression>
+        <Properties leafLevel="1" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="string" />
+            <UsedBy_Terminated value="xmlPrint" />
+        </Properties>
+        <Called>
+            <T v="string" />
+        </Called>
+        <Caller>
+            <C v="xmlPrint">
+                <C v="option" c="2">
+                    <T v="sequence" c="4" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="5" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="raw_sequence" uses="" usedBy=",raw_text,">
+        <Expression>
+            <Sequence>
+                <Character_Single value="[" />
+                <OneOrMoreOf>
+                    <Sub>
+                        <Exclusion>
+                            <First>
+                                <Primitive value="anychar_p" />
+                            </First>
+                            <Second>
+                                <Sub>
+                                    <Character_Single value="]" />
+                                </Sub>
+                            </Second>
+                        </Exclusion>
+                    </Sub>
+                </OneOrMoreOf>
+                <Character_Single value="]" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="1" characterLevel="not phrased">
+            <UsedBy_Terminated value="raw_text" />
+        </Properties>
+        <Called />
+        <Caller>
+            <T v="raw_text" />
+        </Caller>
+    </Rule>
+    <Rule value="raw_text" uses="linePart,raw_sequence,snipet_name,useAlsoFor" usedBy="">
+        <Expression>
+            <Sub>
+                <Sequence>
+                    <Terminating_Rule value="snipet_name" />
+                    <ZeroOrMoreOf>
+                        <Sub>
+                            <OrInclusive>
+                                <Terminating_Rule value="linePart" />
+                                <Terminating_Rule value="raw_sequence" />
+                            </OrInclusive>
+                        </Sub>
+                    </ZeroOrMoreOf>
+                    <Character_Single value="|" />
+                    <ZeroOrOneOf>
+                        <Terminating_Rule value="useAlsoFor" />
+                    </ZeroOrOneOf>
+                </Sequence>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="0" characterLevel="not phrased">
+            <Uses_Terminated value="linePart" />
+            <Uses_Terminated value="raw_sequence" />
+            <Uses_Terminated value="snipet_name" />
+            <Uses_Terminated value="useAlsoFor" />
+        </Properties>
+        <Called>
+            <T v="linePart" />
+            <T v="raw_sequence" />
+            <C v="snipet_name">
+                <T v="name" c="5" />
+            </C>
+            <C v="useAlsoFor">
+                <C v="parameter" c="6">
+                    <T v="name" c="7" />
+                    <T v="string" c="8" />
+                </C>
+            </C>
+        </Called>
+        <Caller />
+    </Rule>
+    <Rule value="repeat_ifStackEqual" uses="stackName,value" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@repeat_ifStackEqual" />
+                        <String value="repeat_ifStackEqual" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="value" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="stackName" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="stackName" />
+            <Uses_Terminated value="value" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="stackName">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="value">
+                <C v="parameter" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="repeat_ifStackUnequal" uses="stackName,value" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@repeat_ifStackUnequal" />
+                        <String value="repeat_ifStackUnequal" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="value" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="stackName" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="stackName" />
+            <Uses_Terminated value="value" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="stackName">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="value">
+                <C v="parameter" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="replace" uses="newPart,oldPart,replaceReset" usedBy=",option,onlyOnce,macro,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@replace" />
+                        <String value="replace" />
+                    </OrInclusive>
+                </Sub>
+                <Sub>
+                    <OrInclusive>
+                        <Sub>
+                            <Sequence>
+                                <Character_Single value="(" />
+                                <Terminating_Rule value="oldPart" />
+                                <Character_Single value="," />
+                                <Terminating_Rule value="newPart" />
+                                <ZeroOrOneOf>
+                                    <Sub>
+                                        <Character_Single value="," />
+                                    </Sub>
+                                </ZeroOrOneOf>
+                                <Character_Single value=")" />
+                            </Sequence>
+                        </Sub>
+                        <Sub>
+                            <Sequence>
+                                <Character_Single value="(" />
+                                <Terminating_Rule value="replaceReset" />
+                                <ZeroOrOneOf>
+                                    <Sub>
+                                        <Character_Single value="," />
+                                    </Sub>
+                                </ZeroOrOneOf>
+                                <Character_Single value=")" />
+                            </Sequence>
+                        </Sub>
+                    </OrInclusive>
+                </Sub>
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="newPart" />
+            <Uses_Terminated value="oldPart" />
+            <Uses_Terminated value="replaceReset" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+            <UsedBy_Terminated value="macro" />
+        </Properties>
+        <Called>
+            <C v="newPart">
+                <C v="parameter" c="4">
+                    <T v="name" c="5" />
+                    <T v="string" c="6" />
+                </C>
+            </C>
+            <C v="oldPart">
+                <C v="parameter" c="7" />
+            </C>
+            <T v="replaceReset" />
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="4" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="5" />
+            </C>
+            <C v="macro">
+                <T v="sequence" c="6" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="replaceReset" uses="" usedBy=",replace,">
+        <Expression>
+            <String value="__RESET__" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="replace" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="replace">
+                <C v="option" c="2">
+                    <T v="sequence" c="5" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="6" />
+                </C>
+                <C v="macro" c="4">
+                    <R v="sequence" c="7" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="reserved" usedBy="" uses="">
+        <Expression>
+            <OrInclusive>
+                <String value="!]" />
+                <String value="%]" />
+                <String value="*/" />
+                <String value="/*" />
+                <String value="&gt;]" />
+                <String value="@attribute" />
+                <String value="@collection" />
+                <String value="@destination" />
+                <String value="@drop" />
+                <String value="@forAll" />
+                <String value="@ifAbsent" />
+                <String value="@ifEmpty" />
+                <String value="@ifNotExist" />
+                <String value="@ifOlderAs" />
+                <String value="@ifStackEqual" />
+                <String value="@ifStackUnequal" />
+                <String value="@ifXmlEqual" />
+                <String value="@ifXmlExisting" />
+                <String value="@ifXmlMissing" />
+                <String value="@ifXmlUnequal" />
+                <String value="@parse" />
+                <String value="@parserSet" />
+                <String value="@repeat_ifStackEqual" />
+                <String value="@repeat_ifStackUnequal" />
+                <String value="@replace" />
+                <String value="@snipet" />
+                <String value="@stackClear" />
+                <String value="@stackPop" />
+                <String value="@stackPopAll" />
+                <String value="@stackPush" />
+                <String value="@stackPushSize" />
+                <String value="@stackRead" />
+                <String value="@stackReadAll" />
+                <String value="@statistic" />
+                <String value="@tag" />
+                <String value="@text" />
+                <String value="@useForSnipet" />
+                <String value="@useForSnipetDownwards" />
+                <String value="@useForSnipet_Local" />
+                <String value="@xmlCode" />
+                <String value="@xmlCopy" />
+                <String value="@xmlCreate" />
+                <String value="@xmlCut" />
+                <String value="@xmlDelete" />
+                <String value="@xmlInsert" />
+                <String value="@xmlPrint" />
+                <String value="@xmlSave" />
+                <String value="@xmlSnipet" />
+                <String value="[!" />
+                <String value="[%" />
+                <String value="[&lt;" />
+                <String value="[]" />
+                <String value="__AFTER__" />
+                <String value="__BEFORE__" />
+                <String value="__FIRST__" />
+                <String value="__LAST__" />
+                <String value="__RESET__" />
+                <String value="__TOLERANT__" />
+                <String value="attribute" />
+                <String value="collection" />
+                <String value="destination" />
+                <String value="drop" />
+                <String value="forAll" />
+                <String value="ifAbsent" />
+                <String value="ifEmpty" />
+                <String value="ifNotExist" />
+                <String value="ifOlderAs" />
+                <String value="ifStackEqual" />
+                <String value="ifStackUnequal" />
+                <String value="ifXmlEqual" />
+                <String value="ifXmlExisting" />
+                <String value="ifXmlMissing" />
+                <String value="ifXmlUnequal" />
+                <String value="parse" />
+                <String value="parserSet" />
+                <String value="repeat_ifStackEqual" />
+                <String value="repeat_ifStackUnequal" />
+                <String value="replace" />
+                <String value="snipet" />
+                <String value="stackClear" />
+                <String value="stackPop" />
+                <String value="stackPopAll" />
+                <String value="stackPush" />
+                <String value="stackPushSize" />
+                <String value="stackRead" />
+                <String value="stackReadAll" />
+                <String value="statistic" />
+                <String value="tag" />
+                <String value="text" />
+                <String value="useAlsoFor" />
+                <String value="useForSnipet" />
+                <String value="useForSnipetDownwards" />
+                <String value="useForSnipet_Local" />
+                <String value="xmlCode" />
+                <String value="xmlCopy" />
+                <String value="xmlCreate" />
+                <String value="xmlCut" />
+                <String value="xmlDelete" />
+                <String value="xmlInsert" />
+                <String value="xmlPrint" />
+                <String value="xmlSave" />
+                <String value="xmlSnipet" />
+            </OrInclusive>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="0" characterLevel="not phrased" />
+        <Called />
+        <Caller />
+    </Rule>
+    <Rule value="rule" uses="parameter" usedBy=",parse,">
+        <Expression>
+            <Terminating_Rule value="parameter" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="not phrased">
+            <Uses_Terminated value="parameter" />
+            <UsedBy_Terminated value="parse" />
+        </Properties>
+        <Called>
+            <C v="parameter">
+                <T v="name" c="2" />
+                <T v="string" c="3" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="parse">
+                <C v="option" c="2">
+                    <T v="sequence" c="4" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="5" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="sequence" uses="format,macro,onlyOnce,option" usedBy="">
+        <Expression>
+            <Exclusion>
+                <First>
+                    <Sub>
+                        <OrInclusive>
+                            <Terminating_Rule value="option" />
+                            <Terminating_Rule value="onlyOnce" />
+                            <Terminating_Rule value="macro" />
+                            <Terminating_Rule value="format" />
+                        </OrInclusive>
+                    </Sub>
+                </First>
+                <Second>
+                    <Sub>
+                        <String value="[]" />
+                    </Sub>
+                </Second>
+            </Exclusion>
+        </Expression>
+        <Properties leafLevel="6" rootLevel="0" characterLevel="phrased">
+            <Uses_Terminated value="format" />
+            <Uses_Terminated value="macro" />
+            <Uses_Terminated value="onlyOnce" />
+            <Uses_Terminated value="option" />
+        </Properties>
+        <Called>
+            <C v="format">
+                <C v="ascii" c="5">
+                    <T v="number" c="13" />
+                </C>
+                <C v="dedend" c="6">
+                    <R v="number" c="14" />
+                </C>
+                <T v="format_end" c="7" />
+                <T v="format_start" c="8" />
+                <C v="indend" c="9">
+                    <R v="number" c="15" />
+                </C>
+                <C v="newLine" c="10">
+                    <R v="number" c="16" />
+                </C>
+                <C v="space" c="11">
+                    <R v="number" c="17" />
+                </C>
+                <C v="tab" c="12">
+                    <R v="number" c="18" />
+                </C>
+            </C>
+            <C v="macro">
+                <T v="name" c="19" />
+                <C v="replace" c="20">
+                    <C v="newPart" c="21">
+                        <C v="parameter" c="24">
+                            <T v="name" c="25" />
+                            <T v="string" c="26" />
+                        </C>
+                    </C>
+                    <C v="oldPart" c="22">
+                        <R v="parameter" c="27" />
+                    </C>
+                    <T v="replaceReset" c="23" />
+                </C>
+            </C>
+            <C v="onlyOnce">
+                <X v="attribute" c="28" />
+                <X v="collection" c="29" />
+                <X v="destination" c="30" />
+                <X v="drop" c="31" />
+                <X v="forAll" c="32" />
+                <X v="ifAbsent" c="33" />
+                <X v="ifEmpty" c="34" />
+                <X v="ifNotExist" c="35" />
+                <X v="ifOlderAs" c="36" />
+                <X v="ifStackEqual" c="37" />
+                <X v="ifStackUnequal" c="38" />
+                <X v="ifXmlEqual" c="39" />
+                <X v="ifXmlExisting" c="40" />
+                <X v="ifXmlMissing" c="41" />
+                <X v="ifXmlUnequal" c="42" />
+                <X v="parse" c="43" />
+                <X v="parserSet" c="44" />
+                <X v="repeat_ifStackEqual" c="45" />
+                <X v="repeat_ifStackUnequal" c="46" />
+                <X v="replace" c="47" />
+                <X v="snipet" c="48" />
+                <X v="stackClear" c="49" />
+                <X v="stackPop" c="50" />
+                <X v="stackPopAll" c="51" />
+                <X v="stackPush" c="52" />
+                <X v="stackPushSize" c="53" />
+                <X v="stackRead" c="54" />
+                <X v="stackReadAll" c="55" />
+                <X v="statistic" c="56" />
+                <T v="tag" c="57" />
+                <X v="text" c="58" />
+                <X v="useForSnipet" c="59" />
+                <X v="useForSnipetDownwards" c="60" />
+                <X v="xmlCode" c="61" />
+                <X v="xmlCopy" c="62" />
+                <X v="xmlCreate" c="63" />
+                <X v="xmlCut" c="64" />
+                <X v="xmlDelete" c="65" />
+                <X v="xmlInsert" c="66" />
+                <X v="xmlPrint" c="67" />
+                <X v="xmlSave" c="68" />
+                <X v="xmlSnipet" c="69" />
+            </C>
+            <C v="option">
+                <X v="attribute" c="70" />
+                <X v="collection" c="71" />
+                <X v="destination" c="72" />
+                <X v="drop" c="73" />
+                <X v="forAll" c="74" />
+                <X v="ifAbsent" c="75" />
+                <X v="ifEmpty" c="76" />
+                <X v="ifNotExist" c="77" />
+                <X v="ifOlderAs" c="78" />
+                <X v="ifStackEqual" c="79" />
+                <X v="ifStackUnequal" c="80" />
+                <X v="ifXmlEqual" c="81" />
+                <X v="ifXmlExisting" c="82" />
+                <X v="ifXmlMissing" c="83" />
+                <X v="ifXmlUnequal" c="84" />
+                <X v="parse" c="85" />
+                <X v="parserSet" c="86" />
+                <X v="repeat_ifStackEqual" c="87" />
+                <X v="repeat_ifStackUnequal" c="88" />
+                <X v="replace" c="89" />
+                <X v="snipet" c="90" />
+                <X v="stackClear" c="91" />
+                <X v="stackPop" c="92" />
+                <X v="stackPopAll" c="93" />
+                <X v="stackPush" c="94" />
+                <X v="stackPushSize" c="95" />
+                <X v="stackRead" c="96" />
+                <X v="stackReadAll" c="97" />
+                <X v="statistic" c="98" />
+                <T v="tag" c="99" />
+                <X v="text" c="100" />
+                <X v="useForSnipet" c="101" />
+                <X v="useForSnipetDownwards" c="102" />
+                <X v="xmlCode" c="103" />
+                <X v="xmlCopy" c="104" />
+                <X v="xmlCreate" c="105" />
+                <X v="xmlCut" c="106" />
+                <X v="xmlDelete" c="107" />
+                <X v="xmlInsert" c="108" />
+                <X v="xmlPrint" c="109" />
+                <X v="xmlSave" c="110" />
+                <X v="xmlSnipet" c="111" />
+            </C>
+        </Called>
+        <Caller />
+    </Rule>
+    <Rule value="snipet" uses="tagName,tagPath" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@snipet" />
+                        <String value="snipet" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Sub>
+                    <Sequence>
+                        <Terminating_Rule value="tagName" />
+                        <ZeroOrOneOf>
+                            <Terminating_Rule value="tagPath" />
+                        </ZeroOrOneOf>
+                    </Sequence>
+                </Sub>
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Sub>
+                                <Sequence>
+                                    <Terminating_Rule value="tagName" />
+                                    <ZeroOrOneOf>
+                                        <Terminating_Rule value="tagPath" />
+                                    </ZeroOrOneOf>
+                                </Sequence>
+                            </Sub>
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="tagName" />
+            <Uses_Terminated value="tagPath" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="tagName">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="tagPath">
+                <T v="name" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="snipet_name" uses="name" usedBy=",raw_text,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="name" />
+                <Character_Single value=":" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="1" characterLevel="not phrased">
+            <Uses_Terminated value="name" />
+            <UsedBy_Terminated value="raw_text" />
+        </Properties>
+        <Called>
+            <T v="name" />
+        </Called>
+        <Caller>
+            <T v="raw_text" />
+        </Caller>
+    </Rule>
+    <Rule value="snipetName" uses="parameter" usedBy=",useForSnipet,useForSnipetDownwards,forAll,ifAbsent,ifEmpty,stackPush,xmlCreate,">
+        <Expression>
+            <Terminating_Rule value="parameter" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="parameter" />
+            <UsedBy_Terminated value="useForSnipet" />
+            <UsedBy_Terminated value="useForSnipetDownwards" />
+            <UsedBy_Terminated value="forAll" />
+            <UsedBy_Terminated value="ifAbsent" />
+            <UsedBy_Terminated value="ifEmpty" />
+            <UsedBy_Terminated value="stackPush" />
+            <UsedBy_Terminated value="xmlCreate" />
+        </Properties>
+        <Called>
+            <C v="parameter">
+                <T v="name" c="2" />
+                <T v="string" c="3" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="useForSnipet">
+                <C v="option" c="8">
+                    <T v="sequence" c="10" />
+                </C>
+                <C v="onlyOnce" c="9">
+                    <R v="sequence" c="11" />
+                </C>
+            </C>
+            <C v="useForSnipetDownwards">
+                <C v="option" c="12" />
+                <C v="onlyOnce" c="13" />
+            </C>
+            <C v="forAll">
+                <C v="option" c="14" />
+                <C v="onlyOnce" c="15" />
+            </C>
+            <C v="ifAbsent">
+                <C v="option" c="16" />
+                <C v="onlyOnce" c="17" />
+            </C>
+            <C v="ifEmpty">
+                <C v="option" c="18" />
+                <C v="onlyOnce" c="19" />
+            </C>
+            <C v="stackPush">
+                <C v="option" c="20" />
+                <C v="onlyOnce" c="21" />
+            </C>
+            <C v="xmlCreate">
+                <C v="option" c="22" />
+                <C v="onlyOnce" c="23" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="sourceStack" uses="stackName" usedBy=",stackPushSize,">
+        <Expression>
+            <Terminating_Rule value="stackName" />
+        </Expression>
+        <Properties leafLevel="3" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="stackName" />
+            <UsedBy_Terminated value="stackPushSize" />
+        </Properties>
+        <Called>
+            <C v="stackName">
+                <C v="parameter" c="2">
+                    <T v="name" c="3" />
+                    <T v="string" c="4" />
+                </C>
+            </C>
+        </Called>
+        <Caller>
+            <C v="stackPushSize">
+                <C v="option" c="2">
+                    <T v="sequence" c="4" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="5" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="space" uses="number" usedBy=",format,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <Character_Single value="S" />
+                        <Character_Single value="s" />
+                    </OrInclusive>
+                </Sub>
+                <Terminating_Rule value="number" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="not phrased">
+            <Uses_Terminated value="number" />
+            <UsedBy_Terminated value="format" />
+        </Properties>
+        <Called>
+            <T v="number" />
+        </Called>
+        <Caller>
+            <C v="format">
+                <T v="sequence" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="stackClear" uses="stackName" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@stackClear" />
+                        <String value="stackClear" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="stackName" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="stackName" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="stackName" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="stackName">
+                <C v="parameter" c="2">
+                    <T v="name" c="3" />
+                    <T v="string" c="4" />
+                </C>
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="stackName" uses="parameter" usedBy=",stackPush,stackRead,stackReadAll,stackPop,stackPopAll,ifStackEqual,ifStackUnequal,repeat_ifStackEqual,repeat_ifStackUnequal,sourceStack,dstntnStack,stackClear,">
+        <Expression>
+            <Terminating_Rule value="parameter" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="4" characterLevel="phrased">
+            <Uses_Terminated value="parameter" />
+            <UsedBy_Terminated value="stackPush" />
+            <UsedBy_Terminated value="stackRead" />
+            <UsedBy_Terminated value="stackReadAll" />
+            <UsedBy_Terminated value="stackPop" />
+            <UsedBy_Terminated value="stackPopAll" />
+            <UsedBy_Terminated value="ifStackEqual" />
+            <UsedBy_Terminated value="ifStackUnequal" />
+            <UsedBy_Terminated value="repeat_ifStackEqual" />
+            <UsedBy_Terminated value="repeat_ifStackUnequal" />
+            <UsedBy_Terminated value="sourceStack" />
+            <UsedBy_Terminated value="dstntnStack" />
+            <UsedBy_Terminated value="stackClear" />
+        </Properties>
+        <Called>
+            <C v="parameter">
+                <T v="name" c="2" />
+                <T v="string" c="3" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="stackPush">
+                <C v="option" c="13">
+                    <T v="sequence" c="15" />
+                </C>
+                <C v="onlyOnce" c="14">
+                    <R v="sequence" c="16" />
+                </C>
+            </C>
+            <C v="stackRead">
+                <C v="option" c="17" />
+                <C v="onlyOnce" c="18" />
+            </C>
+            <C v="stackReadAll">
+                <C v="option" c="19" />
+                <C v="onlyOnce" c="20" />
+            </C>
+            <C v="stackPop">
+                <C v="option" c="21" />
+                <C v="onlyOnce" c="22" />
+            </C>
+            <C v="stackPopAll">
+                <C v="option" c="23" />
+                <C v="onlyOnce" c="24" />
+            </C>
+            <C v="ifStackEqual">
+                <C v="option" c="25" />
+                <C v="onlyOnce" c="26" />
+            </C>
+            <C v="ifStackUnequal">
+                <C v="option" c="27" />
+                <C v="onlyOnce" c="28" />
+            </C>
+            <C v="repeat_ifStackEqual">
+                <X v="option" c="29" />
+                <X v="onlyOnce" c="30" />
+            </C>
+            <C v="repeat_ifStackUnequal">
+                <X v="option" c="31" />
+                <X v="onlyOnce" c="32" />
+            </C>
+            <C v="sourceStack">
+                <X v="stackPushSize" c="33" />
+            </C>
+            <C v="dstntnStack">
+                <X v="stackPushSize" c="34" />
+            </C>
+            <C v="stackClear">
+                <X v="option" c="35" />
+                <X v="onlyOnce" c="36" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="stackPop" uses="stackName,value" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@stackPop" />
+                        <String value="stackPop" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="value" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="stackName" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="stackName" />
+            <Uses_Terminated value="value" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="stackName">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="value">
+                <C v="parameter" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="stackPopAll" uses="stackName,value" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@stackPopAll" />
+                        <String value="stackPopAll" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="value" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="stackName" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="stackName" />
+            <Uses_Terminated value="value" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="stackName">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="value">
+                <C v="parameter" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="stackPush" uses="snipetName,stackName" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@stackPush" />
+                        <String value="stackPush" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="stackName" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="snipetName" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="snipetName" />
+            <Uses_Terminated value="stackName" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="snipetName">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="stackName">
+                <C v="parameter" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="stackPushSize" uses="dstntnStack,sourceStack" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="stackPushSize" />
+                        <String value="@stackPushSize" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="sourceStack" />
+                <Character_Single value="," />
+                <Terminating_Rule value="dstntnStack" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="4" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="dstntnStack" />
+            <Uses_Terminated value="sourceStack" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="dstntnStack">
+                <C v="stackName" c="3">
+                    <C v="parameter" c="4">
+                        <T v="name" c="5" />
+                        <T v="string" c="6" />
+                    </C>
+                </C>
+            </C>
+            <C v="sourceStack">
+                <C v="stackName" c="7" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="stackRead" uses="stackName,value" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@stackRead" />
+                        <String value="stackRead" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="value" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="stackName" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="stackName" />
+            <Uses_Terminated value="value" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="stackName">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="value">
+                <C v="parameter" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="stackReadAll" uses="stackName,value" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@stackReadAll" />
+                        <String value="stackReadAll" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="value" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="stackName" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="stackName" />
+            <Uses_Terminated value="value" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="stackName">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="value">
+                <C v="parameter" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="statistic" uses="tagToCount,tagToSave" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@statistic" />
+                        <String value="statistic" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="tagToCount" />
+                <Character_Single value="," />
+                <Terminating_Rule value="tagToSave" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="tagToCount" />
+            <Uses_Terminated value="tagToSave" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="tagToCount">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="tagToSave">
+                <C v="parameter" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="string" uses="" usedBy=",parameter,prefix,xmlProperty,">
+        <Expression>
+            <Sub>
+                <Sequence>
+                    <Character_Single value='&quot;' />
+                    <ZeroOrMoreOf>
+                        <Sub>
+                            <OrInclusive>
+                                <Sub>
+                                    <Sequence>
+                                        <Character_Single value="\\" />
+                                        <Primitive value="anychar_p" />
+                                    </Sequence>
+                                </Sub>
+                                <Sub>
+                                    <Exclusion>
+                                        <First>
+                                            <Primitive value="anychar_p" />
+                                        </First>
+                                        <Second>
+                                            <Character_Single value='&quot;' />
+                                        </Second>
+                                    </Exclusion>
+                                </Sub>
+                            </OrInclusive>
+                        </Sub>
+                    </ZeroOrMoreOf>
+                    <Character_Single value='&quot;' />
+                </Sequence>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="6" characterLevel="not phrased">
+            <UsedBy_Terminated value="parameter" />
+            <UsedBy_Terminated value="prefix" />
+            <UsedBy_Terminated value="xmlProperty" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="parameter">
+                <C v="useAlsoFor" c="4">
+                    <T v="raw_text" c="17" />
+                </C>
+                <C v="tagName" c="5">
+                    <X v="snipet" c="18" />
+                    <X v="drop" c="19" />
+                    <X v="text" c="20" />
+                    <X v="collection" c="21" />
+                    <X v="destination" c="22" />
+                    <X v="useForSnipet" c="23" />
+                    <X v="useForSnipetDownwards" c="24" />
+                    <X v="ifAbsent" c="25" />
+                    <X v="xmlCopy" c="26" />
+                    <X v="xmlCut" c="27" />
+                    <X v="xmlCode" c="28" />
+                    <X v="xmlPrint" c="29" />
+                    <X v="ifXmlEqual" c="30" />
+                    <X v="ifXmlUnequal" c="31" />
+                    <X v="ifXmlExisting" c="32" />
+                    <X v="ifXmlMissing" c="33" />
+                </C>
+                <X v="newName" c="6" />
+                <X v="snipetName" c="7" />
+                <X v="value" c="8" />
+                <X v="stackName" c="9" />
+                <X v="oldPart" c="10" />
+                <X v="newPart" c="11" />
+                <X v="tagToCount" c="12" />
+                <X v="tagToSave" c="13" />
+                <X v="attributeName" c="14" />
+                <X v="textToParse" c="15" />
+                <X v="rule" c="16" />
+            </C>
+            <C v="prefix">
+                <X v="xmlPrint" c="34" />
+            </C>
+            <C v="xmlProperty">
+                <X v="xmlPrint" c="35" />
+                <X v="ifXmlEqual" c="36" />
+                <X v="ifXmlUnequal" c="37" />
+                <X v="ifXmlExisting" c="38" />
+                <X v="ifXmlMissing" c="39" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="tab" uses="number" usedBy=",format,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <Character_Single value="T" />
+                        <Character_Single value="t" />
+                    </OrInclusive>
+                </Sub>
+                <Terminating_Rule value="number" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="not phrased">
+            <Uses_Terminated value="number" />
+            <UsedBy_Terminated value="format" />
+        </Properties>
+        <Called>
+            <T v="number" />
+        </Called>
+        <Caller>
+            <C v="format">
+                <T v="sequence" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="tag" uses="" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@tag" />
+                        <String value="tag" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="2" characterLevel="phrased">
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="tagName" uses="parameter" usedBy=",snipet,drop,text,collection,destination,useForSnipet,useForSnipetDownwards,ifAbsent,xmlCopy,xmlCut,xmlCode,xmlPrint,ifXmlEqual,ifXmlUnequal,ifXmlExisting,ifXmlMissing,">
+        <Expression>
+            <Terminating_Rule value="parameter" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="parameter" />
+            <UsedBy_Terminated value="snipet" />
+            <UsedBy_Terminated value="drop" />
+            <UsedBy_Terminated value="text" />
+            <UsedBy_Terminated value="collection" />
+            <UsedBy_Terminated value="destination" />
+            <UsedBy_Terminated value="useForSnipet" />
+            <UsedBy_Terminated value="useForSnipetDownwards" />
+            <UsedBy_Terminated value="ifAbsent" />
+            <UsedBy_Terminated value="xmlCopy" />
+            <UsedBy_Terminated value="xmlCut" />
+            <UsedBy_Terminated value="xmlCode" />
+            <UsedBy_Terminated value="xmlPrint" />
+            <UsedBy_Terminated value="ifXmlEqual" />
+            <UsedBy_Terminated value="ifXmlUnequal" />
+            <UsedBy_Terminated value="ifXmlExisting" />
+            <UsedBy_Terminated value="ifXmlMissing" />
+        </Properties>
+        <Called>
+            <C v="parameter">
+                <T v="name" c="2" />
+                <T v="string" c="3" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="snipet">
+                <C v="option" c="17">
+                    <T v="sequence" c="19" />
+                </C>
+                <C v="onlyOnce" c="18">
+                    <R v="sequence" c="20" />
+                </C>
+            </C>
+            <C v="drop">
+                <C v="option" c="21" />
+                <C v="onlyOnce" c="22" />
+            </C>
+            <C v="text">
+                <C v="option" c="23" />
+                <C v="onlyOnce" c="24" />
+            </C>
+            <C v="collection">
+                <C v="option" c="25" />
+                <C v="onlyOnce" c="26" />
+            </C>
+            <C v="destination">
+                <C v="option" c="27" />
+                <C v="onlyOnce" c="28" />
+            </C>
+            <C v="useForSnipet">
+                <X v="option" c="29" />
+                <X v="onlyOnce" c="30" />
+            </C>
+            <C v="useForSnipetDownwards">
+                <X v="option" c="31" />
+                <X v="onlyOnce" c="32" />
+            </C>
+            <C v="ifAbsent">
+                <X v="option" c="33" />
+                <X v="onlyOnce" c="34" />
+            </C>
+            <C v="xmlCopy">
+                <X v="option" c="35" />
+                <X v="onlyOnce" c="36" />
+            </C>
+            <C v="xmlCut">
+                <X v="option" c="37" />
+                <X v="onlyOnce" c="38" />
+            </C>
+            <C v="xmlCode">
+                <X v="option" c="39" />
+                <X v="onlyOnce" c="40" />
+            </C>
+            <C v="xmlPrint">
+                <X v="option" c="41" />
+                <X v="onlyOnce" c="42" />
+            </C>
+            <C v="ifXmlEqual">
+                <X v="option" c="43" />
+                <X v="onlyOnce" c="44" />
+            </C>
+            <C v="ifXmlUnequal">
+                <X v="option" c="45" />
+                <X v="onlyOnce" c="46" />
+            </C>
+            <C v="ifXmlExisting">
+                <X v="option" c="47" />
+                <X v="onlyOnce" c="48" />
+            </C>
+            <C v="ifXmlMissing">
+                <X v="option" c="49" />
+                <X v="onlyOnce" c="50" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="tagPath" uses="name" usedBy=",snipet,text,xmlCopy,xmlCut,xmlCode,xmlPrint,ifXmlEqual,ifXmlUnequal,ifXmlExisting,ifXmlMissing,xmlSnipet,">
+        <Expression>
+            <OneOrMoreOf>
+                <Sub>
+                    <Sequence>
+                        <Character_Single value="/" />
+                        <Terminating_Rule value="name" />
+                    </Sequence>
+                </Sub>
+            </OneOrMoreOf>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="3" characterLevel="not phrased">
+            <Uses_Terminated value="name" />
+            <UsedBy_Terminated value="snipet" />
+            <UsedBy_Terminated value="text" />
+            <UsedBy_Terminated value="xmlCopy" />
+            <UsedBy_Terminated value="xmlCut" />
+            <UsedBy_Terminated value="xmlCode" />
+            <UsedBy_Terminated value="xmlPrint" />
+            <UsedBy_Terminated value="ifXmlEqual" />
+            <UsedBy_Terminated value="ifXmlUnequal" />
+            <UsedBy_Terminated value="ifXmlExisting" />
+            <UsedBy_Terminated value="ifXmlMissing" />
+            <UsedBy_Terminated value="xmlSnipet" />
+        </Properties>
+        <Called>
+            <T v="name" />
+        </Called>
+        <Caller>
+            <C v="snipet">
+                <C v="option" c="12">
+                    <T v="sequence" c="14" />
+                </C>
+                <C v="onlyOnce" c="13">
+                    <R v="sequence" c="15" />
+                </C>
+            </C>
+            <C v="text">
+                <C v="option" c="16" />
+                <C v="onlyOnce" c="17" />
+            </C>
+            <C v="xmlCopy">
+                <C v="option" c="18" />
+                <C v="onlyOnce" c="19" />
+            </C>
+            <C v="xmlCut">
+                <C v="option" c="20" />
+                <C v="onlyOnce" c="21" />
+            </C>
+            <C v="xmlCode">
+                <C v="option" c="22" />
+                <C v="onlyOnce" c="23" />
+            </C>
+            <C v="xmlPrint">
+                <C v="option" c="24" />
+                <C v="onlyOnce" c="25" />
+            </C>
+            <C v="ifXmlEqual">
+                <C v="option" c="26" />
+                <C v="onlyOnce" c="27" />
+            </C>
+            <C v="ifXmlUnequal">
+                <C v="option" c="28" />
+                <C v="onlyOnce" c="29" />
+            </C>
+            <C v="ifXmlExisting">
+                <X v="option" c="30" />
+                <X v="onlyOnce" c="31" />
+            </C>
+            <C v="ifXmlMissing">
+                <X v="option" c="32" />
+                <X v="onlyOnce" c="33" />
+            </C>
+            <C v="xmlSnipet">
+                <X v="option" c="34" />
+                <X v="onlyOnce" c="35" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="tagToCount" uses="parameter" usedBy=",statistic,">
+        <Expression>
+            <Terminating_Rule value="parameter" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="parameter" />
+            <UsedBy_Terminated value="statistic" />
+        </Properties>
+        <Called>
+            <C v="parameter">
+                <T v="name" c="2" />
+                <T v="string" c="3" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="statistic">
+                <C v="option" c="2">
+                    <T v="sequence" c="4" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="5" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="tagToSave" uses="parameter" usedBy=",statistic,">
+        <Expression>
+            <Terminating_Rule value="parameter" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="parameter" />
+            <UsedBy_Terminated value="statistic" />
+        </Properties>
+        <Called>
+            <C v="parameter">
+                <T v="name" c="2" />
+                <T v="string" c="3" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="statistic">
+                <C v="option" c="2">
+                    <T v="sequence" c="4" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="5" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="text" uses="tagName,tagPath" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@text" />
+                        <String value="text" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="tagName" />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="tagPath" />
+                </ZeroOrOneOf>
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="tagName" />
+                            <ZeroOrOneOf>
+                                <Terminating_Rule value="tagPath" />
+                            </ZeroOrOneOf>
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="tagName" />
+            <Uses_Terminated value="tagPath" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="tagName">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="tagPath">
+                <T v="name" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="textToParse" uses="parameter" usedBy=",parse,">
+        <Expression>
+            <Terminating_Rule value="parameter" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="not phrased">
+            <Uses_Terminated value="parameter" />
+            <UsedBy_Terminated value="parse" />
+        </Properties>
+        <Called>
+            <C v="parameter">
+                <T v="name" c="2" />
+                <T v="string" c="3" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="parse">
+                <C v="option" c="2">
+                    <T v="sequence" c="4" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="5" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="tolerant" uses="" usedBy=",xmlSnipet,">
+        <Expression>
+            <String value="__TOLERANT__" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="not phrased">
+            <UsedBy_Terminated value="xmlSnipet" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="xmlSnipet">
+                <C v="option" c="2">
+                    <T v="sequence" c="4" />
+                </C>
+                <C v="onlyOnce" c="3">
+                    <R v="sequence" c="5" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="useAlsoFor" uses="parameter" usedBy=",raw_text,">
+        <Expression>
+            <Sequence>
+                <String value="useAlsoFor" />
+                <Character_Single value="(" />
+                <Terminating_Rule value="parameter" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="parameter" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="2" rootLevel="1" characterLevel="phrased">
+            <Uses_Terminated value="parameter" />
+            <UsedBy_Terminated value="raw_text" />
+        </Properties>
+        <Called>
+            <C v="parameter">
+                <T v="name" c="2" />
+                <T v="string" c="3" />
+            </C>
+        </Called>
+        <Caller>
+            <T v="raw_text" />
+        </Caller>
+    </Rule>
+    <Rule value="useForSnipet" uses="snipetName,tagName" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@useForSnipet" />
+                        <String value="@useForSnipet_Local" />
+                        <String value="useForSnipet" />
+                        <String value="useForSnipet_Local" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="tagName" />
+                <Character_Single value="," />
+                <Terminating_Rule value="snipetName" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="snipetName" />
+            <Uses_Terminated value="tagName" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="snipetName">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="tagName">
+                <C v="parameter" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="useForSnipetDownwards" uses="snipetName,tagName" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@useForSnipetDownwards" />
+                        <String value="useForSnipetDownwards" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="tagName" />
+                <Character_Single value="," />
+                <Terminating_Rule value="snipetName" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="snipetName" />
+            <Uses_Terminated value="tagName" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="snipetName">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="tagName">
+                <C v="parameter" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="value" uses="parameter" usedBy=",stackRead,stackReadAll,stackPop,stackPopAll,ifStackEqual,ifStackUnequal,repeat_ifStackEqual,repeat_ifStackUnequal,ifXmlEqual,ifXmlUnequal,">
+        <Expression>
+            <Terminating_Rule value="parameter" />
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="parameter" />
+            <UsedBy_Terminated value="stackRead" />
+            <UsedBy_Terminated value="stackReadAll" />
+            <UsedBy_Terminated value="stackPop" />
+            <UsedBy_Terminated value="stackPopAll" />
+            <UsedBy_Terminated value="ifStackEqual" />
+            <UsedBy_Terminated value="ifStackUnequal" />
+            <UsedBy_Terminated value="repeat_ifStackEqual" />
+            <UsedBy_Terminated value="repeat_ifStackUnequal" />
+            <UsedBy_Terminated value="ifXmlEqual" />
+            <UsedBy_Terminated value="ifXmlUnequal" />
+        </Properties>
+        <Called>
+            <C v="parameter">
+                <T v="name" c="2" />
+                <T v="string" c="3" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="stackRead">
+                <C v="option" c="11">
+                    <T v="sequence" c="13" />
+                </C>
+                <C v="onlyOnce" c="12">
+                    <R v="sequence" c="14" />
+                </C>
+            </C>
+            <C v="stackReadAll">
+                <C v="option" c="15" />
+                <C v="onlyOnce" c="16" />
+            </C>
+            <C v="stackPop">
+                <C v="option" c="17" />
+                <C v="onlyOnce" c="18" />
+            </C>
+            <C v="stackPopAll">
+                <C v="option" c="19" />
+                <C v="onlyOnce" c="20" />
+            </C>
+            <C v="ifStackEqual">
+                <C v="option" c="21" />
+                <C v="onlyOnce" c="22" />
+            </C>
+            <C v="ifStackUnequal">
+                <C v="option" c="23" />
+                <C v="onlyOnce" c="24" />
+            </C>
+            <C v="repeat_ifStackEqual">
+                <C v="option" c="25" />
+                <C v="onlyOnce" c="26" />
+            </C>
+            <C v="repeat_ifStackUnequal">
+                <C v="option" c="27" />
+                <C v="onlyOnce" c="28" />
+            </C>
+            <C v="ifXmlEqual">
+                <X v="option" c="29" />
+                <X v="onlyOnce" c="30" />
+            </C>
+            <C v="ifXmlUnequal">
+                <X v="option" c="31" />
+                <X v="onlyOnce" c="32" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="xmlCode" uses="newName,newPath,tagName,tagPath" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@xmlCode" />
+                        <String value="xmlCode" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="newName" />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="newPath" />
+                </ZeroOrOneOf>
+                <Character_Single value="," />
+                <Sub>
+                    <Sequence>
+                        <Terminating_Rule value="tagName" />
+                        <ZeroOrOneOf>
+                            <Terminating_Rule value="tagPath" />
+                        </ZeroOrOneOf>
+                    </Sequence>
+                </Sub>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="newName" />
+            <Uses_Terminated value="newPath" />
+            <Uses_Terminated value="tagName" />
+            <Uses_Terminated value="tagPath" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="newName">
+                <C v="parameter" c="5">
+                    <T v="name" c="6" />
+                    <T v="string" c="7" />
+                </C>
+            </C>
+            <C v="newPath">
+                <T v="name" c="8" />
+            </C>
+            <C v="tagName">
+                <C v="parameter" c="9" />
+            </C>
+            <C v="tagPath">
+                <T v="name" c="10" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="xmlCopy" uses="newName,newPath,tagName,tagPath" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@xmlCopy" />
+                        <String value="xmlCopy" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="newName" />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="newPath" />
+                </ZeroOrOneOf>
+                <Character_Single value="," />
+                <Sub>
+                    <Sequence>
+                        <Terminating_Rule value="tagName" />
+                        <ZeroOrOneOf>
+                            <Terminating_Rule value="tagPath" />
+                        </ZeroOrOneOf>
+                    </Sequence>
+                </Sub>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="newName" />
+            <Uses_Terminated value="newPath" />
+            <Uses_Terminated value="tagName" />
+            <Uses_Terminated value="tagPath" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="newName">
+                <C v="parameter" c="5">
+                    <T v="name" c="6" />
+                    <T v="string" c="7" />
+                </C>
+            </C>
+            <C v="newPath">
+                <T v="name" c="8" />
+            </C>
+            <C v="tagName">
+                <C v="parameter" c="9" />
+            </C>
+            <C v="tagPath">
+                <T v="name" c="10" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="xmlCreate" uses="newName,newPath,snipetName" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@xmlCreate" />
+                        <String value="xmlCreate" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="newName" />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="newPath" />
+                </ZeroOrOneOf>
+                <Character_Single value="," />
+                <Terminating_Rule value="snipetName" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="newName" />
+            <Uses_Terminated value="newPath" />
+            <Uses_Terminated value="snipetName" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="newName">
+                <C v="parameter" c="4">
+                    <T v="name" c="5" />
+                    <T v="string" c="6" />
+                </C>
+            </C>
+            <C v="newPath">
+                <T v="name" c="7" />
+            </C>
+            <C v="snipetName">
+                <C v="parameter" c="8" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="xmlCut" uses="newName,newPath,tagName,tagPath" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@xmlCut" />
+                        <String value="xmlCut" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="newName" />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="newPath" />
+                </ZeroOrOneOf>
+                <Character_Single value="," />
+                <Sub>
+                    <Sequence>
+                        <Terminating_Rule value="tagName" />
+                        <ZeroOrOneOf>
+                            <Terminating_Rule value="tagPath" />
+                        </ZeroOrOneOf>
+                    </Sequence>
+                </Sub>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="newName" />
+            <Uses_Terminated value="newPath" />
+            <Uses_Terminated value="tagName" />
+            <Uses_Terminated value="tagPath" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="newName">
+                <C v="parameter" c="5">
+                    <T v="name" c="6" />
+                    <T v="string" c="7" />
+                </C>
+            </C>
+            <C v="newPath">
+                <T v="name" c="8" />
+            </C>
+            <C v="tagName">
+                <C v="parameter" c="9" />
+            </C>
+            <C v="tagPath">
+                <T v="name" c="10" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="xmlDelete" uses="newName,newPath" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@xmlDelete" />
+                        <String value="xmlDelete" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="newName" />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="newPath" />
+                </ZeroOrOneOf>
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="newName" />
+                            <ZeroOrOneOf>
+                                <Terminating_Rule value="newPath" />
+                            </ZeroOrOneOf>
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="newName" />
+            <Uses_Terminated value="newPath" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="newName">
+                <C v="parameter" c="3">
+                    <T v="name" c="4" />
+                    <T v="string" c="5" />
+                </C>
+            </C>
+            <C v="newPath">
+                <T v="name" c="6" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="xmlInsert" uses="newName,newPath,position" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@xmlInsert" />
+                        <String value="xmlInsert" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="newName" />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="newPath" />
+                </ZeroOrOneOf>
+                <Character_Single value="," />
+                <Terminating_Rule value="position" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="newName" />
+            <Uses_Terminated value="newPath" />
+            <Uses_Terminated value="position" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="newName">
+                <C v="parameter" c="4">
+                    <T v="name" c="5" />
+                    <T v="string" c="6" />
+                </C>
+            </C>
+            <C v="newPath">
+                <T v="name" c="7" />
+            </C>
+            <C v="position">
+                <T v="number" c="8" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="xmlPrint" uses="prefix,tagName,tagPath,xmlProperty" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@xmlPrint" />
+                        <String value="xmlPrint" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="prefix" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="," />
+                            <Terminating_Rule value="tagName" />
+                            <ZeroOrOneOf>
+                                <Terminating_Rule value="tagPath" />
+                            </ZeroOrOneOf>
+                            <ZeroOrOneOf>
+                                <Sub>
+                                    <Sequence>
+                                        <Character_Single value="/" />
+                                        <Terminating_Rule value="xmlProperty" />
+                                    </Sequence>
+                                </Sub>
+                            </ZeroOrOneOf>
+                        </Sequence>
+                    </Sub>
+                </ZeroOrOneOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="prefix" />
+            <Uses_Terminated value="tagName" />
+            <Uses_Terminated value="tagPath" />
+            <Uses_Terminated value="xmlProperty" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="prefix">
+                <T v="string" c="5" />
+            </C>
+            <C v="tagName">
+                <C v="parameter" c="6">
+                    <T v="name" c="7" />
+                    <T v="string" c="8" />
+                </C>
+            </C>
+            <C v="tagPath">
+                <T v="name" c="9" />
+            </C>
+            <C v="xmlProperty">
+                <T v="string" c="10" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="xmlProperty" uses="string" usedBy=",xmlPrint,ifXmlEqual,ifXmlUnequal,ifXmlExisting,ifXmlMissing,">
+        <Expression>
+            <Terminating_Rule value="string" />
+        </Expression>
+        <Properties leafLevel="1" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="string" />
+            <UsedBy_Terminated value="xmlPrint" />
+            <UsedBy_Terminated value="ifXmlEqual" />
+            <UsedBy_Terminated value="ifXmlUnequal" />
+            <UsedBy_Terminated value="ifXmlExisting" />
+            <UsedBy_Terminated value="ifXmlMissing" />
+        </Properties>
+        <Called>
+            <T v="string" />
+        </Called>
+        <Caller>
+            <C v="xmlPrint">
+                <C v="option" c="6">
+                    <T v="sequence" c="8" />
+                </C>
+                <C v="onlyOnce" c="7">
+                    <R v="sequence" c="9" />
+                </C>
+            </C>
+            <C v="ifXmlEqual">
+                <C v="option" c="10" />
+                <C v="onlyOnce" c="11" />
+            </C>
+            <C v="ifXmlUnequal">
+                <C v="option" c="12" />
+                <C v="onlyOnce" c="13" />
+            </C>
+            <C v="ifXmlExisting">
+                <C v="option" c="14" />
+                <C v="onlyOnce" c="15" />
+            </C>
+            <C v="ifXmlMissing">
+                <C v="option" c="16" />
+                <C v="onlyOnce" c="17" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="xmlSave" uses="fileName,filePath,newName,newPath" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@xmlSave" />
+                        <String value="xmlSave" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Terminating_Rule value="newName" />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="newPath" />
+                </ZeroOrOneOf>
+                <Character_Single value="," />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="filePath" />
+                </ZeroOrOneOf>
+                <Terminating_Rule value="fileName" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="fileName" />
+            <Uses_Terminated value="filePath" />
+            <Uses_Terminated value="newName" />
+            <Uses_Terminated value="newPath" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="fileName">
+                <T v="name" c="5" />
+            </C>
+            <C v="filePath">
+                <T v="name" c="6" />
+            </C>
+            <C v="newName">
+                <C v="parameter" c="7">
+                    <T v="name" c="8" />
+                    <T v="string" c="9" />
+                </C>
+            </C>
+            <C v="newPath">
+                <T v="name" c="10" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="xmlSnipet" uses="newName,tagPath,tolerant" usedBy=",option,onlyOnce,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <String value="@xmlSnipet" />
+                        <String value="xmlSnipet" />
+                    </OrInclusive>
+                </Sub>
+                <Character_Single value="(" />
+                <Sub>
+                    <Sequence>
+                        <Terminating_Rule value="newName" />
+                        <ZeroOrOneOf>
+                            <Terminating_Rule value="tagPath" />
+                        </ZeroOrOneOf>
+                    </Sequence>
+                </Sub>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="tolerant" />
+                </ZeroOrOneOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Character_Single value="," />
+                    </Sub>
+                </ZeroOrOneOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="newName" />
+            <Uses_Terminated value="tagPath" />
+            <Uses_Terminated value="tolerant" />
+            <UsedBy_Terminated value="option" />
+            <UsedBy_Terminated value="onlyOnce" />
+        </Properties>
+        <Called>
+            <C v="newName">
+                <C v="parameter" c="4">
+                    <T v="name" c="5" />
+                    <T v="string" c="6" />
+                </C>
+            </C>
+            <C v="tagPath">
+                <T v="name" c="7" />
+            </C>
+            <T v="tolerant" />
+        </Called>
+        <Caller>
+            <C v="option">
+                <T v="sequence" c="3" />
+            </C>
+            <C v="onlyOnce">
+                <T v="sequence" c="4" />
+            </C>
+        </Caller>
+    </Rule>
+</Content>

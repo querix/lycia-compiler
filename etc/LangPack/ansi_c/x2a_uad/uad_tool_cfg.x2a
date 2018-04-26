@@ -1,0 +1,51 @@
+
+
+
+dumpBrkCnt:[@stackPop("",_BrkDst_),@stackPop("",_CntDst_)]|
+
+
+dumpPrePst:[@stackPop("",_PreFix_),@stackPop("",_PstFix_)]|
+dumpPre:[@stackPop("",_PreFix_)]|
+dumpPst:[@stackPop("",_PstFix_)]|
+
+
+
+
+inc_Counter:[@stackPushSize(_Counter_,_Counter_)][@stackRead("",_Counter_)]|
+dec_Counter:[@stackPop("",_Counter_)]|
+clr_Counter:[@stackClear(_Counter_)]|
+
+node_ID:L_[@attribute(L)]_C_[@attribute(C)]|
+
+
+store_local_operation:[% suiteAndMore %]|
+store_case_operation:[@stackReadAll("",_LocalOperation_)] |
+
+
+case_sink:[@tag()]_[% node_ID %];|
+
+init_stack:-|
+
+/**/
+dumpCaseSink:[@stackPop("",_CaseSink_)]|
+
+
+setCaseSink:[@ifStackEqual("-",_CaseSink_),
+             @useForSnipet(TAG_NAME,case_sink), @stackPush(_CaseSink_,__SELF__)]|
+             
+setNodeStyle:[@useForSnipet(TAG_NAME,TAG_NAME_Style), @stackPush(_Style_,__SELF__)]|
+
+setPreAndPost:[@useForSnipet(TAG_NAME,TAG_NAME_Pre),  @stackPush(_PreFix_,__SELF__)
+             ][@useForSnipet(TAG_NAME,TAG_NAME_Pst),  @stackPush(_PstFix_,__SELF__)
+             ]|
+clrPreAndPost:[@useForSnipet(TAG_NAME,dumpPrePst),    @stackPush(_DUMP_,__SELF__)
+             ][@stackClear(_DUMP_)]|
+             
+setBrkAndCnt:[@useForSnipet(TAG_NAME,TAG_NAME_Brk),  @stackPush(_BrkDst_,__SELF__)
+            ][@useForSnipet(TAG_NAME,TAG_NAME_Cnt),  @stackPush(_CntDst_,__SELF__)
+            ]|
+clrBrkAndCnt:[@useForSnipet(TAG_NAME,dumpBrkCnt),     @stackPush(_DUMP_,__SELF__)
+            ][@stackClear(_DUMP_)]|
+
+
+

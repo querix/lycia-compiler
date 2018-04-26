@@ -1,0 +1,1366 @@
+
+/*!
+ @defgroup GRAMMAR_PREPRO_EXPR Preprocedure Expressions
+ @ingroup GRAMMAR_PREPRO
+ 
+*/
+
+
+
+/*!
+ @defgroup GRAMMAR_PREPRO_EXPR_TOKEN Preprocedure Tokens
+ @ingroup GRAMMAR_PREPRO
+ 
+*/
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_D D
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_D.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_D_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_D_Caller.dt"
+*/
+D = range_p('0','9');
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_L L
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_L.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_L_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_L_Caller.dt"
+*/
+L = range_p('a','z') | range_p('A','Z');
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_H H
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_H.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_H_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_H_Caller.dt"
+*/
+H	=	range_p('a','f') | range_p('A','F') | range_p('0','9');
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_E E
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_E.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_E_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_E_Caller.dt"
+*/
+E	= (ch_p('E') | ch_p('e')) >> !(ch_p('+') | ch_p('-')) >> +D;
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_FS FS
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_FS.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_FS_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_FS_Caller.dt"
+*/
+FS =			(ch_p('f') | ch_p('F') | ch_p('l') | ch_p('L'));
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_IS IS
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_IS.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Directive_R_IS_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_IS_Caller.dt"
+*/
+IS =		 *(ch_p('u') | ch_p('U') | ch_p('l') | ch_p('L'));
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_CONSTANT_HEX CONSTANT_HEX
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_CONSTANT_HEX.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_CONSTANT_HEX_Called.dt"
+                     
+ <h2>Used by</h2>
+  @dotfile "Directive_R_CONSTANT_HEX_Caller.dt"
+*/
+CONSTANT_HEX = '0' >> ('x'|'X') >> +H >>!IS;
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_CONSTANT_INT0 CONSTANT_INT0
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_CONSTANT_INT0.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_CONSTANT_INT0_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_CONSTANT_INT0_Caller.dt"
+*/
+CONSTANT_INT0 = '0' >> +D >> !IS;
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_CONSTANT_INT1 CONSTANT_INT1
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_CONSTANT_INT1.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_CONSTANT_INT1_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_CONSTANT_INT1_Caller.dt"
+*/
+CONSTANT_INT1 = +D >> !IS;
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_CONSTANT_INT CONSTANT_INT
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_CONSTANT_INT.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_CONSTANT_INT_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_CONSTANT_INT_Caller.dt"
+*/
+CONSTANT_INT = CONSTANT_INT0
+             | CONSTANT_INT1;
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_CONSTANT_CHAR CONSTANT_CHAR
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_CONSTANT_CHAR.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_CONSTANT_CHAR_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_CONSTANT_CHAR_Caller.dt"
+*/
+CONSTANT_CHAR = !'L' >> '\''
+                     >> +(  (  '\\'
+                              >>(anychar_p-('\r'|'\n'))
+                            )
+                          |(anychar_p - ('\\'|'\'') )
+                         )
+                     >> '\'';
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_CONSTANT_FLT1 CONSTANT_FLT1
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_CONSTANT_FLT1.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_CONSTANT_FLT1_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_CONSTANT_FLT1_Caller.dt"
+*/
+CONSTANT_FLT1 = +D >> E >> !FS;
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_CONSTANT_FLT2 CONSTANT_FLT2
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_CONSTANT_FLT2.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_CONSTANT_FLT2_Called.dt"
+                     
+ <h2>Used by</h2>
+  @dotfile "Directive_R_CONSTANT_FLT2_Caller.dt"
+*/
+CONSTANT_FLT2 = *D >> '.' >> +D >> !(E) >> !FS;
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_CONSTANT_FLT3 CONSTANT_FLT3
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_CONSTANT_FLT3.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_CONSTANT_FLT3_Called.dt"
+                     
+ <h2>Used by</h2>
+  @dotfile "Directive_R_CONSTANT_FLT3_Caller.dt"
+*/
+CONSTANT_FLT3 = +D >> '.' >> *D >> !(E) >> !FS;
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_CONSTANT_FLT CONSTANT_FLT
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_CONSTANT_FLT.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_CONSTANT_FLT_Called.dt"
+                     
+ <h2>Used by</h2>
+  @dotfile "Directive_R_CONSTANT_FLT_Caller.dt"
+*/
+CONSTANT_FLT = CONSTANT_FLT1
+             | CONSTANT_FLT2
+             | CONSTANT_FLT3;
+
+
+         
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_Number Number
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_Number.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_Number_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_Number_Caller.dt"
+*/
+Number =   CONSTANT_HEX
+         | CONSTANT_INT
+         | CONSTANT_CHAR
+         | CONSTANT_FLT;
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_String String
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_String.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_String_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_String_Caller.dt"
+*/
+String = !'L' >> '\"'
+              >> *( (  '\\'
+                     >>(anychar_p-('\r'|'\n'))
+                    )
+                   |(anychar_p - ('\\'|'\"') )
+                  )
+              >> '\"';
+
+
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_NON_ID NON_ID
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_NON_ID.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_NON_ID_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_NON_ID_Caller.dt"
+*/
+NON_ID = reserved; 
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_ID ID
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_ID.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_ID_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_ID_Caller.dt"
+*/
+ID = (( L | '_' ) >> *( L  |  D  | '_' )) - NON_ID;
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_p_defined p_defined
+                   
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_defined.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_defined_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_defined_Caller.dt"
+*/
+p_defined = "defined" >> *lineChange  
+                      >>(  (     ID  >> *lineChange)
+                         ||(    ("(" >> *lineChange)  
+                             >>  ID  >> *lineChange  
+                             >> (")" >> *lineChange) 
+                           )
+                        );
+
+                                                                                          
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_primary_expression primary_expression
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_primary_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_primary_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_primary_expression_Caller.dt"
+*/
+primary_expression =  p_defined
+                    | (ID >> *lineChange )
+                    | (Number >> *lineChange )
+                    | (String >> *lineChange ) 
+                    | (subexpression >> *lineChange )
+                    | (logical_or_expression >> *lineChange )
+                    | ( "(" >> *lineChange  >> expression >> *lineChange >> ")" );
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_subexpression subexpression
+                   
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_subexpression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_subexpression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_subexpression_Caller.dt"
+*/
+subexpression = "(" >> *lineChange >> *comment >> logical_or_expression >> *comment >>  ")" >> *lineChange  ;
+
+
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_unary_expression unary_expression
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_unary_expression.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Directive_R_unary_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_unary_expression_Caller.dt"
+*/
+unary_expression =   (unary_operator >> *comment >> primary_expression >> *comment)
+                   | (primary_expression >> *comment);
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_unary_operator unary_operator
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_unary_operator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_unary_operator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_unary_operator_Caller.dt"
+*/
+unary_operator   =  (o_plus | o_minus | o_invert | o_negate) >> *lineChange  ;
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_plus o_plus
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_plus.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_plus_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_plus_Caller.dt"
+*/
+o_plus   = "+";
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_minus o_minus
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_minus.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_minus_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_minus_Caller.dt"
+*/
+o_minus  = "-";
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_invert o_invert
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_invert.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_invert_Called.dt"
+                     
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_invert_Caller.dt"
+*/
+o_invert = "~";
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_negate o_negate
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_negate.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_negate_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_negate_Caller.dt"
+*/
+o_negate = "!";
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_multiplicative_expression multiplicative_expression
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_multiplicative_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_multiplicative_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_multiplicative_expression_Caller.dt"
+*/
+multiplicative_expression =                                 unary_expression
+                            >> *(multiplicative_operator >> *comment >> unary_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_multiplicative_operator multiplicative_operator
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_multiplicative_operator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_multiplicative_operator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_multiplicative_operator_Caller.dt"
+*/
+multiplicative_operator   = (o_mul | o_div | o_mod) >> *lineChange ;
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_mul o_mul
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_mul.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_mul_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_mul_Caller.dt"
+*/
+o_mul ="*" -"*/";
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_div o_div 
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_div.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_div_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_div_Caller.dt"
+*/
+o_div = "/" - "/*";
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_mod o_mod
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_mod.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_mod_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_mod_Caller.dt"
+*/
+o_mod ="%";
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_additive_expression additive_expression
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_additive_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_additive_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_additive_expression_Caller.dt"
+*/
+additive_expression =                           multiplicative_expression
+                      >> *(additive_operator >> *comment >> multiplicative_expression);
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_additive_operator additive_operator
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_additive_operator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_additive_operator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_additive_operator_Caller.dt"
+*/
+additive_operator = (o_plus | o_minus) >> *lineChange  ;
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_shift_expression shift_expression
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_shift_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_shift_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_shift_expression_Caller.dt"
+*/
+shift_expression =                        additive_expression
+                   >> *(shift_operator >> *comment >> additive_expression);
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_shift_operator shift_operator
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_shift_operator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_shift_operator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_shift_operator_Caller.dt"
+*/
+shift_operator = (o_shift_left | o_shift_right) >> *lineChange ;
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_shift_left o_shift_left
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_shift_left.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_shift_left_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_shift_left_Caller.dt"
+*/
+o_shift_left  ="<<";
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_shift_right o_shift_right
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_shift_right.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_shift_right_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_shift_right_Caller.dt"
+*/
+o_shift_right =">>";
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_relational_expression relational_expression
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_relational_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_relational_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_relational_expression_Caller.dt"
+*/
+relational_expression =                               shift_expression
+                        >> *( relational_operator >> *comment >> shift_expression);
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_relational_operator relational_operator
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_relational_operator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_relational_operator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_relational_operator_Caller.dt"
+*/
+relational_operator = (o_less_equal | o_greater_equal | o_less | o_greater) >> *lineChange ;
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_less_equal o_less_equal
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_less_equal.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_less_equal_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_less_equal_Caller.dt"
+*/
+o_less_equal    = "<=";
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_greater_equal o_greater_equal
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_greater_equal.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_greater_equal_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_greater_equal_Caller.dt"
+*/
+o_greater_equal = ">=";
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_less o_less
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_less.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_less_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_less_Caller.dt"
+*/
+o_less          = "<" - ( "<=" | "<<" );
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_greater o_greater
+                             
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_greater.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_greater_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_greater_Caller.dt"
+*/
+o_greater       = ">" - ( ">=" | ">>" );
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_equality_expression equality_expression 
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_equality_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_equality_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_equality_expression_Caller.dt"
+*/
+equality_expression =                           relational_expression
+                      >> *(equality_operator >> *comment >> relational_expression);
+                      
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_equality_operator equality_operator
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_equality_operator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_equality_operator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_equality_operator_Caller.dt"
+*/
+equality_operator = (o_equal |o_unequal) >> *lineChange ;
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_equal o_equal
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_equal.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_equal_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_equal_Caller.dt"
+*/
+o_equal   = "==";
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_unequal o_unequal
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_unequal.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_unequal_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_unequal_Caller.dt"
+*/
+o_unequal = "!=";
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_and_expression and_expression
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_and_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_and_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_and_expression_Caller.dt"
+*/
+and_expression =                               equality_expression
+                      >> *(bit_and_operator >> *comment >> equality_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_bit_and_operator bit_and_operator
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_bit_and_operator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_bit_and_operator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_bit_and_operator_Caller.dt"
+*/
+bit_and_operator = (o_bit_and) >> *lineChange ;
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_bit_and o_bit_and
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_bit_and.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_bit_and_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_bit_and_Caller.dt"
+*/
+o_bit_and = "&"-"&&";
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_exclusive_or_expression exclusive_or_expression
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_exclusive_or_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_exclusive_or_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_exclusive_or_expression_Caller.dt"
+*/
+exclusive_or_expression =                           and_expression
+                          >> *(bit_exor_opeartor >> *comment >> and_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_bit_exor_opeartor bit_exor_opeartor
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_bit_exor_opeartor.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_bit_exor_opeartor_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_bit_exor_opeartor_Caller.dt"
+*/
+bit_exor_opeartor = (o_bit_exor) >> *lineChange ;
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_bit_exor o_bit_exor
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_bit_exor.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_bit_exor_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_bit_exor_Caller.dt"
+*/
+o_bit_exor = "^";
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_inclusive_or_expression inclusive_or_expression
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_inclusive_or_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_inclusive_or_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_inclusive_or_expression_Caller.dt"
+*/
+inclusive_or_expression =                         exclusive_or_expression
+                          >> *(bit_or_operator >> *comment >> exclusive_or_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_bit_or_operator bit_or_operator 
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_bit_or_operator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_bit_or_operator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_bit_or_operator_Caller.dt"
+*/
+bit_or_operator = (o_bit_or) >> *lineChange ;
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_bit_or o_bit_or
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_bit_or.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_bit_or_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_bit_or_Caller.dt"
+*/
+o_bit_or = "|" - "||";
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_logical_and_expression logical_and_expression
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_logical_and_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_logical_and_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_logical_and_expression_Caller.dt"
+*/
+logical_and_expression =                          inclusive_or_expression
+                         >> *(log_and_operator >> *comment >> inclusive_or_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_log_and_operator log_and_operator
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_log_and_operator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_log_and_operator_Called.dt"
+                     
+ <h2>Used by</h2>
+  @dotfile "Directive_R_log_and_operator_Caller.dt"
+*/
+log_and_operator = (o_log_and) >> *lineChange ;
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_log_and o_log_and
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_log_and.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_log_and_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_log_and_Caller.dt"
+*/
+o_log_and = "&&" - "&"; 
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_logical_or_expression logical_or_expression
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_logical_or_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_logical_or_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_logical_or_expression_Caller.dt"
+*/
+logical_or_expression =                         logical_and_expression 
+                        >> *(log_or_operator >> *comment >> logical_and_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_log_or_operator log_or_operator
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_log_or_operator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_log_or_operator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_log_or_operator_Caller.dt"
+*/
+log_or_operator = (o_log_or) >> *lineChange ;
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_o_log_or  o_log_or
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_o_log_or.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_o_log_or_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_o_log_or_Caller.dt"
+*/
+o_log_or = "||" - "|";
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_expression expression
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_expression_Caller.dt"
+*/
+expression = logical_or_expression;
+
+
+
+
+
+/*!
+ @defgroup GRAMMAR_PREPRO_EXPR_COMMENT Preprocedure Commenrts
+ @ingroup GRAMMAR_PREPRO
+ 
+*/
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_comment_cpp comment_cpp
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_comment_cpp.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_comment_cpp_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_comment_cpp_Caller.dt"
+*/
+comment_cpp   =  +("//" >> *(anychar_p - (eol_p|'\\'))   );
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_open_std open_std
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_open_std.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_open_std_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_open_std_Caller.dt"
+*/
+open_std  = "/*" - ( "/" | "//" ) ;
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_close_std close_std
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_close_std.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_close_std_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_close_std_Caller.dt"
+*/
+close_std = "*/" - ( "*" );
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_comment_std comment_std
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_comment_std.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_comment_std_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_comment_std_Caller.dt"
+*/
+comment_std   =  (open_std >> *(anychar_p - close_std)  >> close_std );
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_comment comment
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_comment.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_comment_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_comment_Caller.dt"
+*/
+comment = (comment_std|comment_cpp|(ch_p('\\') >> eol_p));
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_precut precut
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_precut.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_precut_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_precut_Caller.dt"
+*/
+precut = (ch_p('\\') >> eol_p)| comment_std ;
+
+
+
+/*! 
+ @ingroup GRAMMAR_PREPRO_EXPR
+ @defgroup GRAMMAR_Directive_lineChange lineChange
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_lineChange.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_lineChange_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_lineChange_Caller.dt"
+*/
+lineChange = ('\\' >> eol_p);

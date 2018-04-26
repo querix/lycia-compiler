@@ -1,0 +1,77 @@
+
+
+
+/* Struct FileContent @ifXmlEqual("1",__SELF__/""),*/      
+Content2File:[@useForSnipet(Content,MscFileName), @stackPush(__DESTINATION__,__SELF__)]
+             [@xmlPrint("\n\n")][@stackRead(__LIVEOUT__,__DESTINATION__)]
+             
+             [@ifOlderAs(__DESTINATION__),@useForSnipet(Content,MscFile_Data)   , @stackPush(FileContent,__SELF__)]
+             [@ifOlderAs(__DESTINATION__),@stackPop(__DESTINATION__, FileContent)]
+
+             
+             |
+
+/*[<I1>]        width = "800";;
+*/ 
+MscFile_Data:# this is a souce for the tool MscGen to describe a sequence-chart
+[<N0>]       msc
+[<N0>]       {
+[<I1>]        hscale = "2";
+[<N0>]        [@snipet(Actors)]
+[<N0>]        [@snipet(Sequence)]
+[<D1>]       }|
+
+Actors:User[@snipet(Actor)];| 
+Actor:, [@replace(".","_"),@attribute(source)]|         
+
+Sequence:[@replace(", )",")"), @snipet(Function)]|
+
+FlowBlocks:[@replace(", )",")"),
+            @snipet(If_Decision, Switch_Decision, 
+                    For_Loop, While_Loop, Do_While_Loop, 
+                    User_Data, Function, Undefined )]|
+
+
+
+
+If_Decision:[% FlowBlocks %]|   
+Switch_Decision:[% FlowBlocks %]|
+For_Loop:[% FlowBlocks %]|     
+While_Loop:[% FlowBlocks %]|   
+Do_While_Loop:[% FlowBlocks %]|
+User_Data:[% FlowBlocks %]|   
+Undefined:[% FlowBlocks %]|    
+
+
+
+
+
+
+
+
+
+
+
+
+
+Function:
+[<13>][<10>] [@snipet(Caller)]->[@useForSnipet(Function,Called),@snipet(__SELF__)
+            ] [<91>] label = "[@attribute(identifier)]( [@snipet(Data)])" [<93>]; 
+             
+[<N0>][% FlowBlocks %]|
+
+Data:[@snipet(Parameter)]|
+
+Parameter:[@attribute(identifier)]=[@attribute(value)] |
+
+Caller:[@ifXmlUnequal("",__SELF__/"object"),@attribute(object)
+      ][@ifXmlUnequal("",__SELF__/"class"), @attribute(class)
+      ][@ifXmlEqual("",__SELF__/"class"),  @replace(".","_"),@attribute(source)
+      ]|
+
+Called:[@ifXmlUnequal("",__SELF__/"owner"), @attribute(owner)
+      ][@ifXmlEqual("",__SELF__/"owner"),  @replace(".","_"), @attribute(source)
+      ]|
+
+
+                            

@@ -1,0 +1,130 @@
+
+
+
+
+
+/*
+[% setNodeStyle , @replace(TAG_NAME, preprocedure)
+           %][@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] headport=n [@stackRead("",__Pe__)];
+[<N0>]      
+
+[<N0>]      [@tag()]_[% node_ID %]_End [          @stackRead("",_PstFix_)]
+*/
+
+preprocedure:[@snipet(p_include,
+                      p_pragma,
+                      p_line,
+                      p_error,
+                      p_warning,
+                      p_define,
+                      p_undefine,
+                      compilerSwitch,
+              )]|
+
+preprocedure_Style:
+[<N0>] [@tag()]_[% node_ID %] [@stackRead("",__Pb__)]label="[@text(__SELF__)][@snipet(Comment)]", shape=box, style="rounded, filled", height=0.01, width=0.01 [@stackRead("",__Pe__)];
+|
+
+
+
+p_define_local:[@text(Chr),@text(Str)
+              ][@snipet(p_declarator)
+              ][@useForSnipet(assignment_expression,p_assignment_expression),
+                @snipet(declaration,if_stmt,switch_stmt,case_stmt,default_stmt,
+                         while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                         continue_stmt,break_stmt,return_stmt,
+                         expr_stmt,assignment_expression,compound_statement,p_text)
+              ][@snipet(Comment)]|
+
+
+independent_define:[ @useForSnipet(Variant,p_Variant_inddefine),@snipet(Variant)
+                  ][ @ifAbsent(Variant,p_NoVariant_inddefine)
+                  ]|useAlsoFor(p_define)
+
+p_Variant_inddefine:[@useForSnipet(Variant,p_VariantName),
+                     @stackPush(__VARIANTNAME__,__SELF__)
+                   ][@useForSnipet(Variant,independent_define_Data),@snipet(__SELF__)
+                   ][@stackClear(__VARIANTNAME__)]|
+/*@snipet(__SELF__),*/
+
+p_VariantName:<font color="#8FAA0F"><i>Variant: [@attribute(name)]</i></font>|
+
+
+
+p_NoVariant_inddefine:[@useForSnipet(p_define,p_NoVariantName),
+                       @stackPush(__VARIANTNAME__,__SELF__)
+                     ][@useForSnipet(p_define,independent_define_Data),@snipet(__SELF__)
+                     ][@stackClear(__VARIANTNAME__)]|
+/*@snipet(__SELF__),*/
+
+p_NoVariantName: |
+
+
+
+
+
+
+
+
+independent_define_Data:
+  [@useForSnipet(p_declarator,print_pdef_name),
+   @stackPush(DefineName,p_declarator),
+ ][@stackRead(__LIVEOUT__,DefineName)
+ ][@text(Chr),@text(Str)
+ ][@replace("_"," "),@text(Chr),@text(Str)] [@snipet(p_declarator)] [@stackRead("",__VARIANTNAME__)
+ ][@text(Chr),@text(Str)
+ ][@text(p_declarator)
+ ][@snipet(Comment)
+ ][@useForSnipet(assignment_expression,p_assignment_expression),
+   @snipet(declaration,if_stmt,switch_stmt,case_stmt,default_stmt,
+               while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+               continue_stmt,break_stmt,return_stmt,
+               expr_stmt,assignment_expression,compound_statement,p_text)]|
+
+print_pdef_name0:[@useForSnipet(p_declarator,print_pdef_name2), @snipet(p_declarator)]|
+print_pdef_name: define  : [@text(Owner),@text(KeyChr),@text(ID),@text(operator_id)]|
+
+
+
+
+
+
+p_declarator:[@text(ID)]
+             [@text(p_parameterlist)]|
+
+
+
+
+
+p_include:[@text(Chr),@text(Str)]
+          [@snipet(p_text)]| useAlsoFor(p_pragma,p_line,p_error,p_warning,p_undefine)
+
+p_text:[@text(__SELF__)]|
+
+p_assignment_expression:
+     [@snipet(cast_expression,unary_expression,assignment_expression,assignment_operator,KeyChr,)]
+|
+
+
+
+
+compilerSwitch:
+         PREPROSESSOR ALTERNATIVES
+         PREPROSESSOR DEFAULTS
+           [@snipet(p_if,p_ifdef,p_ifndef,)]
+           [@snipet(p_elif)]
+           [ @snipet(p_else),@ifAbsent(p_else, p_if_empty_else)]
+|
+
+p_if_expr:[@text(Keyword), @text(KeyChr),@text(Chr),@text(Str),@text(p_defined)
+         ][@snipet(assignment_expression)
+         ][@snipet(Comment)]|useAlsoFor(p_ifdef_expr,p_ifndef_expr,p_elif_expr,p_else_expr)
+
+p_if:[@snipet(p_if_expr,p_ifdef_expr,p_ifndef_expr,p_elif_expr,p_else_expr)
+    ][% suiteAndMore %]|useAlsoFor(p_ifdef,p_ifndef,p_elif,p_else)
+
+
+
+
+p_if_empty_else:%|
+

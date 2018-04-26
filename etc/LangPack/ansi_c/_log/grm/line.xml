@@ -1,0 +1,103 @@
+<Content>
+    <Rule value="pass" uses="process_do" usedBy="">
+        <Expression>
+            <OrInclusive>
+                <Terminating_Rule value="process_do" />
+                <Sub>
+                    <Sequence>
+                        <Character_Single value="\\" />
+                        <Primitive value="anychar_p" />
+                    </Sequence>
+                </Sub>
+            </OrInclusive>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="0" characterLevel="not phrased">
+            <Uses_Terminated value="process_do" />
+        </Properties>
+        <Called>
+            <T v="process_do" />
+        </Called>
+        <Caller />
+    </Rule>
+    <Rule value="precut" uses="" usedBy="">
+        <Expression>
+            <Sub>
+                <Sequence>
+                    <Character_Single value="\\" />
+                    <Primitive value="eol_p" />
+                </Sequence>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="0" characterLevel="not phrased" />
+        <Called />
+        <Caller />
+    </Rule>
+    <Rule value="process_do" uses="" usedBy=",pass,">
+        <Expression>
+            <Sub>
+                <Sequence>
+                    <Primitive value="eol_p" />
+                    <ZeroOrMoreOf>
+                        <Primitive value="blank_p" />
+                    </ZeroOrMoreOf>
+                </Sequence>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="1" characterLevel="not phrased">
+            <UsedBy_Terminated value="pass" />
+        </Properties>
+        <Called />
+        <Caller>
+            <T v="pass" />
+        </Caller>
+    </Rule>
+    <Rule value="process_off" uses="" usedBy="">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <Character_Single value=")" />
+                    <Character_Single value="]" />
+                    <Character_Single value="}" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="0" characterLevel="not phrased" />
+        <Called />
+        <Caller />
+    </Rule>
+    <Rule value="process_on" uses="" usedBy="">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <Character_Single value="{" />
+                    <Character_Single value="[" />
+                    <Character_Single value="(" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="0" characterLevel="not phrased" />
+        <Called />
+        <Caller />
+    </Rule>
+    <Rule value="process_swt" uses="" usedBy="">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <Character_Single value="\&apos;" />
+                    <Character_Single value='\&quot;' />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="0" characterLevel="not phrased" />
+        <Called />
+        <Caller />
+    </Rule>
+    <Rule value="skip" uses="" usedBy="">
+        <Expression>
+            <Primitive value="space_p" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="0" characterLevel="not phrased" />
+        <Called />
+        <Caller />
+    </Rule>
+</Content>

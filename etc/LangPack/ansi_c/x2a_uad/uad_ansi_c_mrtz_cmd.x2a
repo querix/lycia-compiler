@@ -1,0 +1,778 @@
+
+comp_op_print:[@text(__SELF__)]|useAlsoFor(comp_op)
+comp_op_skip:
+|
+
+Keyword_print: [@text(__SELF__)] |useAlsoFor(Keyword)
+Keyword_skip:
+|
+KeyChr_print:[@text(__SELF__)]|useAlsoFor(KeyChr)
+KeyChr_skip:
+|
+Str_print:[@text(__SELF__)]|useAlsoFor(Str)
+Str_skip:
+|
+
+ID_print:[@text(__SELF__)]|useAlsoFor(ID)
+ID_skip:
+|
+
+Owner_print:[@text(__SELF__)]|useAlsoFor(Owner)
+Owner_skip:
+|            
+
+owned_ID_std_print:[@text(__SELF__)]|useAlsoFor(owned_ID_std)
+owned_ID_std_skip:
+|
+
+
+String_print:[@replace(DQ,"''"),@text(__SELF__)]|useAlsoFor(String)
+String_skip:
+|
+
+testlist1_print:[@text(__SELF__)]|useAlsoFor(testlist1)
+testlist1_skip:
+|
+
+Number_print:[@text(__SELF__)]|useAlsoFor(Number)
+Number_skip:
+|
+
+
+Comment_print:\n[@replace(DQ,"''"),@replace(__Pb__,"<"),@replace(__Pe__,">"),@replace(NL,""),@replace("/*",""),@replace("*/",""),@replace("//",""),@text(__SELF__)]\n|
+Comment_skip:
+|
+
+
+USER_TYPE_print:[@useForSnipet(ID,printInternalID),@snipet(ID)]|useAlsoFor(USER_TYPE)
+USER_TYPE_skip:
+|
+
+enum_specifier_print:[@useForSnipet(ID,printInternalID),@snipet(ID)]|useAlsoFor(enum_specifier_print)
+enum_specifier_skip:
+|
+
+type_qualifier_print:[@text(__SELF__)] |useAlsoFor(type_qualifier)
+type_qualifier_skip:
+|
+
+storage_class_specifier_print:[@text(__SELF__)]|useAlsoFor(storage_class_specifier)
+storage_class_specifier_skip:
+|
+
+
+
+
+
+
+
+printInternalID:[@text(ID)]|
+
+
+
+compound_statement:[@snipet(preprocedure,declaration,
+                            if_stmt,switch_stmt,case_stmt,default_stmt,
+                            while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                            continue_stmt,break_stmt,return_stmt,
+                            expr_stmt,compound_statement,
+                            __command__,__block__,)]|
+
+statement:[@snipet(preprocedure,declaration,
+                   if_stmt,switch_stmt,case_stmt,default_stmt,
+                   while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                   continue_stmt,break_stmt,return_stmt,
+                   expr_stmt,compound_statement,
+                   __command__,__block__,)]|
+
+
+
+
+
+
+save_class_name:[@useForSnipet(direct_declarator,save_class_name2), @snipet(direct_declarator)]|
+save_class_name2:[@useForSnipet(ID,printInternalID),@snipet(ID),@snipet(owned_ID)]|
+
+
+
+
+
+suiteAndMore:[@useForSnipetDownwards(p_define,p_define_local),
+              @snipet(preprocedure,declaration,
+                      function_definition,
+                      if_stmt,switch_stmt,case_stmt,default_stmt,
+                      while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                      continue_stmt,break_stmt,return_stmt,
+                      expr_stmt,compound_statement,
+                      __command__,__block__,)]|
+
+
+/*@ifStackEqual("-",_ReturnOccured_),
+[@ifStackUnequal("-",_ReturnOccured_),@useForSnipet(declaration_specifier,funcdef_specifier_Empty),@snipet(declaration_specifier)
+      ][@ifStackEqual("-",_ReturnOccured_),  @useForSnipet(declaration_specifier,funcdef_specifier_Style),@snipet(declaration_specifier)
+      ]        */
+funcdef_Data:
+   [@useForSnipet(declarator,print_func_name), @stackPush(PrintFunctionName,declarator),
+  ][@stackRead(__LIVEOUT__,PrintFunctionName),
+  ][@stackClear(_Style_)
+  ][@useForSnipet(declarator,save_func_name), @stackPush(_ExcludeParentName_,declarator)
+  ][@useForSnipet(declarator,save_func_name), @stackPush(_FunctionName_,declarator)
+  ][@useForSnipet(declarator,save_func_ID),   @stackPush(_FunctionID_,declarator)
+
+  ][@useForSnipet(function_definition,funcdefLogFileName),@xmlCreate(DotFiles,__SELF__) 
+  ][@useForSnipet(function_definition,funcdefLogFileName),@xmlCreate(DotFileSingleFunction,__SELF__) 
+
+  ][@useForSnipet(declarator,init_stack),     @stackPush(_ReturnOccured_,declarator)
+  ][@stackPush(_FunctionComment_,Comment)]
+[<N0>]digraph activity
+[<N0>]{
+[<I1>] node [@stackRead("",__Pb__)]fixedsize=false, height=.01, shape=circle, fontname="Arial", fontsize=10, fillcolor="#FFFFFF" [@stackRead("",__Pe__)];
+[<I1>] edge [@stackRead("",__Pb__)]arrowsize=.5, fontname="Arial", fontsize=10[@stackRead("",__Pe__)];
+[<N0>] nodesep=0.1;
+[<N0>] ranksep=0.05;
+ 
+[<N0>] [@useForSnipet(declarator,funcdef_declarator) @snipet(declarator)] -> [% suiteAndMore %]
+[<N0>] [@useForSnipet(declaration_specifier,funcdef_specifier), @snipet(declaration_specifier)]
+       [@ifAbsent(declaration_specifier,funcdef_specifier_Empty)]
+       [@ifAbsent(declaration_specifier,funcdef_specifier_Empty_Style)]
+
+       [/*@replace("$","\'DollarCharacter\'"),*/@stackPopAll("",_Style_)][@stackClear( _Dump_)]
+       [@stackClear(_ReturnOccured_,mrtzExcludeName, mrtzExcludeOutput, mrtzExcludeContent, mrtzExcludeFile, mrtzExcludeContentSize)]
+[<D1>]}
+
+[ @useForSnipet(declarator,mrtz_describe_name), @stackPush(mrtzDescribeName,declarator)
+ ][@useForSnipet(declarator,empty), @stackPush(_LinkFile_,declarator)
+ ][@useForSnipet(function_definition,mrtz_describe_file),
+   @useForSnipet(Variant,mrtz_describe_file),
+   @stackPush(mrtzDescribeFile,__SELF__)
+ ][@ifStackUnequal(" ",_LinkFile_),@stackPop(mrtzDescribeName, mrtzDescribeFile)
+ ][@stackClear(mrtzDescribeName, _LinkFile_, mrtzDescribeFile,_FunctionID_)
+ ][@useForSnipet(__command__,drop_describe),@snipet(__command__,/* avoid to create description table again if this snippet is called again  */)
+ ]
+ |
+
+/*[@useForSnipet(DotFileSingleFunction,DotFileSingleFunction_OverView),@xmlSnipet(DotFileSingleFunction)
+ ][@xmlDelete(DotFileSingleFunction)]
+*/
+drop_describe:[@drop(mrtz_describe)]|
+
+
+
+  
+
+
+print_func_name:[@useForSnipet(direct_declarator,print_func_name2), @snipet(direct_declarator)]|
+print_func_name2: function: [@text(owned_ID),@text(KeyChr),@text(ID),@text(operator_id)]|
+
+save_func_name:[@useForSnipet(direct_declarator,save_func_name2), @snipet(direct_declarator)]|
+save_func_name2:[@replace(" ","_"),@replace(":","_"),@text(owned_ID),@text(KeyChr),@text(ID),@text(operator_id)]|
+
+save_func_ID:[@useForSnipet(direct_declarator,save_func_ID2), @snipet(direct_declarator)]|
+
+save_func_ID2:[@replace(":",""),@text(owned_ID/ID),@text(ID)]|
+
+empty: |
+
+/* */
+SwitchCaseAndMore:[@useForSnipet(__command__,__command__TD__),@snipet(case_stmt),@snipet(__command__)]|
+
+
+
+IfAndMore:[@snipet(if_part)]
+ [<N0>]   [@useForSnipet(__command__,__command__TD__),@snipet(__command__)]
+ [<N0>]   [@snipet(elif_part)]|
+
+
+
+
+
+
+
+
+/* moritz-commands*/
+__command__:
+[@snipet(mrtz_exclude,
+         mrtz_hideComments,
+         mrtz_printComments,
+         mrtz_hideCommands,
+         mrtz_printCommands,
+         mrtz_pointOut,
+         mrtz_skip,
+         mrtz_independent,
+         mrtz_showSource,
+         mrtz_ifElseChain,
+         mrtz_automaticLink,
+         mrtz_insertLink)]
+|
+
+
+__command__TD__:
+[<N0>] subgraph [@tag()]_[% node_ID %]
+[<N0>] {
+[<I1>]  nslimit1=f;
+  
+[<N0>] [@stackRead("",_PreFix_)]
+[% setPreAndPost, @replace(TAG_NAME, __command__) %]
+       [@snipet(mrtz_exclude,
+                mrtz_hideComments,
+                mrtz_printComments,
+                mrtz_hideCommands,
+                mrtz_printCommands,
+                mrtz_pointOut,
+                mrtz_skip,
+                mrtz_independent,
+                mrtz_showSource,
+                mrtz_ifElseChain,
+                mrtz_automaticLink,
+                mrtz_insertLink)]
+[% clrPreAndPost, @replace(TAG_NAME, __command__) %]
+
+[<D1>] }
+|
+
+
+__command___Style:
+ [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)]label="", shape=none, height=0.01, [@stackRead("",__Pe__)];
+ [@tag()]_[% node_ID %]_End [@stackRead("",__Pb__)]label="", shape=none, height=0.01, [@stackRead("",__Pe__)];
+|
+__command___Pre: |
+__command___Pst:->[@stackRead("",_PstFix_)] |
+
+
+
+
+
+
+/*StructBlock*/
+__block__:[@snipet(preprocedure,declaration,
+                   if_stmt,switch_stmt,case_stmt,default_stmt,
+                   while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                   continue_stmt,break_stmt,return_stmt,
+                   expr_stmt,compound_statement,
+                   __command__,__block__,)]|
+
+
+
+
+mrtz_exclude:[@useForSnipet(__block__,pushStyle),                 @stackPush(_StyleStack_,__block__)
+            ][@useForSnipet(mrtz_exclude,print_exclude_name), @stackPush(PrintExcludeName,__SELF__)
+            ][@useForSnipet(mrtz_exclude,mrtz_exclude_titel), @snipet(__SELF__)
+            ][@useForSnipet(__block__,mrtz_exclude_content_Style),@stackPush(_Style_,__block__)
+            ][@stackRead(__LIVEOUT__,PrintExcludeName)][@stackClear(PrintExcludeName)
+            ][@useForSnipet(mrtz_exclude,mrtz_exclude_name),  @stackPush(mrtzExcludeName,__SELF__)
+
+            ][@useForSnipet(mrtz_exclude,mrtz_excludeLogFileName),@xmlCreate(DotFiles,__SELF__)
+            ][@useForSnipet(mrtz_exclude,mrtz_excludeLogFileName),@xmlCreate(DotFileSingleFunction,__SELF__)
+
+            ][@useForSnipet(mrtz_exclude,save_exclude_name),  @stackPush(_ExcludeParentName_,__SELF__)
+
+
+            ][@useForSnipet(__block__,mrtz_exclude_content_Pre),  @stackPush(_PreFix_,__block__)
+            ][@useForSnipet(__block__,mrtz_exclude_content_Pst),  @stackPush(_PstFix_,__block__)
+
+            ][@useForSnipet(__block__,mrtz_exclude_content),  @stackPush(mrtzExcludeContent,__block__),
+              
+            ][@useForSnipet(__block__,mrtz_exclude_file),  @stackPush(mrtzExcludeFile,__block__)
+            ][@replace("->  }","}"), 
+              @replace("->  ","-> "), 
+              @replace("-> ->","-> "),
+              @replace("  -> "," -> "),
+              @replace("; ",";"),
+              @replace(";->",";"),
+              @replace("} ","}"),
+              @replace("}->","}"),
+              @stackPop(mrtzExcludeName,mrtzExcludeFile)
+
+            ][@useForSnipet(__block__,popStyle),                  @stackPush(_Style_,__block__)
+            ][@useForSnipet(__block__,dumpPrePst),                @stackPush(_DUMP_,__block__)
+          
+            ][@useForSnipet(mrtz_exclude,dump_exclude_name),      @stackPush(Dump,__SELF__)
+
+
+            ][@useForSnipet(mrtz_exclude,mrtz_exclude_titel), @snipet(__SELF__)
+            ][@useForSnipet(mrtz_exclude,mrtz_exclude_Style), @stackPush(_Style_,__SELF__)
+            ][@tag()]_[% node_ID %];
+ [<N0>]      [@tag()]_[% node_ID %][@stackRead("",_PstFix_)
+            ][@stackClear(_DUMP_)][@stackClear(_Direction_,_Titel_)]|
+
+mrtz_excludeLogFileName:<File><Exclude name="[@replace(".xml",""),@stackRead("",__SOURCENAME__)
+                                         ]_F_[@replace(" ","_"),@replace("/","_"),@stackRead("",_ExcludeParentName_)
+                                           ]_[@replace(" ","_"),@attribute(titel)
+                                    ]" link="[@stackRead("",_FunctionID_)]_[@attribute(titel)]" /></File>|
+
+                             
+mrtz_exclude_Style:
+[<N0>] [@tag()]_[% node_ID %][@stackRead("",__Pb__)]label="[@replace("_"," "),@stackRead("",_Titel_)]", shape=box3d, style=filled,  height=0.1, width=0.1 [@stackRead("",__Pe__)];
+|
+
+/*
+[@stackRead(__LIVEOUT__,_Direction_)]
+*/
+mrtz_exclude_titel:
+[@useForSnipet(mrtz_exclude,direction),       @stackPush(_Direction_,__SELF__)]
+[@useForSnipet(mrtz_exclude,horizontalTitel), @stackPush(_Titel_,__SELF__)]
+[@ifStackEqual("vertical",_Direction_), 
+ @useForSnipet(mrtz_exclude,verticalTitel),   @stackPush(_Titel_,__SELF__)]
+|
+
+
+pushStyle:[@stackPopAll("",_Style_)]|
+
+popStyle:[@stackPop("",_StyleStack_)]|
+
+
+
+
+
+
+
+
+print_exclude_name:  exclude: [@attribute(titel)]|
+
+
+mrtz_exclude_link:
+[<N0>] <br>
+[<N0>] <a name="[@stackRead("",_ExcludeParentName_)]/[@replace(" ","_"),@attribute(titel)]"></a><h4>[@replace("_"," "),@attribute(titel)]</h4>
+ (excluded part of <a href="#[@stackRead("",_ExcludeParentName_)]">[@stackRead("",_ExcludeParentName_)]</a>)
+|
+
+
+/*
+mrtz_exclude_ref:
+[<N0>]  <a href="#[@stackRead("",_ExcludeParentName_)]/[@replace(" ","_"),@attribute(titel)]"><i>Excluded Part : [@replace("_"," "),@attribute(titel)]</i></a>
+|
+[@stackRead(__LIVEOUT__,_Direction_)]
+*/
+mrtz_exclude_ref:
+[@useForSnipet(mrtz_exclude,direction),       @stackPush(_Direction_,__SELF__)]
+[@useForSnipet(mrtz_exclude,horizontalTitel), @stackPush(_Titel_,__SELF__)]
+[@useForSnipet(mrtz_exclude,horizontalHeader),@stackPush(_Header_,__SELF__)]
+[@ifStackEqual("vertical",_Direction_), 
+ @useForSnipet(mrtz_exclude,verticalTitel),   @stackPush(_Titel_,__SELF__)]
+[@ifStackEqual("vertical",_Direction_), 
+ @useForSnipet(mrtz_exclude,verticalHeader),  @stackPush(_Header_,__SELF__)]
+
+[<N0>]       <a href="#[@stackRead("",_ExcludeParentName_)]/[@replace(" ","_"),@attribute(titel)]"><i>[@stackRead("",_Header_)][@replace("_"," "),@stackRead("",_Titel_)]</i></a>
+[@stackClear(_Direction_,_Titel_,_Header_)]                                                           
+|
+
+
+
+
+horizontalHeader:Excluded :|
+verticalHeader:E\nx\nc\nl\nu\nd\ne\nd\n:\n|
+
+direction:[@attribute(direction)]|
+horizontalTitel:[@attribute(titel)]|
+verticalTitel:
+[@parse(_Titel_,ID,Titel)]
+[@useForSnipet(ID,verticalCharacters),@xmlSnipet(Titel/ID)]
+[@xmlSave(Titel,Titel.xml)]
+[@xmlDelete(Titel)]
+|
+
+verticalCharacters:[@snipet(Character),@snipet(Digit),@snipet(Underscore),]|
+Character:[@text(__SELF__)]\n|useAlsoFor(Digit,Underscore)
+
+
+
+
+
+
+
+
+
+
+
+
+
+save_exclude_name:[@stackRead("",_FunctionName_)]/[@attribute(titel)]|
+
+dump_exclude_name:[@stackPop("",_ExcludeParentName_)]|
+
+/*
+mrtz_exclude_file:
+     [@stackRead("",mrtzExcludeContent)]
+|
+*/
+mrtz_exclude_file:
+     [@stackPop("",mrtzExcludeContent)]
+|
+
+/*[@stackReadAll(__LIVEOUT__,_ARROW_ALREADY_EXISTING_)]
+                     */
+mrtz_exclude_content:
+[<N0>] digraph [@tag()]_[% node_ID %]
+[<N0>] {
+[<I1>]  node [@stackRead("",__Pb__)]fixedsize=false, height=.01, shape=circle, fontname="Arial", fontsize=10, [@stackRead("",__Pe__)];
+[<I1>]  edge [@stackRead("",__Pb__)]arrowsize=.5, fontname="Arial", fontsize=10[@stackRead("",__Pe__)];
+[<N0>]  nodesep=0.1;
+[<N0>]  ranksep=0.05;
+[<N0>]  [@tag()]_[% node_ID %]_Start -> [
+                     @useForSnipet(elif_part,excluded_elif_part),
+                     @useForSnipet(case_stmt,excluded_case_stmt),
+                     @snipet(preprocedure,declaration,
+                     if_stmt,if_part,elif_part,switch_stmt,case_stmt,default_stmt,
+                     while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                     continue_stmt,break_stmt,return_stmt,
+                     expr_stmt,compound_statement, __command__,__block__,) 
+                    ][@ifStackEqual(" -> ",_PstFix_), 
+                      @useForSnipet(__block__,init_stack),@stackPush(_ARROW_ALREADY_EXISTING_,__SELF__)
+                    ][@ifStackUnequal("-",_ARROW_ALREADY_EXISTING_), @stackRead("",_Arrow_)]   
+                     [@tag()]_[% node_ID %]_End [@stackRead("",__Pb__)] tailport=s [@stackRead("",__Pe__)];
+[<N0>]               [/*@replace("$","__"),*/@stackPopAll("",_Style_)]   
+[<D1>] }
+[@stackClear(_DUMP_,_ARROW_ALREADY_EXISTING_)]
+|
+
+excluded_case_stmt://[@snipet(case_part)
+                    ][@useForSnipet(case_stmt,init_stack),@stackPush(_ARROW_ALREADY_EXISTING_,__SELF__)]|
+
+
+
+mrtz_exclude_content_Style:
+[<N0>] [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)]label="[@stackRead("",PrintExcludeName)]", shape=box3d, [@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_End   [@stackRead("",__Pb__)]label="[@stackRead("",PrintExcludeName)]", shape=box3d, [@stackRead("",__Pe__)];
+|
+
+mrtz_exclude_content_Pre: |
+mrtz_exclude_content_Pst: -> |
+/*        [@ifStackEqual(" -> ",_PstFix_),@stackRead("",_Arrow_)]
+[@stackRead(__LIVEOUT__,_PstFix_)][@stackRead(__LIVEOUT__,_Arrow_)]
+[@tag()]_[% node_ID %]_End [@stackRead("",__Pb__)] tailport=s [@stackRead("",__Pe__)];*/
+
+
+/*
+[<N0>] subgraph [@tag()]_[% node_ID %]
+[<N0>] {
+[<D1>] }
+
+*/
+excluded_elif_part:[% setNodeStyle , @replace(TAG_NAME, elif_part)%]
+                   [@stackRead("",_PreFix_)][@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] headport=n [@stackRead("",__Pe__)];
+                   [% setPreAndPost, @replace(TAG_NAME, elif_part) %]
+[<I1>]  [@tag()]_[% node_ID %]_Start ->[<S1>] [% suiteAndMore %]
+        [% clrPreAndPost, @replace(TAG_NAME, elif_part) %]
+        [@stackRead("",_PstFix_)]
+|
+
+elif_part_Style:
+[<N0>] [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)]label="[@snipet(elif_expr)]", shape=none, height=0.01, [@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_End   [@stackRead("",__Pb__)]label="", shape=none, height=0.01, [@stackRead("",__Pe__)];
+|
+elif_part_Pre: |
+elif_part_Pst: ->  |
+/*[@tag()]_[% node_ID %]_End[@stackRead("",__Pb__)]len =0.01, [@stackRead("",__Pe__)];*/
+
+
+
+
+
+
+mrtz_hideComments:
+ [@useForSnipetDownwards(Comment,Comment_skip),@snipet(__block__)]
+|
+mrtz_printComments:
+ [@useForSnipetDownwards(Comment,Comment_print),@snipet(__block__)]
+|
+
+
+
+mrtz_hideCommands:
+ [@useForSnipetDownwards(comp_op,                   comp_op_skip),
+  @useForSnipetDownwards(Keyword,                   Keyword_skip),
+  @useForSnipetDownwards(KeyChr,                    KeyChr_skip),
+  @useForSnipetDownwards(Str,                       Str_skip),
+  @useForSnipetDownwards(ID,                        ID_skip),
+  @useForSnipetDownwards(Owner,                     Owner_skip),
+  @useForSnipetDownwards(owned_ID,                  owned_ID_skip),
+  @useForSnipetDownwards(owned_ID_std,              owned_ID_skip_std),
+  @useForSnipetDownwards(String,                    String_skip),
+  @useForSnipetDownwards(testlist1,                 testlist1_skip),
+  @useForSnipetDownwards(Number,                    Number_skip),
+
+  @useForSnipetDownwards(USER_TYPE,                 USER_TYPE_skip),
+  @useForSnipetDownwards(enum_specifier,            enum_specifier_skip),
+  @useForSnipetDownwards(type_qualifier,            type_qualifier_skip),
+  @useForSnipetDownwards(storage_class_specifier,   storage_class_specifier_skip),
+
+  @snipet(__block__)]
+|
+/*
+  @useForSnipetDownwards(struct_specifier,          struct_specifier_skip),
+  @useForSnipetDownwards(union_specifier,           union_specifier_skip),
+*/
+
+/**/
+mrtz_printCommands:
+ [@useForSnipetDownwards(comp_op,                   comp_op_print),
+  @useForSnipetDownwards(Keyword,                   Keyword_print),
+  @useForSnipetDownwards(KeyChr,                    KeyChr_print),
+  @useForSnipetDownwards(Str,                       Str_print),
+  @useForSnipetDownwards(ID,                        ID_print),
+  @useForSnipetDownwards(Owner,                     Owner_print),
+  @useForSnipetDownwards(owned_ID,                  owned_ID_print),
+  @useForSnipetDownwards(owned_ID_std,              owned_ID_std_print),
+  @useForSnipetDownwards(String,                    String_print),
+  @useForSnipetDownwards(testlist1,                 testlist1_print),
+  @useForSnipetDownwards(Number,                    Number_print),
+
+  @useForSnipetDownwards(USER_TYPE,                 USER_TYPE_print),
+  @useForSnipetDownwards(enum_specifier,            enum_specifier_print),
+  @useForSnipetDownwards(type_qualifier,            type_qualifier_print),
+  @useForSnipetDownwards(storage_class_specifier,   storage_class_specifier_print),
+
+  @snipet(__block__)]
+|
+/*
+  @useForSnipetDownwards(struct_specifier,          struct_specifier_print),
+  @useForSnipetDownwards(union_specifier,           union_specifier_print),
+*/
+
+
+
+
+
+
+
+
+/*
+[@ifStackEqual("-",_CaseSink_),
+               @useForSnipet(mrtz_pointOut,case_sink), @stackPush(_CaseSink_,__SELF__)
+             ]*/
+mrtz_pointOut:[@useForSnipet(mrtz_pointOut,mrtz_pointOut_Style),@stackPush(_Style_,__SELF__)
+             ][@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] headport=n, arrowhead=none, weight= 0.01 [@stackRead("",__Pe__)];
+[              @useForSnipet(mrtz_pointOut,mrtz_pointOut_Pre),  @stackPush(_PreFix_,__SELF__)
+             ][@useForSnipet(mrtz_pointOut,mrtz_pointOut_Pst),  @stackPush(_PstFix_,__SELF__)
+             ]
+[<N0>] subgraph [@tag()]_[% node_ID %]
+[<I1>] {
+[<N0>] label="[@replace(" "," "),@attribute(titel)]";
+[<N0>] color="#[@replace(" ",""),@replace("","FFFFFF"),@attribute(color)]";
+
+[<N0>] node [@stackRead("",__Pb__)] height=.01,  style="filled", fontname=Courier, fillcolor="#[@replace(" ",""),@replace("","FFFFFF"),@attribute(color)]", [@stackRead("",__Pe__)];
+[<N0>] edge [@stackRead("",__Pb__)] color="#[@replace(" ",""),@replace("","000000"),@attribute(color)]", [@stackRead("",__Pe__)];
+
+[<N0>] [@tag()]_[% node_ID %]_Start -> [@tag()]_[% node_ID %]_Intro[@stackRead("",__Pb__)]  headport=n, tailport=s [@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_Intro -> [% suiteAndMore %][@tag()]_[% node_ID %]_End [@stackRead("",__Pb__)] tailport=s, arrowhead=none ,weight= 0.01 [@stackRead("",__Pe__)];
+[<D1>] }
+[<N0>][@tag()]_[% node_ID %]_End [        @stackRead("",_PstFix_)][@stackClear(_DUMP_)]|
+
+mrtz_pointOut_Style:
+[<N0>] [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)]label="", shape=point, height=0.01, width=0.01[@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_End   [@stackRead("",__Pb__)]label="", shape=point, height=0.01, width=0.01[@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_Intro [@stackRead("",__Pb__)]label="[@replace(" "," "),@attribute(titel)]", shape=note, height=0.01, width=0.01, [@stackRead("",__Pe__)];
+|
+
+mrtz_pointOut_Pre: |
+mrtz_pointOut_Pst: -> |
+
+
+
+
+
+/*
+
+mrtz_skip:
+[<N0>]   <TR align="left">
+[<I1>]    <TD>
+              <b><i>[@replace("_"," "),@stackRead("",_Titel_)]</i></b>
+[<D1>]    </TD>
+[<D1>]   </TR>
+
+*/
+
+
+
+
+
+
+
+/*
+[@stackPushSize(_CaseSink_,_CaseSink_Size_),
+         ]
+[@ifStackEqual("-",_CaseSink_),
+           @useForSnipet(mrtz_skip,case_sink),       @stackPush(_CaseSink_,__SELF__)
+         ]*/
+mrtz_skip:[@useForSnipet(mrtz_skip,direction),       @stackPush(_Direction_,__SELF__)]
+          [@useForSnipet(mrtz_skip,horizontalTitel), @stackPush(_Titel_,__SELF__)]
+          [@ifStackEqual("vertical",_Direction_), 
+           @useForSnipet(mrtz_skip,verticalTitel),   @stackPush(_Titel_,__SELF__)]
+          [@useForSnipet(mrtz_skip,mrtz_skip_Style), @stackPush(_Style_,__SELF__)
+         ][@tag()]_[% node_ID %];
+[<N0>]    [@tag()]_[% node_ID %][@stackRead("",_PstFix_)
+          ][@stackClear(_Direction_,_Titel_)]|
+|
+mrtz_skip_Style:
+[<N0>] [@tag()]_[% node_ID %] [@stackRead("",__Pb__)]label="[@replace("_"," "),@stackRead("",_Titel_)]", shape=box, style="rounded, filled, dotted", height=0.01, width=0.01 [@stackRead("",__Pe__)];
+|
+
+
+
+
+
+/*
+[@ifStackEqual("-",_CaseSink_),
+                  @useForSnipet(mrtz_independent,case_sink),              @stackPush(_CaseSink_,__SELF__)
+                ]*/
+mrtz_independent:[@useForSnipet(mrtz_independent,mrtz_independent_Style), @stackPush(_Style_,__SELF__)
+                ][@tag()]_[% node_ID %];
+[<N0>]           [@tag()]_[% node_ID %][@stackRead("",_PstFix_)           ]|
+mrtz_independent_Style:
+[<N0>] [@tag()]_[% node_ID %] [@stackRead("",__Pb__)]label="[@snipet(__block__/Comment)]", shape=note, style="rounded, filled", height=0.1, width=0.1 [@stackRead("",__Pe__)];
+|
+
+
+
+
+
+
+
+      
+
+/*,@replace(".c","")
+*/
+mrtz_describe_file:
+[<N0>][@stackRead("",CmntBgn)]! 
+[<N0>] @file [@replace(__DescriptionPath__,""),@stackRead("",mrtzDescribeName)] 
+[<13>][<10>]
+[<I1>]     <b> Details of Algorithm :</b>
+[<13>][<10>]
+[<N0>]     <TABLE border="0" cellspacing="5" cellpadding="0">
+[<I1>]      [@useForSnipet(__command__,mrtz_describe_content),  @snipet(__command__)]
+[<D1>]     </TABLE>
+[<13>][<10>]
+[<13>][<10>]
+[<N0>][@stackRead("",CmntEnd)]
+|
+
+
+mrtz_describe_content:[@ifOlderAs(mrtzDescribeName),@snipet(mrtz_describe)]|
+
+
+/*@attribute(name)*/
+mrtz_describe:[@useForSnipet(mrtz_describe,mrtz_describe_LinkAnchor),
+               @stackPush(_LinkAnchor_,__SELF__)
+             ][@useForSnipet(mrtz_describe,mrtz_describe_LinkFile),
+               @stackPush(_LinkFile_,__SELF__)
+             ][@useForSnipet(mrtz_describe,mrtz_describe_DeleteFromLinkAnchor),
+               @stackPush(_DeleteFromLinkAnchor_,__SELF__)]
+[<N0>]      <TR>
+[<I1>]        <TD align="left" valign="top">
+[<I1>]        <a href="diagrams_[@replace(".xml",""),@replace("@","_"),@stackRead("",_LinkFile_)
+                    ].html#uad_[@replace(_DeleteFromLinkAnchor_,""),@stackRead("",_LinkAnchor_)]">
+[<I1>]         [@attribute(PartName)]
+[<D1>]        </a>
+[<D1>]       </TD>
+[<N0>]       <TD align="left" valign="top">
+[<I1>]        [@useForSnipet(__block__,__block__describe),@snipet(__block__)]
+[<D1>]       </TD>
+[<D1>]      </TR>[@stackClear(_LinkAnchor_,_DeleteFromLinkAnchor_)]|
+
+__block__describe:[@useForSnipet(Comment,mrtz_describe_line),@snipet(Comment)]|
+
+/*<font color="#000000"></font>*/
+mrtz_describe_line:[@replace("#",""),@text(__SELF__)]|
+
+mrtz_describe_LinkAnchor:[@stackRead("",_FunctionName_)]_[@replace(" ",""),@attribute(PartName)]|
+
+mrtz_describe_DeleteFromLinkAnchor:_[@stackRead("",_FunctionName_)]|
+
+
+
+
+/*pre replacements of under-scores into @ wich have to be replaced into 2 
+underscores for doxygen-links*/
+mrtz_describe_LinkFile:[@replace("_","@"),@stackRead("",__SOURCENAME__)]|
+
+
+
+mrtz_showSource:[@useForSnipet(mrtz_showSource,mrtz_showSource_AttributeLineNumber), 
+                 @stackPush(ShowSource_AttributeLineNumber,__SELF__)
+               ][@xmlCode(_ContentSource_,__SELF__),@xmlSave(_ContentSource_,nsd/SourceContent.xml)
+               ][@useForSnipet(_ContentSource_,mrtz_showSource_Content), 
+                 @xmlSnipet(_ContentSource_)
+               ][@xmlDelete(_ContentSource_)]|             
+
+
+/*
+*/
+mrtz_showSource_Content:[@ifStackEqual("-",_CaseSink_),
+                         @useForSnipet(_ContentSource_,case_sink),             @stackPush(_CaseSink_,__SELF__)
+                       ][@useForSnipet(_ContentSource_,mrtz_showSource_Style), @stackPush(_Style_,__SELF__)
+                       ][@tag()]_[% node_ID %];
+[<N0>]                  [@tag()]_[% node_ID %][@stackRead("",_PstFix_)        
+                      ][@stackClear(ShowSource_AttributeLineNumber)]|
+
+
+
+mrtz_showSource_Style:
+[<N0>] [@tag()]_[% node_ID %] [@stackRead("",__Pb__)]label="[@useForSnipet(CODE,mrtz_showSource_Code),@snipet(CODE),
+                                                      ]" fontname=Courier, shape=box, style="rounded, filled", height=0.1, width=0.1 [@stackRead("",__Pe__)];
+|
+
+
+
+
+
+
+mrtz_showSource_AttributeLineNumber:[@attribute(lineNumber)]|
+
+
+
+
+mrtz_showSource_Code:[@useForSnipet(LINE,mrtz_showSource_Line),@snipet(LINE)]|
+
+mrtz_showSource_LineNumber:[@ifStackEqual("LineNumber",ShowSource_AttributeLineNumber),@attribute(L)] |
+
+mrtz_showSource_Line:[@useForSnipet(LINE,mrtz_showSource_LineNumber),@snipet(__SELF__)
+                    ][@useForSnipet(Comment,Comment_source),
+                      @snipet(comp_op,
+                              Keyword,
+                              KeyChr,
+                              ID,
+                              shortstring,
+                              longstring,
+                              testlist1,
+                              floatnumber,
+                              octinteger,
+                              hexinteger,
+                              decimalinteger,
+                              longinteger,
+                              imagnumber,
+                              Comment,
+                              SP),]\l|
+
+SP: |
+shortstring:[@text(__SELF__)]|
+longstring:[@text(__SELF__)]|
+
+floatnumber:[@text(__SELF__)]|
+integer:[@text(__SELF__)]|
+longinteger:[@text(__SELF__)]|
+imagnumber:[@text(__SELF__)]|
+octinteger:[@text(__SELF__)]|
+hexinteger:[@text(__SELF__)]|
+decimalinteger:[@text(__SELF__)]|
+Comment_source:[@text(__SELF__)]|
+
+
+
+mrtz_ifElseChain:[@useForSnipet(__block__,__block__mrtz_ifElseChain),@snipet(__block__)]|
+__block__mrtz_ifElseChain:[@snipet(if_stmt)]|
+
+
+
+/*dumies*/
+mrtz_automaticLink:[@snipet(__block__)]|
+mrtz_insertLink:|
+
+
+
+
+
+
+
+
+
+
+

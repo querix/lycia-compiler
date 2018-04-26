@@ -1,0 +1,1014 @@
+ /* GeneratorNSD configuration */
+
+
+comp_op:<font color="#FF00FF"><b>[@text(__SELF__)]</b></font>|
+
+Keyword:<font color="#0000FF"><b> [@text(__SELF__)] </b></font>|
+
+KeyChr:<font color="#FF00FF"><b>[@text(__SELF__)]</b></font>|
+
+Str:<font color="#FF00FF"><b>[@text(__SELF__)]</b></font>|
+
+ID:<font color="#000000"><b><i>[@text(__SELF__)]</i></b></font>|
+
+Owner:<font color="#000000"><b><i>[@text(__SELF__)]</i></b></font>|
+
+STRING:<font color="#007F00"><b>[@text(__SELF__)]</b></font>|
+
+testlist1:<font color="#00CF00"><b>[@text(__SELF__)]</b></font>|
+
+Number:<font color="#7F007F"><b>[@text(__SELF__)]</b></font>|
+
+Comment:<font color="#7FAF7F"><b>[@replace("//",""),@replace("/*",""),@replace("*/",""),@text(__SELF__)]</b></font>|
+
+
+
+
+USER_TYPE: <font color="#FF0000">[@text(ID)]</font>|
+
+/*struct_or_union_specifier: <font color="#FF0000">[@text(ID)]</font>| */
+
+enum_specifier: <font color="#FF0000">[@text(ID)]</font>|
+
+
+type_qualifier:<font color="#0000FF"><b><i>[@text(__SELF__)]</i></b></font> |
+
+storage_class_specifier:<font color="#0000FF"><b><i>[@text(__SELF__)]</i></b></font> |
+
+
+/*struct_or_union:<font color="#0000FF"><b><i>[@text(__SELF__)]</i></b></font>|   */
+
+
+
+struct_specifier:
+[<N0>]     <TABLE border="0" width="100%">             
+[<N0>]      <TR border=0 cellspacing="0" cellpadding="0">
+[<I1>]       <TD align="left">
+[<I1>]       [@snipet(Keyword)] 
+[<D1>]       </TD>
+[<N0>]       <TD align="right">
+[<I1>]       [@snipet(Comment)]
+[<D1>]       </TD> 
+[<D1>]      </TR>
+[<N0>]      <TR border=0 cellspacing="0" cellpadding="0">
+[<I1>]       <TD colspan="2" align="left">
+[<I1>]        <TABLE border="1"  width="100%">             
+[<I1>]         [@snipet(declaration,)]
+[<D1>]        </TABLE>
+[<D1>]       </TD> 
+[<D1>]      </TR>
+[<D1>]     </TABLE>
+|useAlsoFor(union_specifier),
+
+
+
+
+
+
+
+
+
+
+
+
+declaration:
+[<N0>]      <TR align="left" border=0 cellspacing="0" cellpadding="0">
+[<I1>]       <TD>
+[<I1>]        <TABLE width="100%" border="0" cellspacing="0" cellpadding="0">             
+[<N0>]         <TR align="left" border=0 cellspacing="0" cellpadding="0">
+[<I1>]          <TD >
+[<I1>]            [@snipet(declaration_specifier)]
+[<D1>]          </TD>
+[<N0>]          <TD >
+[<I1>]            [@snipet(init_declarator,KeyChr,)]
+[<D1>]          </TD>
+[<N0>]          <TD align="right">
+[<I1>]            [@snipet(Comment)]
+[<D1>]          </TD> 
+[<D1>]         </TR>
+[<D1>]        </TABLE>
+[<D1>]       </TD> 
+[<D1>]      </TR>
+|
+
+
+
+
+
+
+
+init_declarator:
+ [@snipet(declarator,KeyChr,initializer)]
+|
+
+
+
+initializer:[@snipet(KeyChr,assignment_expression,initializer_list)]|
+
+initializer_list:[@snipet(KeyChr,initializer)]|
+
+
+declaration_specifier:[@replace(__RESET__),
+                       @snipet(USER_TYPE, 
+                               Owner,
+                               KeyChr,
+                               template_type,
+                               storage_class_specifier,
+                               type_qualifier,
+                               type_specifier)]|
+
+
+type_name:
+ [@snipet(specifier_qualifier_list,abstract_declarator,USER_TYPE,)]
+|
+
+specifier_qualifier_list:
+ [@snipet(type_specifier,type_qualifier,specifier_qualifier_list,USER_TYPE,)]    
+|
+
+type_specifier:
+ [@useForSnipet(type_specifier,Number),@snipet(_SELF_)]
+ [@snipet(struct_specifier,union_specifier,enum_specifier,Keyword,KeyChr,Str,)]
+|
+
+abstract_declarator:[@snipet(pointer,direct_abstract_declarator)]|
+
+pointer:[@snipet(direct_declarator)]|
+
+direct_abstract_declarator:[@snipet(parameter_type_list,constant_expression,KeyChr)]|
+
+template_type:[@snipet(ID, KeyChr, declaration_specifier)]|
+
+
+declarator:
+ [@snipet(direct_declarator, pointer ,funcPoint_declarator)]
+|
+
+funcPoint_declarator:
+ [@snipet(KeyChr, type_qualifier, direct_declarator, prototype_parameter_list)]
+|
+
+direct_declarator:
+ [@replace("_"," "),@snipet(KeyChr,owned_ID,ID,direct_declarator_second)]
+|
+
+owned_ID:[@replace("_"," "),@snipet(KeyChr,Owner,ID,)]|
+
+
+
+
+direct_declarator_second:
+ [@snipet(KeyChr,direct_parameter_declarator,constant_expression)]
+|
+
+direct_parameter_declarator:
+ [@snipet(KeyChr,parameter_type_list,assignment_expression)]
+|
+
+parameter_type_list:
+ [@snipet(parameter_list)]
+|
+
+parameter_list:
+ [@snipet(parameter_declaration)]
+|
+
+parameter_declaration:
+ [@snipet(declaration_specifier,declarator)]
+|
+
+
+assignment_expression:
+        [@snipet(cast_expression,unary_expression,assignment_expression,assignment_operator,KeyChr,)]
+|
+assignment_operator:
+ [@snipet(KeyChr),@snipet(Str)]
+|
+
+cast_expression:
+ [@snipet(unary_expression,cast_expression,type_name,KeyChr,)]
+|
+
+unary_expression:
+ [@snipet(ID,KeyChr,Number,argument_expression_list,unary_operator,unary_expression,cast_expression,assignment_expression,String,Str,p_defined)]
+|
+unary_operator:
+ [@snipet(KeyChr,Keyword)]
+|
+
+
+
+argument_expression_list:
+ [@snipet(assignment_expression,KeyChr)]
+|
+
+constant_expression:
+[@snipet(cast_expression)]
+|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*File*/
+File_HeadText:
+[<N0>]   <HTML>
+[<I1>]    <HEAD>
+[<N0>]    </HEAD>
+[<N0>]    <BODY>
+[<I1>]     <TABLE border="0" cellspacing="0" cellpadding="0" width="800">
+|
+
+File_FootText:
+[<D1>]     </TABLE>
+[<D1>]    </BODY>
+[<D1>]   </HTML>
+|
+
+
+
+/* Struct FileContent*/
+Content2File:[@useForSnipet(Content,ContentFileName), @stackPush(__DESTINATION__,__SELF__)]
+             [@ifOlderAs(__DESTINATION__),@useForSnipet(Content,Content_Data)   , @stackPush(FileContent,__SELF__)]
+             [@ifOlderAs(__DESTINATION__),@stackPop(__DESTINATION__, FileContent)]|
+
+
+Content_Data:
+[<N0>]   <TR>
+[<I1>]    <TD width="100%">
+[<I1>]     <TABLE border="0" width="100%">
+[<I1>]     [@useForSnipetDownwards(p_define,independent_define),
+          @snipet(function_definition),@snipet(preprocedure),@snipet(namespace)]
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+[<D1>]   </TR>
+|useAlsoFor(namespace)
+
+
+/*
+compound_funcdef:
+     [@drop(classdef), @snipet( function_definition, if_stmt)]
+|*/
+
+
+/**/
+classdef2File:[@useForSnipet(classdef,classdefFileName), @stackPush(__DESTINATION__,__SELF__)]
+              [@ifOlderAs(__DESTINATION__),@useForSnipet(classdef,classdef_Data)   , @stackPush(classdefContent,__SELF__)]
+              [@ifOlderAs(__DESTINATION__),@stackPop(__DESTINATION__, classdefContent)]|
+
+/*
+classdefFileName:.\nsd\[@replace(".xml",""),@stackRead("",__SOURCENAME__)]_C_[@text(NAME)].html|
+*/
+
+classdef_Data:
+[<N0>]   <TR>
+[<I1>]    <TD>
+[<I1>]     <h1> Class [@snipet(ID)]</h1>
+[<D1>]    </TD>
+[<D1>]   </TR>
+[<N0>]   <TR>
+[<I1>]    <TD>
+[<I1>]     <TABLE border="0" width="100%">
+[<I1>]      [!@snipet(suite)!]
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+[<D1>]   </TR>
+|
+
+ClassFileName:[@stackRead("",__SOURCENAME__)][@text(ID)]|
+
+
+
+suiteAndMore:[@useForSnipetDownwards(p_define,p_define_local),
+              @snipet(preprocedure,declaration,
+                      function_definition,
+                      if_stmt,switch_stmt,case_stmt,default_stmt,
+                      while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                      continue_stmt,break_stmt,return_stmt,
+                      expr_stmt,compound_statement,)]|
+
+/*[@stackRead(__LIVEOUT__,__DESTINATION__)
+            ]*/
+funcdef2File:[@useForSnipet(function_definition,funcdefFileName), @stackPush(__DESTINATION__,__SELF__)]
+             [@ifOlderAs(__DESTINATION__),@useForSnipet(function_definition,funcdef_Data)   , @stackPush(funcdefContent,__SELF__)]
+             [@ifOlderAs(__DESTINATION__),@stackPop(__DESTINATION__, funcdefContent)]|
+
+
+/*
+funcdefFileName:.\nsd\[@replace(".xml",""),@stackRead("",__SOURCENAME__)]_F_[@useForSnipet(declarator,declarator_text),@snipet(declarator)].html|
+*/
+
+
+declarator_text:[@useForSnipet(direct_declarator,direct_declarator_text),@snipet(direct_declarator)]|
+direct_declarator_text:[@text(ID),@text(owned_ID)]|
+/*Variant:<b>Variant:</b> [@attribute(name)] [@snipet(declarator)]| */
+
+funcdef_VariantData:[ @useForSnipet(Variant,Variant_Funcdef),@snipet(Variant)
+                   ][ @ifAbsent(Variant,NoVariant_Funcdef)
+                   ][%funcdef2File%]|
+
+Variant_Funcdef:[@useForSnipet(Variant,VariantName),
+                 @stackPush(__VARIANTNAME__,__SELF__)
+               ][@useForSnipetDownwards(Variant,funcdef_Data),@snipet(__SELF__)
+               ][@stackClear(__VARIANTNAME__)]| /**/
+/*@snipet(__SELF__),*/
+VariantName:<font color="#8FAA0F"><i>Variant: [@attribute(name)]</i></font>|
+
+
+NoVariant_Funcdef:[@useForSnipet(function_definition,NoVariantName),
+                   @stackPush(__VARIANTNAME__,__SELF__)
+                 ][@useForSnipetDownwards(function_definition,funcdef_Data),@snipet(__SELF__)
+                 ][@stackClear(__VARIANTNAME__)]| /**/
+/*@snipet(__SELF__),*/
+NoVariantName: |
+
+
+
+
+
+
+
+
+funcdef_Data:
+  [@useForSnipet(declarator,print_func_name),
+   @stackPush(FunctionName,declarator),]
+  [@stackRead(__LIVEOUT__,FunctionName)]
+[<N0>]   <TR>
+[<I1>]    <TD>
+[<I1>]     <a name="[@text(declarator)]"></a>
+[<I1>]     <br><h2>[@replace("_"," "),@snipet(declarator/direct_declarator)] [@stackRead("",__VARIANTNAME__)]</h2><br>
+[<I1>]     <TABLE  border="2" cellspacing="0" cellpadding="0" width="800">
+[<I1>]      <TR>
+[<I1>]       <TD>
+[<I1>]       [@snipet(declaration_specifier),@snipet(declarator)]
+[<D1>]        <br><div align="right">[@snipet(Comment)]</div>
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<N0>]      <TR>
+[<I1>]       <TD width="100%">
+[<I1>]        <TABLE border="1" width="100%">
+[<I1>]         [% suiteAndMore %]
+[<D1>]        </TABLE>
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<D1>]     </TABLE>
+[<N0>]     <br>
+[<D1>]    </TD>
+[<D1>]   </TR>
+|
+
+
+
+
+
+print_func_name:[@useForSnipet(direct_declarator,print_func_name2), @snipet(direct_declarator)]|
+print_func_name2: function: [@text(owned_ID),@text(KeyChr),@text(ID),@text(operator_id)]|
+
+
+
+
+
+FunctionFileName:[@stackRead("",__SOURCENAME__)][@text(ID)]|
+
+parameters:
+ [@snipet(varargslist), @snipet(KeyChr)]
+|
+
+varargslist:
+ [@snipet(ID), @snipet(KeyChr), @snipet(power), @snipet(fpdef)]
+|
+
+fpdef:
+ [@snipet(ID), @snipet(KeyChr), @snipet(fplist)]
+|
+
+fplist:
+ [@snipet(fpdef), @snipet(KeyChr)]
+|
+
+
+
+/*collection*/
+stmt:
+     [@snipet( compound_stmt, simple_stmt)]
+|
+
+/*collection*/
+assignment:
+ [@snipet(KeyChr, ID, comment)]
+|
+
+/*compound_stmt:*/
+compound_statement:
+     [@snipet(preprocedure,declaration,
+          if_stmt,switch_stmt,case_stmt,default_stmt,
+          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+          continue_stmt,break_stmt,return_stmt,
+          expr_stmt,compound_statement,)
+     ][@ifEmpty(emptyCompound)]
+          
+|
+
+
+
+emptyCompound:
+[<N0>]   <TR align="left">
+[<I1>]    <TD width="100%">
+[<N0>]    </TD>
+[<D1>]  </TR>
+|
+
+
+statement:
+      [@snipet(preprocedure,declaration,
+          if_stmt,switch_stmt,case_stmt,default_stmt,
+          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+          continue_stmt,break_stmt,return_stmt,
+          expr_stmt,compound_statement,)]
+|
+
+
+
+
+
+
+/*collection*/
+simple_stmt:
+     [@snipet(small_stmt)]
+|
+
+small_stmt:
+     [@snipet(expr_stmt,
+              print_stmt,
+              del_stmt,
+              pass_stmt,
+              flow_stmt,
+              import_stmt,
+              global_stmt,
+              exec_stmt,
+              assert_stmt,)]
+|
+
+
+
+exprlist:
+[@snipet(KeyChr), @snipet(power)]
+|
+
+expr_stmt:
+[<N0>]   <TR align="left">
+[<I1>]    <TD width="100%">
+[<I1>]     [@snipet(KeyChr), @snipet(assignment_expression)]
+[<N0>]     <br><div align="right">[@snipet(Comment)]</div>
+[<D1>]    </TD>
+[<D1>]   </TR>
+|
+
+power:
+    [@snipet(ID), @snipet(KeyChr), @snipet(testlist_gexp), @snipet(testlist1), @snipet(Number), @snipet(STRING), @snipet(trailer), @snipet(dictmaker)]
+|
+
+
+testlist_gexp:
+ [@snipet(power), @snipet(KeyChr), @snipet(Keyword), @snipet(comp_op)]
+|
+
+
+
+trailer:
+    [@snipet(KeyChr),  @snipet(arglist), @text(subscriptlist), @snipet(ID)]
+|
+
+arglist:
+ [@snipet(KeyChr), @snipet(argument), @text(test)]
+|
+
+argument:
+ [@snipet(power),@snipet(KeyChr)]
+|
+
+dictmaker:
+ [@snipet(power),@snipet(KeyChr)]
+|
+
+
+
+
+
+
+
+
+
+/*StructBreak*/
+
+break_stmt:
+[<N0>]   <TR align="left">
+[<I1>]    <TD width= "100%">
+[<I1>]     <font color="#0000FF"><b> [@snipet(Keyword)] </b></font><b> ===>>> </b>
+[<N0>]     <br><div align="right">[@snipet(Comment)]</div>
+[<D1>]    </TD>
+[<D1>]   </TR>
+|
+
+/*StructContinue*/
+
+continue_stmt:
+[<N0>]   <TR align="left">
+[<I1>]    <TD width= "100%">
+[<I1>]     <b> ^^^^^^ </b><font color="#0000FF"><b> [@snipet(Keyword)] </b></font><b> ^^^^^^ </b>
+[<N0>]     <br><div align="right">[@snipet(Comment)]</div>
+[<D1>]    </TD>
+[<D1>]   </TR>
+|
+
+
+/*StructReturn*/
+
+return_stmt:
+[<N0>]   <TR align="left">
+[<I1>]    <TD width= "100%">
+[<I1>]     [@snipet(Keyword), @snipet(assignment_expression)]
+[<N0>]     <br><div align="right">[@snipet(Comment)]</div>
+[<D1>]    </TD>
+[<D1>]   </TR>
+|
+
+
+goto_stmt:
+[<N0>]   <TR align="left">
+[<I1>]    <TD width= "100%">
+[<I1>]     [@snipet(Keyword)] <font color="#00B0B0"><b><i>[@text(ID)]</i></b></font>
+[<N0>]     <br><div align="right">[@snipet(Comment)]</div>
+[<D1>]    </TD>
+[<D1>]   </TR>
+|
+
+lable_stmt:
+[<N0>]   <TR align="left">
+[<I1>]    <TD width="100%"">
+[<I1>]     <font color="#00B0B0"><b><i>[@text(ID)]</i></b></font> [@snipet(KeyChr)]
+[<N0>]     <br><div align="right">[@snipet(Comment)]</div>
+[<D1>]    </TD>
+[<D1>]   </TR>
+|
+
+
+expr_parameter:[@snipet(KeyChr), @snipet(assignment_expression,Comment,)]|
+
+
+/*StructFor*/
+for_expr:
+[<N0>]        [@useForSnipet(expr_stmt,expr_parameter),@snipet(Keyword,KeyChr,expr_stmt,assignment_expression)]
+[<N0>]        <br><div align="right">[@snipet(Comment)]</div>
+|
+
+for_stmt:
+[<N0>]   <TR align="left">
+[<I1>]    <TD width= "100%">
+[<I1>]     <TABLE border="0" width="100%" cellspacing="0" cellpadding="0">
+[<I1>]      <TR>
+[<I1>]       <TD width="100%">
+[<I1>]        [@snipet(for_expr)]
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<N0>]      <TR align="right">
+[<I1>]       <TD width="100%">
+[<I1>]        <TABLE align="right" width="100%" cellspacing="0" cellpadding="0">
+[<I1>]         <TR>
+[<I1>]          <TD width="5%"></TD>
+[<I1>]          <TD width="95%">
+[<I1>]           <TABLE border="1" align="left" width="100%" cellspacing="0" cellpadding="0">
+[<I1>]            [% suiteAndMore %]
+[<D1>]           </TABLE>
+[<D1>]          </TD>
+[<D1>]         </TR>
+[<D1>]        </TABLE>
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+[<D1>]   </TR>
+|
+
+
+
+
+
+
+
+/*StructWhile*/
+while_expr:
+[<N0>]        [@snipet(Keyword), @snipet(KeyChr), @snipet(assignment_expression)]
+[<N0>]        <br><div align="right">[@snipet(Comment)]</div>
+|
+
+while_stmt:
+[<N0>]   <TR align="left">
+[<I1>]    <TD width= "100%">
+[<I1>]     <TABLE border="0" width="100%" cellspacing="0" cellpadding="0">
+[<I1>]      <TR>
+[<I1>]       <TD width="100%">
+[<I1>]        [@snipet(while_expr)]
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<N0>]      <TR align="right">
+[<I1>]       <TD width="100%">
+[<I1>]        <TABLE  align="right" width="100%" cellspacing="0" cellpadding="0">
+[<I1>]         <TR>
+[<I1>]          <TD width="5%"></TD>
+[<I1>]          <TD width="95%">
+[<I1>]           <TABLE border="1"  align="left"  width="100%" cellspacing="0" cellpadding="0">
+[<I1>]            [% suiteAndMore %]
+[<D1>]           </TABLE>
+[<D1>]          </TD>
+[<D1>]         </TR>
+[<D1>]        </TABLE>
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+[<D1>]   </TR>
+|
+
+
+/*StructWhile*/
+
+do_stmt:
+[<N0>]   <TR>
+[<I1>]    <TD width= "100%">
+[<I1>]     <TABLE border="0" width="100%" cellspacing="0" cellpadding="0">
+[<I1>]      <TR>
+[<I1>]       <TD width="100%">
+[<I1>]        [@snipet(Keyword)]
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<N0>]      <TR align="right">
+[<I1>]       <TD width="100%">
+[<I1>]        <TABLE  align="right" width="100%" cellspacing="0" cellpadding="0">
+[<I1>]         <TR>
+[<I1>]          <TD width="5%"></TD>
+[<I1>]          <TD width="95%">
+[<I1>]           <TABLE border="1"  align="left"  width="100%" cellspacing="0" cellpadding="0">
+[<I1>]            [% suiteAndMore %]
+[<D1>]           </TABLE>
+[<D1>]          </TD>
+[<D1>]         </TR>
+[<D1>]        </TABLE>
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<N0>]      <TR>
+[<I1>]       <TD width="100%">
+[<I1>]        [@snipet(while_expr)]
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+[<D1>]   </TR>
+|
+
+
+
+/*StructIf*/
+
+if_stmt:
+[<N0>]   <TR align="left">
+[<I1>]    <TD width= "100%">
+[<I1>]     <TABLE  align="left" border="1" rules="rows" cellspacing="0" cellpadding="0" width="100%" >
+[<I1>]       <TR>
+[<I1>]        <TD height="20" colspan="1">
+[<I1>]         <TABLE frame="box" width="100%" border="0" cellspacing="0" cellpadding="0">
+[<I1>]          <TR height="1">                      <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="19"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="1"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="18"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="2"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="17"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="3"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="16"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="4"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="15"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="5"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="14"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="6"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="13"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="7"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="12"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="8"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="11"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="9"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="10"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="10"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="9"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="11"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="8"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="12"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="7"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="13"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="6"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="14"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="5"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="15"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="4"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="16"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="3"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="17"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="2"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="18"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="1"></TD> </TR>
+[<N0>]          <TR height="1"><TD colspan="19"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD></TR>
+[<D1>]         </TABLE>
+[<D1>]        </TD>
+[<N0>]        <TD height="20" colspan="1">
+[<I1>]         <TABLE frame="box" width="100%" border="0" cellspacing="0" cellpadding="0">
+[<I1>]          <TR height="1"><TD colspan="19"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="18"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="1"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="17"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="2"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="16"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="3"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="15"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="4"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="14"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="5"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="13"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="6"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="12"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="7"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="11"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="8"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="10"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="9"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="9"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="10"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="8"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="11"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="7"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="12"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="6"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="13"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="5"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="14"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="4"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="15"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="3"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="16"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="2"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="17"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="1"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="18"></TD></TR>
+[<N0>]          <TR height="1">                      <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="19"></TD></TR>
+[<D1>]         </TABLE>
+[<D1>]        </TD>
+[<D1>]       </TR>
+[<N0>]       <TR>
+[<I1>]        <TD>
+[<I1>]         <TABLE  align="left" border="1" rules="none" cellspacing="0" cellpadding="0" width="100%"  height="100%">
+[<I1>]          <TR>
+[<I1>]           [% IfAndMore %]
+[<D1>]          </TR>
+[<D1>]         </TABLE>
+[<D1>]        </TD>
+[<N0>]        <TD>
+[<I1>]         <TABLE  align="left" border="1" rules="none" cellspacing="0" cellpadding="0" width="100%"  height="100%">
+[<I1>]          <TR>
+[<I1>]           [% ElseAndMore %]
+[<D1>]          </TR>
+[<D1>]         </TABLE>
+[<D1>]        </TD>
+[<D1>]       </TR>
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+[<D1>]   </TR>
+|
+
+
+IfAndMore:[@snipet(if_part)]
+ [<N0>]   [@snipet(elif_part)]|
+
+ElseAndMore:[ @snipet(else_part),@ifAbsent(else_part, if_empty_else)]|
+
+
+
+
+if_expr:
+[<N0>]        [@snipet(Keyword), @snipet(KeyChr), @snipet(assignment_expression)]
+[<N0>]        <br><div align="right">[@snipet(Comment)]</div>
+|useAlsoFor(elif_expr)
+
+if_part:
+[<N0>]    <TD>
+[<I1>]     <TABLE  align="left" border="0" cellspacing="0" cellpadding="0" width="100%"  height="100%">
+[<I1>]      <TR>
+[<I1>]       <TD height="100%">
+[<I1>]       [@snipet(if_expr)]
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<N0>]      <TR height="100%">
+[<I1>]       <TD height="100%" width="100%">
+[<I1>]        <TABLE border="1"  width="100%" height="100%">
+[<I1>]         [% suiteAndMore %]
+[<D1>]        </TABLE>
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+|
+
+elif_part:
+[<N0>]    <TD height="100%">
+[<I1>]     <TABLE  align="left" border="0" cellspacing="0" cellpadding="0" width="100%">
+[<I1>]      <TR>
+[<I1>]       <TD height="100%">
+[<I1>]        [@snipet(elif_expr)]
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<N0>]      <TR>
+[<I1>]       <TD width="100%">
+[<I1>]        <TABLE border="1" width="100%">
+[<I1>]         [% suiteAndMore %]
+[<D1>]        </TABLE>
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+|
+
+else_part:
+[<N0>]    <TD height="100%">
+[<I1>]     <TABLE  align="left" border="0" cellspacing="0" cellpadding="0" width="100%" >
+[<I1>]      <TR>
+[<I1>]       <TD>
+[<I1>]        [@snipet(Keyword)]
+[<D1>]        <br><div align="right">[@snipet(Comment)]</div>
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<N0>]      <TR>
+[<I1>]       <TD width="100%">
+[<I1>]        <TABLE border="1" width="100%">
+[<I1>]         [% suiteAndMore %]
+[<D1>]        </TABLE>
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+|
+
+
+if_empty_else:
+[<N0>]    <TD height="100%">
+[<I1>]     <TABLE  align="center" border="0" cellspacing="0" cellpadding="0" width="100%" >
+[<I1>]      <TR>
+[<I1>]       <TD width="100%" align="center">
+[<I1>]        <h1>%</H1>
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+|
+
+
+
+
+
+
+
+
+switch_expr:
+[<N0>]        [@snipet(Keyword), @snipet(KeyChr), @snipet(assignment_expression)]
+[<N0>]        <br><div align="right">[@snipet(Comment)]</div>
+|
+
+switch_stmt:
+[<N0>]   <TR align="left">
+[<I1>]    <TD width= "100%">
+[<I1>]     [@snipet(switch_expr)]
+[<N0>]     [@useForSnipet(compound_statement,switch_compound),@snipet(compound_statement)]
+[<D1>]    </TD>
+[<D1>]   </TR>
+|
+
+
+switch_compound:
+[<N0>]     <TABLE  align="left" border="1" rules="rows" cellspacing="0" cellpadding="0" width="100%" >
+[<I1>]       <TR>
+[<I1>]        <TD height="20" colspan="1">
+[<I1>]         <TABLE frame="box" width="100%" border="0" cellspacing="0" cellpadding="0">
+[<I1>]          <TR height="1">                      <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="19"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="1"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="18"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="2"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="17"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="3"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="16"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="4"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="15"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="5"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="14"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="6"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="13"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="7"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="12"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="8"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="11"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="9"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="10"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="10"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="9"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="11"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="8"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="12"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="7"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="13"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="6"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="14"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="5"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="15"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="4"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="16"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="3"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="17"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="2"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="18"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="1"></TD> </TR>
+[<N0>]          <TR height="1"><TD colspan="19"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD></TR>
+[<D1>]         </TABLE>
+[<D1>]        </TD>
+[<N0>]        <TD height="20" colspan="1">
+[<I1>]         <TABLE frame="box" width="100%" border="0" cellspacing="0" cellpadding="0">
+[<I1>]          <TR height="1"><TD colspan="19"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="18"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="1"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="17"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="2"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="16"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="3"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="15"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="4"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="14"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="5"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="13"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="6"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="12"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="7"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="11"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="8"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="10"></TD><TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="9"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="9"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="10"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="8"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="11"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="7"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="12"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="6"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="13"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="5"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="14"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="4"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="15"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="3"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="16"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="2"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="17"></TD></TR>
+[<N0>]          <TR height="1"><TD colspan="1"></TD> <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="18"></TD></TR>
+[<N0>]          <TR height="1">                      <TD bgcolor="#7F7F7F" colspan="1"></TD><TD colspan="19"></TD></TR>
+[<D1>]         </TABLE>
+[<D1>]        </TD>
+[<D1>]       </TR>
+[<N0>]       <TR>
+[<I1>]        <TD>
+[<I1>]         <TABLE  align="left" border="1" rules="none" cellspacing="0" cellpadding="0" width="100%" >
+[<I1>]          <TR>
+[<I1>]           [% SwitchCaseAndMore %]
+[<D1>]          </TR>
+[<D1>]         </TABLE>
+[<D1>]        </TD>
+[<N0>]        <TD>
+[<I1>]         <TABLE  align="left" border="1" rules="none" cellspacing="0" cellpadding="0" width="100%" >
+[<I1>]          <TR>
+[<I1>]           [% SwitchDefaultAndMore %]
+[<D1>]          </TR>
+[<D1>]         </TABLE>
+[<D1>]        </TD>
+[<D1>]       </TR>
+[<D1>]     </TABLE>
+|
+
+
+
+
+SwitchCaseAndMore:[@snipet(case_stmt)]|
+
+SwitchDefaultAndMore:[@snipet(default_stmt),@ifAbsent(default_stmt, empty_default)]|
+
+
+
+case_stmt:
+[<N0>]    <TD height="100%">
+[<I1>]     <TABLE  align="left" border="0" cellspacing="0" cellpadding="0" width="100%" >
+[<I1>]     [@snipet(case_part,break_stmt,)]
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+|
+
+case_expr:
+[<N0>]        [@snipet(Keyword), @snipet(KeyChr), @snipet(assignment_expression,constant_expression)]
+[<N0>]        <br><div align="right">[@snipet(Comment)]</div>
+|
+
+case_part:
+[<N0>]      <TR>
+[<I1>]       <TD height="100%">
+[<I1>]       [@snipet(case_expr,default_expr)]
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<N0>]      <TR>
+[<I1>]       <TD width="100%">
+[<I1>]        <TABLE border="1" width="100%">
+[<I1>]         [% suiteAndMore %]
+[<D1>]        </TABLE>
+[<D1>]       </TD>
+[<D1>]      </TR>
+|
+
+default_stmt:
+[<N0>]    <TD height="100%">
+[<I1>]     <TABLE  align="left" border="0" cellspacing="0" cellpadding="0" width="100%" >
+[<I1>]      [@snipet(default_part,break_stmt,)]
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+|
+default_expr:
+[<N0>]        [@snipet(Keyword), @snipet(KeyChr), ]
+[<N0>]        <br><div align="right">[@snipet(Comment)]</div>
+|
+
+default_part:
+[<N0>]      <TR>
+[<I1>]       <TD>
+[<I1>]        [@snipet(default_expr)]
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<N0>]      <TR>
+[<I1>]       <TD width="100%">
+[<I1>]        <TABLE border="1" width="100%">
+[<I1>]         [% suiteAndMore %]
+[<D1>]        </TABLE>
+[<D1>]       </TD>
+[<D1>]      </TR>
+|
+
+
+empty_default:
+[<N0>]    <TD height="100%">
+[<I1>]     <TABLE  align="center" border="0" cellspacing="0" cellpadding="0" width="100%" >
+[<I1>]      <TR>
+[<I1>]       <TD width="100%" align="center">
+[<I1>]        <h1>%</H1>
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+|
+
+
+
+

@@ -1,0 +1,1029 @@
+ <Process>
+  <!-- to configure the bnf-type and its xml-representation as debug-output
+       reffer in documentation of MuLanPa: 
+         "How it works" "Notation"
+         "Configuration-File" "Process-Details" "Notation-Process"
+      -->
+  <Notation>
+   <!-- currently only the type spirit classic will be supportet -->
+   <Type         value="spirit"/>
+   <!-- for every process the used gramma will be transfered to an xml-file 
+        if yes is configured -->
+   <OutputRule   value="Yes" folder="./LangPack/ansi_c/_log/grm/" root="LangPackPath" />
+   <!-- the xml-output may contain for every rule an additional tree that 
+        represents the rules called by this rules directly and indirectly 
+        but only in a limited amount-->
+   <OutputCalled value="Yes" minimumEdges="Yes" limitTree="5" limitNode="30"/>
+   <!-- the xml-output may contain for every rule an additional tree that 
+        represents the rules wich call this rule directly and indirectly 
+        but only in a limited amount-->
+   <OutputCaller value="Yes" minimumEdges="Yes" limitTree="5" limitNode="30"/>
+  </Notation>
+
+
+  <!-- solves compiler-switches for programming-languages like c/cpp and 
+       cretates source-text variants wich contain parseable active code
+       reffer in documentation of MuLanPa: 
+         "How it works" "Directive Process"
+         "Configuration-File" "Process-Details" "Directive Process"
+       -->
+  <Directive>
+   <!-- create an additional xml-output for debuging purposes -->
+   <SavePartResult  value="No" attachment="_drct.xml"/>
+   <!-- create additional log-output that represents the parsing-result in 
+        detail: level 0 == no output level 1 all rule hits 
+        level 2 all rule-hits and all hits of the built in base-parses-->
+   <DebugLevel      value="0" file="./xml/log/drct_log" root="" />
+   <!-- create additional log-output that shows the text to parse before the
+        parser starts-->
+   <ShowTextToParse value="No"/>
+
+   <!-- controll if the parser restarts after a found source error or not
+        should be not changed if you use an ready developed grammar -->
+   <ParseTolerant   value="No"/>
+   <!-- controll if position output should be added 
+        0 == no tag gets position info  
+        1 ==  leafe-nodes with text inside only get position-Info
+        2 ==  all nodes get position info -->
+   <PositionOutput  value="0"/>
+   
+   
+   <!-- token to insert at the beginn of a switched-off text-part in a variant-->
+   <CommentBegin    value="//- "/>
+   <!-- token to insert at the end of a switched-off text-part in a variant-->
+   <CommentEnd      value=""/>
+   
+   <!-- collection of rules used to define the grammar used by this process -->
+   <Grammar>
+    <!-- defines all parts of if-expressions -->
+    <File value="./LangPack/ansi_c/a2x/ANSI_C_Expression.a2x"   root="LangPackPath" />
+    <!-- define all preprocessor-directives -->
+    <File value="./LangPack/ansi_c/a2x/ANSI_C_PreProcedure.a2x" root="LangPackPath" />
+    skip = space_p;
+    pass = p_Block;
+   </Grammar>
+   
+   <!-- special character-sequences can be added to special symbol-classes -->
+   <Symbol>
+    <!-- keywords of the preprocessor -->
+    <Class value="Keyword">
+           "if"      , "elif"   , "else" , "endif",
+           "ifdef"   , "ifndef" ,  
+           "define"  , "undef"  ,    
+           "include" , "pragma" ,    
+           "line"    , "error"     
+    </Class>    
+                                                   
+    <!-- key-characters of the preprocessor -->                                               
+    <Class value="KeyChr">
+      "#" ,
+      "(" , "[" , "{" , "}" , "]" , ")" ,
+      "." , ":" , "," , ";" , "+" , "-" , "*" , "/" , "=" ,
+      "\"" , "\'" , "\\"  , 
+      "&lt;" , "&gt;" , "&lt;&lt;" , "&gt;&gt;" , 
+      "&amp;" , "&amp;&amp;" , "|" , "||" , "!" ,
+      "++" , "--" , "==" , "!="
+    </Class>  
+                                                     
+   </Symbol>
+   
+   <!-- results of rules added here will be shown as leafe-node -->   
+   <GlobalToken>
+    text_line,
+    statement,
+   </GlobalToken>
+                            
+   <!-- rules added here contain no additional whitespaces inside, rules not
+        added here may contain additional whitespaces between part-terms -->
+   <GlobalNotPhrased>
+    skip,
+    text_line,
+    endOfTextLine,
+    p_declarator,
+    p_define,
+    p_enif_cmnt,
+    sp_only,
+    statement,
+    D,L,H,E,FS,IS,
+    CONSTANT_HEX,
+    CONSTANT_INT0,
+    CONSTANT_INT1,
+    CONSTANT_CHAR,
+    CONSTANT_FLT1,
+    CONSTANT_FLT2,
+    CONSTANT_FLT3,
+    String,
+    ID,NON_ID,
+    o_plus,
+    o_minus,
+    o_invert,
+    o_negate,
+    o_mul,
+    o_div,
+    o_mod,
+    o_shift_left,
+    o_shift_right,
+    o_less_equal,
+    o_greater_equal,
+    o_less,
+    o_greater,
+    o_equal,
+    o_unequal,
+    o_bit_and,
+    o_bit_exor,
+    o_bit_or,
+    o_log_and,
+    o_log_or,
+    open_std,
+    close_std,
+    comment_std,
+    comment_cpp,
+    lineChange
+   </GlobalNotPhrased>    
+                        
+   <!-- results of rules added here will completly not be shown -->
+   <GlobalHide>
+    lineChange,
+    endOfTextLine
+   </GlobalHide>
+                            
+   <!-- tags of rules added here will not be shown -->
+   <GlobalSkipLevel>
+    pass,
+    primary_expression,
+
+    D,L,H,E,FS,IS,
+    CONSTANT_INT0,
+    CONSTANT_INT1,
+    CONSTANT_FLT1,
+    CONSTANT_FLT2,
+    CONSTANT_FLT3
+   </GlobalSkipLevel>
+   
+   <!-- tags of rules added here will be used for creating the variants -->
+   <GlobalMergeLevel variantID="Variant">
+    compilerSwitch,
+    p_include,
+    p_define,
+    p_undefine,
+    p_pragma,
+    p_line,
+    p_error,
+    p_warning,
+    class_definition,
+    function_prototype,
+    declaration,
+    function_definition,
+    statement
+   </GlobalMergeLevel>
+   
+   <!-- currently not used -->
+   <LokalToken>
+   </LokalToken>
+   
+   <!-- currently not used -->
+   <LokalNotPhrased>
+   </LokalNotPhrased>
+   
+   <!-- currently not used -->
+   <LokalHide>
+   </LokalHide>
+   
+   <!-- currently not used -->
+   <LokalSkipLevel>
+   </LokalSkipLevel>
+ 
+  </Directive>
+
+  <!-- splits the source in its comment-part and its active part
+       reffer in documentation of MuLanPa: 
+         "How it works" "Core-Flow Processes"   "Context Depending Process-Spliting"
+         "Configuration-File" "Process-Details" "Context Depending Process-Spliting"
+      -->
+  <Context>
+   <!-- create an additional xml-output for debuging purposes -->
+   <SavePartResult  value="No" attachment="_cntxt.xml"/>
+   <!-- create additional log-output that represents the parsing-result in 
+        detail: level 0 == no output level 1 all rule hits 
+        level 2 all rule-hits and all hits of the built in base-parses-->
+   <DebugLevel      value="0" file="./xml/log/cntxt_log" root="" />
+   <!-- create additional log-output that shows the text prepared by the other
+        processes to parse before the parser starts -->
+   <ShowTextToParse value="No"/>
+
+   <!-- controll if the parser restarts after a found source error or not
+        should be not changed if you use an ready developed grammar -->
+   <ParseTolerant   value="Yes"/>
+   <!-- controll if position output should be added 
+        0 == no tag gets position info  
+        1 ==  leafe-nodes with text inside only get position-Info
+        2 ==  all nodes get position info -->
+   <PositionOutput  value="2"/>
+     
+   <!-- specifying the parts of the source -->
+   <Type>
+    <!-- active-part -->
+    <Code isDefault="Yes" replacement=" ">
+     <!-- identifier of grammar-rules to define begin and end of a string -->
+     <Sequence name="String" startToken="String_onOff"  endToken="String_onOff"/>
+     <!-- comment tokens inside a string are active source-parts -->
+    </Code>
+    <!-- comment-part -->
+    <Comment isDefault="No" replacement="_">
+     <!-- identifier of grammar-rules to define begin and end of a c-comment -->
+     <Sequence name="C"      startToken="CommentC_on"   endToken="CommentC_off"/>
+     <!-- identifier of grammar-rules to define begin and end of a cpp-comment -->
+     <Sequence name="Cpp"    startToken="CommentCpp_on" endToken="CommentCpp_off"/>
+     <!-- string tokens inside a comment are comment-parts -->
+    </Comment>
+     
+   </Type>
+
+   <!-- collection of rules used to define the grammar used by this process -->
+   <Grammar>
+    <File value="./LangPack/ansi_c/a2x/ANSI_C_Context_grm.a2x" root="LangPackPath" />
+
+    skip = space_p-(('\r' >> !'\n' ) | '\n' );
+     
+    pass       =  (  Ignor
+                   | String_onOff
+                   | CommentC_on
+                   | CommentC_off
+                   | CommentCpp_on
+                   | CommentCpp_off
+                  ); 
+
+   </Grammar>
+   
+   <!-- results of rules added here will be shown as leafe-node -->   
+   <GlobalToken>
+   </GlobalToken>
+   
+   <!-- rules added here contain no additional whitespaces inside, rules not
+        added here may contain additional whitespaces between part-terms -->
+   <GlobalNotPhrased> 
+     String_onOff,
+     CommentC_on,
+     CommentC_off,
+     CommentCpp_on,
+     CommentCpp_off,
+     skip,pass,Ignor
+   </GlobalNotPhrased> 
+   
+   <!-- results of rules added here will completly not be shown -->
+   <GlobalHide>
+   </GlobalHide>
+   
+   <!-- tags of rules added here will not be shown -->
+   <GlobalSkipLevel>
+   </GlobalSkipLevel>
+   
+   <!-- currently not used -->
+   <LokalToken>
+   </LokalToken>
+   
+   <!-- currently not used -->
+   <LokalNotPhrased>
+   </LokalNotPhrased>
+   
+   <!-- currently not used -->
+   <LokalHide>
+   </LokalHide>
+   
+   <!-- currently not used -->
+   <LokalSkipLevel>
+   </LokalSkipLevel>
+
+  </Context>
+ 
+  <!-- analyse the comment-part of the source for example special commands like
+       moritz-commands
+       reffer in documentation of MuLanPa: 
+         "How it works" "Core-Flow Processes"   "Comment-Process"
+         "Configuration-File" "Process-Details" "Comment-Process"
+      -->
+  <Comment>
+   <!-- create an additional xml-output for debuging purposes -->
+   <SavePartResult  value="No" attachment="_cmnt.xml"/>
+   <!-- create additional log-output that represents the parsing-result in 
+        detail: level 0 == no output level 1 all rule hits 
+        level 2 all rule-hits and all hits of the built in base-parses-->
+   <DebugLevel      value="0" file="./xml/log/cmnt_log" root="" />
+   <!-- create additional log-output that shows the text prepared by the other
+        processes to parse before the parser starts -->
+   <ShowTextToParse value="No"/>
+
+   <!-- number to start with counting text-lines -->
+   <StartLine       value="1"/>
+   <!-- number to start with counting character-positions in a text-line -->
+   <StartColumn     value="1"/>
+   
+   <!-- if activated with Yes all characters of keywords will be tranfered to 
+        low-case characters, what is necessary for not case-sensitive programming
+        languages like pascal-->
+   <NormalizeKeywordsOfSource value="No"/>
+   
+   <!-- tags used inside the parser-software don't change -->
+   <CommandTag>
+    <Command          value="__command__"/>
+    <CommandName      value="__name__"/>
+    <CommandParameter value="__parameter__"/>
+   </CommandTag>
+
+   <!-- definition of several tag identifiers used to hold comments,
+        all comment-nodes which tags-identifiers starts with Comment
+        will be merged more detailed than all other comment-tags wich
+        are only sorted by considering the line-numbers -->
+   <SpecialComment>
+    <!-- describes a comment-block starting and ending with line of stars -->
+    <__independendComment__ startsWith="/**"     endsWith="**/"/>
+    <!-- describes a doxygen line-comment to comment the element before  -->
+    <__doxygen_bhnd__       startsWith="///&lt;" endsWith=""/>
+    <!-- describes a doxygen line-comment to comment the element behind  -->
+    <__doxygen_prev__       startsWith="///"     endsWith=""/>
+    <!-- describes a comment-line used to commentout a line deactivated
+         from a compilerswitch  -->
+    <__directive__          startsWith="//- "     endsWith=""/>
+    <!-- describes a common comment-line  -->
+    <Comment                startsWith="//"      endsWith=""/>
+    <!-- describes a common comment-block  -->
+    <Comment2               startsWith="/*"      endsWith="*/"/>
+   </SpecialComment>
+   
+   <!-- collection of rules used to define the grammar used by this process -->
+   <Grammar>
+    <!-- describes the syntax of moritz-commands -->
+    <File value="./LangPack/ansi_c/a2x/cmd_moritz.a2x"         root="LangPackPath" />
+    <!-- describes the syntax of comments -->
+    <File value="./LangPack/ansi_c/a2x/ANSI_C_Comment_grm.a2x" root="LangPackPath" />    
+   
+    command =  mrtz_cmd;
+
+    skip    = space_p;
+    
+    pass    =  ( *preComment >> comment) ;
+
+
+
+   </Grammar>
+   
+   <!-- results of rules added here will be shown as leafe-node -->   
+   <GlobalToken>
+   </GlobalToken>
+   
+   <!-- rules added here contain no additional whitespaces inside, rules not
+        added here may contain additional whitespaces between part-terms -->
+   <GlobalNotPhrased>
+     directive,
+     QuoteCharacter,
+     open_std,
+     close_std,
+     comment_cpp,
+     comment_std,
+     comment,
+     skip,
+     pass,
+     preComment,
+     name,
+   </GlobalNotPhrased> 
+   
+   <!-- results of rules added here will completly not be shown -->
+   <GlobalHide>
+    mrtz_cmd,
+    name,
+   </GlobalHide>
+   
+   <!-- tags of rules added here will not be shown -->
+   <GlobalSkipLevel>
+   </GlobalSkipLevel>
+   
+   <!-- currently not used -->
+   <LokalToken>
+   </LokalToken>
+   
+   <!-- currently not used -->
+   <LokalNotPhrased>
+   </LokalNotPhrased>
+   
+   <!-- currently not used -->
+   <LokalHide>
+   </LokalHide>
+   
+   <!-- currently not used -->
+   <LokalSkipLevel>
+   </LokalSkipLevel>
+   
+  </Comment>
+  
+  <!-- prepares the active source-part by conecting physical lines to logic 
+       lines or by adding tokens for indentions if necessary
+       reffer in documentation of MuLanPa: 
+         "How it works" "Core-Flow Processes"   "Line-Process"
+         "Configuration-File" "Process-Details" "Line-Process"
+      -->
+  <Line>
+   <!-- create an additional xml-output for debuging purposes -->
+   <SavePartResult  value="No" attachment="_line.xml"/>
+   <!-- create additional log-output that represents the parsing-result in 
+        detail: level 0 == no output level 1 all rule hits 
+        level 2 all rule-hits and all hits of the built in base-parses-->
+   <DebugLevel      value="0" file="./xml/log/line_log" root="" />
+   <!-- create additional log-output that shows the text prepared by the other
+        processes to parse before the parser starts -->
+   <ShowTextToParse value="No"/>
+
+   <!-- number to start with counting text-lines -->
+   <StartLine       value="1"/>
+   <!-- number to start with counting character-positions in a text-line -->
+   <StartColumn     value="1"/>   
+   <!-- numbers of character-positions used for a tab-character, used while
+        indention-analysis for programming-laguages like python -->
+   <TabSize         value="8"/>
+   
+   <!-- numbers of character-positions used for a tab-character, used while
+        indention-analysis for programming-laguages like python -->
+   <Indent    value=""/>
+   <!-- token to insert at the beginning of a text-line with an dedetion, used
+        while indention-analysis for programming-laguages like python -->
+   <Dedent    value=""/>
+   <!-- token to insert at the beginning of an empty text-line, used while
+        indention-analysis for programming-laguages like python -->
+   <NewLine   value=""/>
+   <!-- token to insert at the end of a file, used while
+        indention-analysis for programming-laguages like python -->
+   <EndMarker value=""/>
+   
+   <!-- collection of rules used to define the grammar used by this process -->
+   <Grammar>
+    <File value="./LangPack/ansi_c/a2x/ANSI_C_Line_grm.a2x" root="LangPackPath" />
+
+    skip = space_p;
+
+    pass =  process_do | ('\\' >> anychar_p);
+
+   </Grammar>
+   
+   <!-- results of rules added here will be shown as leafe-node -->   
+   <GlobalToken>
+   </GlobalToken>
+   
+   <!-- rules added here contain no additional whitespaces inside, rules not
+        added here may contain additional whitespaces between part-terms -->
+   <GlobalNotPhrased> 
+     precut,
+     skip,
+     process_on,
+     process_off,
+     process_do,
+     process_swt,
+     pass
+   </GlobalNotPhrased> 
+   
+   <!-- results of rules added here will completly not be shown -->
+   <GlobalHide>
+   </GlobalHide>
+   
+   <!-- tags of rules added here will not be shown -->
+   <GlobalSkipLevel>
+   </GlobalSkipLevel>
+   
+   <!-- currently not used -->
+   <LokalToken>
+   </LokalToken>
+   
+   <!-- currently not used -->
+   <LokalNotPhrased>
+   </LokalNotPhrased>
+   
+   <!-- currently not used -->
+   <LokalHide>
+   </LokalHide>
+   
+   <!-- currently not used -->
+   <LokalSkipLevel>
+   </LokalSkipLevel>
+   
+
+  </Line>
+  
+  <!-- analyse the active source-part
+       reffer in documentation of MuLanPa: 
+         "How it works" "Core-Flow Processes"   "Source-Process"
+         "Configuration-File" "Process-Details" "Source-Process"
+      -->
+  <Source>
+   <!-- create an additional xml-output for debuging purposes -->
+   <SavePartResult            value="No" attachment="_code.xml"/>
+   <!-- create additional log-output that represents the parsing-result in 
+        detail: level 0 == no output level 1 all rule hits 
+        level 2 all rule-hits and all hits of the built in base-parses-->
+   <DebugLevel                value="0"   file="./xml/log/code_log" root="" />
+   <!-- create additional log-output that shows the text prepared by the other
+        processes to parse before the parser starts -->
+   <ShowTextToParse           value="No"/>
+
+   <!-- if activated with Yes all characters of keywords will be tranfered to 
+        low-case characters, what is necessary for not case-sensitive programming
+        languages like pascal-->
+   <NormalizeKeywordsOfSource value="No"/>
+   <!-- controll if the parser restarts after a found source error or not
+        should be not changed if you use an ready developed grammar -->
+   <ParseTolerant             value="No"/>
+   <!-- controll if position output should be added (for merging 2 is neaded)
+        0 == no tag gets position info  
+        1 ==  leafe-nodes with text inside only get position-Info
+        2 ==  all nodes get position info -->
+   <PositionOutput            value="2"/>
+      
+   <!-- collection of rules used to define the grammar used by this process -->
+   <Grammar>
+    <File value="./LangPack/ansi_c/a2x/ANSI_C_Source_C_only_grm.a2x"   root="LangPackPath" />
+    <File value="./LangPack/ansi_c/a2x/ANSI_C_Source_Cpp_grm.a2x"      root="LangPackPath" />
+    <File value="./LangPack/ansi_c/a2x/ANSI_C_Source_C_Pragma_grm.a2x" root="LangPackPath" />
+
+     skip = space_p;
+
+     pass = +(  namespace
+              | using_namespace
+              | preprocedure
+              | class_definition
+              | function_prototype
+              | declaration
+              | function_definition
+              | statement
+             ); 
+
+
+
+   </Grammar>
+   
+   <!-- special character-sequences can be added to special symbol-classes -->
+   <Symbol>
+    <!-- keywords of the programming-language -->
+    <Class value="Keyword">
+           "and"     , "or"       , "not"
+           "for"     , "while"    , "do"        , "break"    , "continue" , "return" ,
+           "if"      , "else"     , "switch"    , "case"     , "default"  ,
+           "typedef" , "struct"   , "enum"      , "union"    , "const"    ,
+           "static"  , "volatile" , "auto"      , "register" , "extern"   ,
+           "new"     , "delete"   , "sizeof"    , "goto"     ,
+           "class"   , "public"   , "protected" , "private"  ,
+           "try"     , "catch"    , "assert"    ,
+           "void"    , "char"     , "int"       , "float"    , "double"   ,
+           "short"   , "long"     , "signed"    , "unsigned" ,
+           "ifdef"   , "ifndef"   , "elif"      , "define"   , "undef"    ,
+           "defined" , "include"  , "pragma"    , "line"     , "error"    ,
+           "warning"
+    </Class>    
+
+    <!-- key-characters of the programming-language -->                                               
+    <Class value="KeyChr">
+      "(" , "[" , "{" , "}" , "]" , ")" ,
+      "." , ":" , "," , ";" , "+" , "-" , "*" , "/" , "=" ,
+      "\"" , "\'" , "\\"  , 
+      "&lt;"  , "&lt;&lt;",    "&lt;=",  "&gt;" , "&gt;&gt;" , "&gt;=" , 
+      "&amp;" , "&amp;&amp;",  "&amp;=" , "|" ,   "||",        "|=" , 
+      "!" , "++" , "--" , "==" , "!=" , "~" ,
+      "#"
+
+    </Class>  
+                                                     
+   </Symbol>
+   
+   <!-- results of rules added here will be shown as leafe-node -->   
+   <GlobalToken>
+    ID,
+    NUMBER,
+    String,
+    semikolon,
+   </GlobalToken>
+                            
+   <!-- rules added here contain no additional whitespaces inside, rules not
+        added here may contain additional whitespaces between part-terms -->
+   <GlobalNotPhrased >
+    skip,
+    D,L,H,E,FS,IS,
+    CONSTANT_HEX,
+    CONSTANT_INT0,
+    CONSTANT_INT1,
+    CONSTANT_FLT1,
+    CONSTANT_FLT2,
+    CONSTANT_FLT3,
+    CONSTANT_CHAR,
+    String,
+    ID,
+    p_declarator,
+    p_parameterlist,
+    p_preproend,
+    p_text,
+    p_stringize_literal,
+    p_pasting_literal,
+    p_pragma_line,
+    endOfTextLine,
+    p_statement,
+    semikolon,
+   </GlobalNotPhrased>    
+                        
+   <!-- results of rules added here will completly not be shown -->
+   <GlobalHide>
+    INDENT,
+    DEDENT,
+    NEWLINE,
+    p_preproend,
+
+   </GlobalHide>
+                            
+   <!-- tags of rules added here will not be shown -->
+   <GlobalSkipLevel >
+    test,
+    testlist,
+    pass,
+
+    multiplicative_expression,
+    additive_expression,
+    shift_expression,
+    relational_expression,
+    equality_expression,
+    and_expression,
+    exclusive_or_expression,
+    inclusive_or_expression,
+    logical_and_expression,
+    logical_or_expression,
+    conditional_expression,
+    primary_expression,
+    postfix_expression,
+    postfix_expression_second,
+    identifier_list,
+    
+    arith_expr,
+    term,
+    factor,
+    atom,
+    integer,
+    statement,
+    expression,   
+     
+    ARRAY_OPEN,
+    ARRAY_CLOSE,
+    
+    p_Block,
+   </GlobalSkipLevel>
+   
+   <!-- currently not used -->
+   <LokalToken>
+   </LokalToken>
+   
+   <!-- currently not used -->
+   <LokalNotPhrased>
+   </LokalNotPhrased>
+   
+   <!-- currently not used -->
+   <LokalHide>
+   </LokalHide>
+   
+   <!-- currently not used -->
+   <LokalSkipLevel>
+   </LokalSkipLevel>
+ 
+  </Source>
+  
+  <!-- merges the part-results of the other processes to one xml-file
+       reffer in documentation of MuLanPa: 
+         "How it works" "Core-Flow Processes"   "Merge-Process"
+         "Configuration-File" "Process-Details" "Merge-Process"
+      -->
+  <Merge>
+   <!-- switch on (Yes) or off (No) the merge in of comments -->
+   <UseComment value="Yes" >
+    
+    <!-- maximum line-distance to merge a comment with the source element
+         before -->
+    <LimitToImportBefore value="1" />
+    <!-- maximum line-distance to merge a comment with the source element
+         behind -->
+    <LimitToImportBehind value="1" />
+   
+    <!-- configure the details to merge comments -->
+    <Detail>
+
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge comments inside -->
+     <ImportLevel value ="
+      expr_stmt,
+      function_definition,
+      declaration,
+      namespace,
+      
+      p_if_expr,p_ifdef_expr,p_ifndef_expr,p_elif_expr,p_else_expr,
+      p_include,
+      p_pragma,
+      p_line,
+      p_error,
+      p_warning,
+      p_define,
+      p_undefine,
+    "/>
+    </Detail> 
+    
+   </UseComment>
+ 
+ 
+   <!-- switch on (Yes) or off (No) the merge in of commands like from moritz -->
+   <UseCommand value="Yes" >
+    
+    <!-- maximum line-distance to merge a command with the source element
+         before -->
+    <LimitToImportBefore value="max" />
+    <!-- maximum line-distance to merge a command with the source element
+         behind -->
+    <LimitToImportBehind value="0" />
+   
+    <!-- configure the details to merge the command mrtz_beginBlock -->
+    <Detail value ="mrtz_beginBlock">
+     <Destination/>
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_beginBlock inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+
+    <!-- configure the details to merge the command mrtz_endBlock -->
+    <Detail value ="mrtz_endBlock">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_endBlock inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_errorResponse -->
+    <Detail value ="mrtz_errorResponse">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_errorResponse inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_showSource -->
+    <Detail value ="mrtz_showSource">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_showSource inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_exclude -->
+    <Detail value ="mrtz_exclude" >
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_exclude inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_part,elif_part,else_part,
+                          if_stmt,switch_stmt,case_part,default_part,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_include -->
+    <Detail value ="mrtz_include">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_include inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_part,default_part,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_skip -->
+    <Detail value ="mrtz_skip">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_skip inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_pointOut -->
+    <Detail value ="mrtz_pointOut">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_pointOut inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_independent -->
+    <Detail value ="mrtz_independent">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_independent inside -->
+     <ImportLevel value ="Content,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,compound_statement,expr_stmt,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_printComments -->
+    <Detail value ="mrtz_printComments">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_printComments inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_printCommands -->
+    <Detail value ="mrtz_printCommands">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_printCommands inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_hideComments -->
+    <Detail value ="mrtz_hideComments">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_hideComments inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_hideCommands -->
+    <Detail value ="mrtz_hideCommands">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_hideCommands inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_condition -->
+    <Detail value ="mrtz_condition">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_condition inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_defineCondition -->
+    <Detail value ="mrtz_defineCondition">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_defineCondition inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_undefineCondition -->
+    <Detail value ="mrtz_undefineCondition">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_undefineCondition inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_commentModel -->
+    <Detail value ="mrtz_commentModel">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_commentModel inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_changeSwitch -->
+    <Detail value ="mrtz_changeSwitch">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_changeSwitch inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_ifElseChain -->
+    <Detail value ="mrtz_ifElseChain">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_ifElseChain inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_insertLink -->
+    <Detail value ="mrtz_insertLink">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_insertLink inside -->
+     <ImportLevel value ="function_definition,preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_automaticLink -->
+    <Detail value ="mrtz_automaticLink">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_automaticLink inside -->
+     <ImportLevel value ="preprocedure,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_describe -->
+    <Detail value ="mrtz_describe">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_describe inside -->
+     <ImportLevel value ="function_definition,"/>
+    </Detail>
+ 
+    <!-- configure the details to merge the command mrtz_checkCompilerSwitch -->
+    <Detail value ="mrtz_checkCompilerSwitch">
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge the command mrtz_checkCompilerSwitch
+          inside -->
+     <ImportLevel value ="function_definition,declaration,
+                          if_stmt,switch_stmt,case_stmt,default_stmt,
+                          while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                          continue_stmt,break_stmt,return_stmt,
+                          expr_stmt,compound_statement,"/>
+    </Detail>
+    
+    <!-- moritz-commands to describe a block of code-lines 
+         used like { and } in c/cpp-->
+    <BlockConstructor>
+     <!-- configure the command-identifiers -->
+     <__block__ open="mrtz_beginBlock" close="mrtz_endBlock"/>
+    </BlockConstructor>
+    
+    
+   </UseCommand>
+ 
+   <!-- switch on (Yes) or off (No) the merge in of special line-process results
+        like ellipsis symbols wich symbolyse the end of a physical line in 
+        a logical line-->
+   <UseLine value="Yes" >
+    <!-- maximum line-distance to merge a special line-process results with the
+         source element before -->
+    <LimitToImportBefore value="1" />
+    <!-- maximum line-distance to merge a special line-process results with the
+         source element behind -->
+    <LimitToImportBehind value="1" />
+    <!-- configure the details to merge special line-process results -->
+    <Detail>
+     <!-- comma separatet list of tag-identifiers wich describe the 
+          source-element tags to merge special line-process results inside -->
+     <ImportLevel value="" />  
+    </Detail>
+   </UseLine>
+   
+   <!-- create additional log-output that represents the merge-result 
+   today it is deprecat
+   <DebugLevel value="0"/>
+    -->  
+   
+   <!-- token formaly inserted at the end of a file today it is deprecat
+   <EndMarker value="@ENDMARKER"/>
+   -->
+  </Merge>
+
+ </Process>

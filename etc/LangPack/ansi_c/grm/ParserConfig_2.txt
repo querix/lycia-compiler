@@ -1,0 +1,64 @@
+/*! [Snipet__ParserConfig_2__Character__] */
+Character =
+ (
+   range_p('a','z')
+  |
+   range_p('A','Z')
+ )
+;
+/*! [Snipet__ParserConfig_2__Character__] */
+
+
+/*! [Snipet__ParserConfig_2__Digit__] */
+Digit =
+ range_p('0','9')
+;
+/*! [Snipet__ParserConfig_2__Digit__] */
+
+
+/*! [Snipet__ParserConfig_2__Underscore__] */
+Underscore =
+ ch_p('_')
+;
+/*! [Snipet__ParserConfig_2__Underscore__] */
+
+
+/*! [Snipet__ParserConfig_2__ID__] */
+ID =
+ (
+   (
+     Character
+    |
+     Underscore
+   )
+  >>
+    *
+     (
+       Character
+      |
+       Digit
+      |
+       Underscore
+     )
+ )
+;
+/*! [Snipet__ParserConfig_2__ID__] */
+
+
+/*! [Snipet__ParserConfig_2__skip__] */
+skip =
+ space_p
+;
+/*! [Snipet__ParserConfig_2__skip__] */
+
+
+/*! [Snipet__ParserConfig_2__pass__] */
+pass =
+  +
+   (
+    ID
+   )
+;
+/*! [Snipet__ParserConfig_2__pass__] */
+
+

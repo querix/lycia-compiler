@@ -1,0 +1,2370 @@
+<Content>
+    <Rule value="bit" uses="" usedBy=",bitList,">
+        <Expression>
+            <OrInclusive>
+                <Character_Single value="0" />
+                <Character_Single value="1" />
+            </OrInclusive>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="5" characterLevel="phrased">
+            <UsedBy_Terminated value="bitList" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="bitList">
+                <C v="list" c="2">
+                    <C v="mrtz_checkCompilerSwitch" c="3">
+                        <C v="mrtz_cmd" c="4">
+                            <T v="command" c="5" />
+                        </C>
+                    </C>
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="bitList" uses="bit" usedBy=",list,">
+        <Expression>
+            <Sequence>
+                <Character_Single value="(" />
+                <Terminating_Rule value="bit" />
+                <ZeroOrMoreOf>
+                    <Terminating_Rule value="bit" />
+                </ZeroOrMoreOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="4" characterLevel="phrased">
+            <Uses_Terminated value="bit" />
+            <UsedBy_Terminated value="list" />
+        </Properties>
+        <Called>
+            <T v="bit" />
+        </Called>
+        <Caller>
+            <C v="list">
+                <C v="mrtz_checkCompilerSwitch" c="2">
+                    <C v="mrtz_cmd" c="3">
+                        <T v="command" c="4" />
+                    </C>
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="close_std" uses="" usedBy=",comment_std,">
+        <Expression>
+            <String value="*/" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="not phrased">
+            <UsedBy_Terminated value="comment_std" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="comment_std">
+                <C v="comment" c="2">
+                    <T v="pass" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="color" uses="" usedBy=",mrtz_pointOut,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <OrInclusive>
+                        <Character_Range value1="a" value2="f" />
+                        <Character_Range value1="A" value2="F" />
+                        <Character_Range value1="0" value2="9" />
+                    </OrInclusive>
+                </Sub>
+                <Sub>
+                    <OrInclusive>
+                        <Character_Range value1="a" value2="f" />
+                        <Character_Range value1="A" value2="F" />
+                        <Character_Range value1="0" value2="9" />
+                    </OrInclusive>
+                </Sub>
+                <Sub>
+                    <OrInclusive>
+                        <Character_Range value1="a" value2="f" />
+                        <Character_Range value1="A" value2="F" />
+                        <Character_Range value1="0" value2="9" />
+                    </OrInclusive>
+                </Sub>
+                <Sub>
+                    <OrInclusive>
+                        <Character_Range value1="a" value2="f" />
+                        <Character_Range value1="A" value2="F" />
+                        <Character_Range value1="0" value2="9" />
+                    </OrInclusive>
+                </Sub>
+                <Sub>
+                    <OrInclusive>
+                        <Character_Range value1="a" value2="f" />
+                        <Character_Range value1="A" value2="F" />
+                        <Character_Range value1="0" value2="9" />
+                    </OrInclusive>
+                </Sub>
+                <Sub>
+                    <OrInclusive>
+                        <Character_Range value1="a" value2="f" />
+                        <Character_Range value1="A" value2="F" />
+                        <Character_Range value1="0" value2="9" />
+                    </OrInclusive>
+                </Sub>
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_pointOut" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_pointOut">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="command" uses="mrtz_cmd" usedBy="">
+        <Expression>
+            <Terminating_Rule value="mrtz_cmd" />
+        </Expression>
+        <Properties leafLevel="5" rootLevel="0" characterLevel="phrased">
+            <Uses_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <C v="mrtz_cmd">
+                <C v="mrtz_automaticLink" c="2">
+                    <T v="key_automaticLink" c="25" />
+                    <T v="onOff" c="26" />
+                </C>
+                <C v="mrtz_beginBlock" c="3">
+                    <T v="key_beginBlock" c="27" />
+                </C>
+                <C v="mrtz_changeSwitch" c="4">
+                    <T v="formSwitch" c="28" />
+                    <T v="key_changeSwitch" c="29" />
+                </C>
+                <C v="mrtz_checkCompilerSwitch" c="5">
+                    <T v="key_checkCompilerSwitch" c="30" />
+                    <X v="list" c="31" />
+                    <T v="modeChCoSw" c="32" />
+                    <T v="number" c="33" />
+                    <T v="off" c="34" />
+                    <T v="switchTableOnly" c="35" />
+                    <X v="titel" c="36" />
+                    <T v="vari" c="37" />
+                </C>
+                <X v="mrtz_commentModel" c="6" />
+                <X v="mrtz_condition" c="7" />
+                <X v="mrtz_defineCondition" c="8" />
+                <X v="mrtz_describe" c="9" />
+                <X v="mrtz_endBlock" c="10" />
+                <X v="mrtz_errorResponse" c="11" />
+                <X v="mrtz_exclude" c="12" />
+                <X v="mrtz_hideCommands" c="13" />
+                <X v="mrtz_hideComments" c="14" />
+                <X v="mrtz_ifElseChain" c="15" />
+                <X v="mrtz_include" c="16" />
+                <X v="mrtz_independent" c="17" />
+                <X v="mrtz_insertLink" c="18" />
+                <X v="mrtz_pointOut" c="19" />
+                <X v="mrtz_printCommands" c="20" />
+                <X v="mrtz_printComments" c="21" />
+                <X v="mrtz_showSource" c="22" />
+                <X v="mrtz_skip" c="23" />
+                <X v="mrtz_undefineCondition" c="24" />
+            </C>
+        </Called>
+        <Caller />
+    </Rule>
+    <Rule value="comment" uses="comment_cpp,comment_std,directive" usedBy=",pass,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <Terminating_Rule value="comment_cpp" />
+                    <Terminating_Rule value="comment_std" />
+                    <Terminating_Rule value="directive" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="2" rootLevel="1" characterLevel="not phrased">
+            <Uses_Terminated value="comment_cpp" />
+            <Uses_Terminated value="comment_std" />
+            <Uses_Terminated value="directive" />
+            <UsedBy_Terminated value="pass" />
+        </Properties>
+        <Called>
+            <T v="comment_cpp" />
+            <C v="comment_std">
+                <T v="close_std" c="4" />
+                <T v="open_std" c="5" />
+            </C>
+            <T v="directive" />
+        </Called>
+        <Caller>
+            <T v="pass" />
+        </Caller>
+    </Rule>
+    <Rule value="comment_cpp" uses="" usedBy=",comment,">
+        <Expression>
+            <OneOrMoreOf>
+                <Sub>
+                    <OrInclusive>
+                        <Sub>
+                            <Sequence>
+                                <String value="//" />
+                                <Sub>
+                                    <Exclusion>
+                                        <First>
+                                            <Primitive value="anychar_p" />
+                                        </First>
+                                        <Second>
+                                            <Sub>
+                                                <OrInclusive>
+                                                    <Character_Single value="-" />
+                                                    <Character_Single value="\n" />
+                                                    <Character_Single value="\r" />
+                                                </OrInclusive>
+                                            </Sub>
+                                        </Second>
+                                    </Exclusion>
+                                </Sub>
+                                <ZeroOrMoreOf>
+                                    <Sub>
+                                        <Exclusion>
+                                            <First>
+                                                <Primitive value="anychar_p" />
+                                            </First>
+                                            <Second>
+                                                <Sub>
+                                                    <OrInclusive>
+                                                        <Character_Single value="\n" />
+                                                        <Character_Single value="\r" />
+                                                    </OrInclusive>
+                                                </Sub>
+                                            </Second>
+                                        </Exclusion>
+                                    </Sub>
+                                </ZeroOrMoreOf>
+                                <Primitive value="eol_p" />
+                            </Sequence>
+                        </Sub>
+                        <Sub>
+                            <Sequence>
+                                <String value="//" />
+                                <Primitive value="eol_p" />
+                            </Sequence>
+                        </Sub>
+                    </OrInclusive>
+                </Sub>
+            </OneOrMoreOf>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="2" characterLevel="not phrased">
+            <UsedBy_Terminated value="comment" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="comment">
+                <T v="pass" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="comment_std" uses="close_std,open_std" usedBy=",comment,">
+        <Expression>
+            <Sub>
+                <Sequence>
+                    <Terminating_Rule value="open_std" />
+                    <ZeroOrMoreOf>
+                        <Sub>
+                            <Exclusion>
+                                <First>
+                                    <Primitive value="anychar_p" />
+                                </First>
+                                <Second>
+                                    <Terminating_Rule value="close_std" />
+                                </Second>
+                            </Exclusion>
+                        </Sub>
+                    </ZeroOrMoreOf>
+                    <Terminating_Rule value="close_std" />
+                </Sequence>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="not phrased">
+            <Uses_Terminated value="close_std" />
+            <Uses_Terminated value="open_std" />
+            <UsedBy_Terminated value="comment" />
+        </Properties>
+        <Called>
+            <T v="close_std" />
+            <T v="open_std" />
+        </Called>
+        <Caller>
+            <C v="comment">
+                <T v="pass" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="condition_value" uses="" usedBy=",mrtz_condition,mrtz_defineCondition,mrtz_undefineCondition,">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <Exclusion>
+                        <First>
+                            <Primitive value="anychar_p" />
+                        </First>
+                        <Second>
+                            <Primitive value="space_p" />
+                        </Second>
+                    </Exclusion>
+                </Sub>
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Exclusion>
+                            <First>
+                                <Primitive value="anychar_p" />
+                            </First>
+                            <Second>
+                                <Sub>
+                                    <OrInclusive>
+                                        <Character_Single value="\n" />
+                                        <Character_Single value="\r" />
+                                    </OrInclusive>
+                                </Sub>
+                            </Second>
+                        </Exclusion>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <Primitive value="eol_p" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_condition" />
+            <UsedBy_Terminated value="mrtz_defineCondition" />
+            <UsedBy_Terminated value="mrtz_undefineCondition" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_condition">
+                <C v="mrtz_cmd" c="4">
+                    <T v="command" c="5" />
+                </C>
+            </C>
+            <C v="mrtz_defineCondition">
+                <C v="mrtz_cmd" c="6" />
+            </C>
+            <C v="mrtz_undefineCondition">
+                <C v="mrtz_cmd" c="7" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="description" uses="key_describe,word" usedBy="">
+        <Expression>
+            <Sequence>
+                <Sub>
+                    <Exclusion>
+                        <First>
+                            <Terminating_Rule value="word" />
+                        </First>
+                        <Second>
+                            <Terminating_Rule value="key_describe" />
+                        </Second>
+                    </Exclusion>
+                </Sub>
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Primitive value="space_p" />
+                            <ZeroOrMoreOf>
+                                <Primitive value="space_p" />
+                            </ZeroOrMoreOf>
+                            <Sub>
+                                <Exclusion>
+                                    <First>
+                                        <Terminating_Rule value="word" />
+                                    </First>
+                                    <Second>
+                                        <Terminating_Rule value="key_describe" />
+                                    </Second>
+                                </Exclusion>
+                            </Sub>
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="0" characterLevel="phrased">
+            <Uses_Terminated value="key_describe" />
+            <Uses_Terminated value="word" />
+        </Properties>
+        <Called>
+            <T v="key_describe" />
+            <T v="word" />
+        </Called>
+        <Caller />
+    </Rule>
+    <Rule value="destinationAnchor" uses="name" usedBy=",mrtz_insertLink,">
+        <Expression>
+            <Terminating_Rule value="name" />
+        </Expression>
+        <Properties leafLevel="1" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="name" />
+            <UsedBy_Terminated value="mrtz_insertLink" />
+        </Properties>
+        <Called>
+            <T v="name" />
+        </Called>
+        <Caller>
+            <C v="mrtz_insertLink">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="direction" uses="" usedBy=",mrtz_exclude,mrtz_skip,">
+        <Expression>
+            <OrInclusive>
+                <String value="horizontal" />
+                <String value="vertical" />
+            </OrInclusive>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_exclude" />
+            <UsedBy_Terminated value="mrtz_skip" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_exclude">
+                <C v="mrtz_cmd" c="3">
+                    <T v="command" c="4" />
+                </C>
+            </C>
+            <C v="mrtz_skip">
+                <C v="mrtz_cmd" c="5" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="directive" uses="" usedBy=",comment,">
+        <Expression>
+            <OneOrMoreOf>
+                <Sub>
+                    <Sequence>
+                        <String value="//-" />
+                        <ZeroOrMoreOf>
+                            <Sub>
+                                <Exclusion>
+                                    <First>
+                                        <Primitive value="anychar_p" />
+                                    </First>
+                                    <Second>
+                                        <Sub>
+                                            <OrInclusive>
+                                                <Character_Single value="\n" />
+                                                <Character_Single value="\r" />
+                                            </OrInclusive>
+                                        </Sub>
+                                    </Second>
+                                </Exclusion>
+                            </Sub>
+                        </ZeroOrMoreOf>
+                        <Primitive value="eol_p" />
+                    </Sequence>
+                </Sub>
+            </OneOrMoreOf>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="2" characterLevel="not phrased">
+            <UsedBy_Terminated value="comment" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="comment">
+                <T v="pass" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="err_rsp_mode" uses="" usedBy=",mrtz_errorResponse,">
+        <Expression>
+            <OrInclusive>
+                <String value="WaitOff_ScriptOffOff" />
+                <String value="WaitOn_ScriptOffOff" />
+                <String value="WaitOff_ScriptOffOn" />
+                <String value="WaitOn_ScriptOffOn" />
+            </OrInclusive>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_errorResponse" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_errorResponse">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="file_name" uses="name" usedBy=",mrtz_include,mrtz_insertLink,">
+        <Expression>
+            <Sequence>
+                <ZeroOrOneOf>
+                    <Character_Range value1="0" value2="9" />
+                </ZeroOrOneOf>
+                <Terminating_Rule value="name" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Sub>
+                                <OrInclusive>
+                                    <Character_Single value="\\" />
+                                    <Character_Single value="/" />
+                                </OrInclusive>
+                            </Sub>
+                            <ZeroOrOneOf>
+                                <Character_Range value1="0" value2="9" />
+                            </ZeroOrOneOf>
+                            <Terminating_Rule value="name" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="." />
+                            <ZeroOrOneOf>
+                                <Character_Range value1="0" value2="9" />
+                            </ZeroOrOneOf>
+                            <Terminating_Rule value="name" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrOneOf>
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="name" />
+            <UsedBy_Terminated value="mrtz_include" />
+            <UsedBy_Terminated value="mrtz_insertLink" />
+        </Properties>
+        <Called>
+            <T v="name" />
+        </Called>
+        <Caller>
+            <C v="mrtz_include">
+                <C v="mrtz_cmd" c="3">
+                    <T v="command" c="4" />
+                </C>
+            </C>
+            <C v="mrtz_insertLink">
+                <C v="mrtz_cmd" c="5" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="fileName" uses="name" usedBy=",mrtz_showSource,">
+        <Expression>
+            <Terminating_Rule value="name" />
+        </Expression>
+        <Properties leafLevel="1" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="name" />
+            <UsedBy_Terminated value="mrtz_showSource" />
+        </Properties>
+        <Called>
+            <T v="name" />
+        </Called>
+        <Caller>
+            <C v="mrtz_showSource">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="formSwitch" uses="" usedBy=",mrtz_changeSwitch,">
+        <Expression>
+            <OrInclusive>
+                <String value="Table" />
+                <String value="List" />
+            </OrInclusive>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_changeSwitch" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_changeSwitch">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_automaticLink" uses="" usedBy=",mrtz_automaticLink,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_automaticLink" />
+                    <String value="\MRTZ_automaticLink" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_automaticLink" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_automaticLink">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_beginBlock" uses="" usedBy=",mrtz_beginBlock,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_beginBlock" />
+                    <String value="\MRTZ_beginBlock" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_beginBlock" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_beginBlock">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_changeSwitch" uses="" usedBy=",mrtz_changeSwitch,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_changeSwitch" />
+                    <String value="\MRTZ_changeSwitch" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_changeSwitch" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_changeSwitch">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_checkCompilerSwitch" uses="" usedBy=",mrtz_checkCompilerSwitch,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_checkCompilerSwitch" />
+                    <String value="\MRTZ_checkCompilerSwitch" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_checkCompilerSwitch" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_checkCompilerSwitch">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_commentModel" uses="" usedBy=",mrtz_commentModel,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_commentModel" />
+                    <String value="\MRTZ_commentModel" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_commentModel" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_commentModel">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_condition" uses="" usedBy=",mrtz_condition,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_Condition" />
+                    <String value="\MRTZ_Condition" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_condition" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_condition">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_defineCondition" uses="" usedBy=",mrtz_defineCondition,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_defineCondition" />
+                    <String value="\MRTZ_defineCondition" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_defineCondition" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_defineCondition">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_describe" uses="" usedBy=",mrtz_describe,description,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_describe" />
+                    <String value="\MRTZ_describe" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_describe" />
+            <UsedBy_Terminated value="description" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_describe">
+                <C v="mrtz_cmd" c="3">
+                    <T v="command" c="4" />
+                </C>
+            </C>
+            <T v="description" />
+        </Caller>
+    </Rule>
+    <Rule value="key_endBlock" uses="" usedBy=",mrtz_endBlock,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_endBlock" />
+                    <String value="\MRTZ_endBlock" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_endBlock" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_endBlock">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_errorResponse" uses="" usedBy=",mrtz_errorResponse,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_errorResponse" />
+                    <String value="\MRTZ_errorResponse" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_errorResponse" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_errorResponse">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_exclude" uses="" usedBy=",mrtz_exclude,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_exclude" />
+                    <String value="\MRTZ_exclude" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_exclude" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_exclude">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_hideCommands" uses="" usedBy=",mrtz_hideCommands,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_hideCommands" />
+                    <String value="\MRTZ_hideCommands" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_hideCommands" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_hideCommands">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_hideComments" uses="" usedBy=",mrtz_hideComments,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_hideComments" />
+                    <String value="\MRTZ_hideComments" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_hideComments" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_hideComments">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_ifElseChain" uses="" usedBy=",mrtz_ifElseChain,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_ifElseChain" />
+                    <String value="\MRTZ_ifElseChain" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_ifElseChain" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_ifElseChain">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_include" uses="" usedBy=",mrtz_include,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_include" />
+                    <String value="\MRTZ_include" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_include" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_include">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_independent" uses="" usedBy=",mrtz_independent,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_independent" />
+                    <String value="\MRTZ_independent" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_independent" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_independent">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_insertLink" uses="" usedBy=",mrtz_insertLink,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_insertLink" />
+                    <String value="\MRTZ_insertLink" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_insertLink" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_insertLink">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_pointOut" uses="" usedBy=",mrtz_pointOut,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_pointOut" />
+                    <String value="\MRTZ_pointOut" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_pointOut" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_pointOut">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_printCommands" uses="" usedBy=",mrtz_printCommands,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_printCommands" />
+                    <String value="\MRTZ_printCommands" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_printCommands" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_printCommands">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_printComments" uses="" usedBy=",mrtz_printComments,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_printComments" />
+                    <String value="\MRTZ_printComments" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_printComments" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_printComments">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_showSource" uses="" usedBy=",mrtz_showSource,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_showSource" />
+                    <String value="\MRTZ_showSource" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_showSource" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_showSource">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_skip" uses="" usedBy=",mrtz_skip,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_skip" />
+                    <String value="\MRTZ_skip" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_skip" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_skip">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="key_undefineCondition" uses="" usedBy=",mrtz_undefineCondition,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <String value="@MRTZ_undefineCondition" />
+                    <String value="\MRTZ_undefineCondition" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_undefineCondition" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_undefineCondition">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="lineNumber" uses="" usedBy=",mrtz_showSource,">
+        <Expression>
+            <OrInclusive>
+                <String value="LineNumber" />
+                <String value="NoLineNumber" />
+            </OrInclusive>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_showSource" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_showSource">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="list" uses="bitList,numberList" usedBy=",mrtz_checkCompilerSwitch,">
+        <Expression>
+            <OrInclusive>
+                <Terminating_Rule value="numberList" />
+                <Terminating_Rule value="bitList" />
+            </OrInclusive>
+        </Expression>
+        <Properties leafLevel="2" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="bitList" />
+            <Uses_Terminated value="numberList" />
+            <UsedBy_Terminated value="mrtz_checkCompilerSwitch" />
+        </Properties>
+        <Called>
+            <C v="bitList">
+                <T v="bit" c="3" />
+            </C>
+            <C v="numberList">
+                <T v="number" c="4" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="mrtz_checkCompilerSwitch">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="modeChCoSw" uses="" usedBy=",mrtz_checkCompilerSwitch,">
+        <Expression>
+            <OrInclusive>
+                <String value="SolveOff_TableOff" />
+                <String value="SolveOn_TableOff" />
+                <String value="SolveOff_TableOn" />
+                <String value="SolveOn_TableOn" />
+            </OrInclusive>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_checkCompilerSwitch" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_checkCompilerSwitch">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="modelComment" uses="" usedBy=",mrtz_commentModel,">
+        <Expression>
+            <OrInclusive>
+                <String value="CommentBehind" />
+                <String value="CommentBefore" />
+                <String value="CommentDefault" />
+            </OrInclusive>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_commentModel" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_commentModel">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_automaticLink" uses="key_automaticLink,onOff" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="key_automaticLink" />
+                <Terminating_Rule value="onOff" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="key_automaticLink" />
+            <Uses_Terminated value="onOff" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="key_automaticLink" />
+            <T v="onOff" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_beginBlock" uses="key_beginBlock" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Terminating_Rule value="key_beginBlock" />
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="key_beginBlock" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="key_beginBlock" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_changeSwitch" uses="formSwitch,key_changeSwitch" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="key_changeSwitch" />
+                <Terminating_Rule value="formSwitch" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="formSwitch" />
+            <Uses_Terminated value="key_changeSwitch" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="formSwitch" />
+            <T v="key_changeSwitch" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_checkCompilerSwitch" uses="key_checkCompilerSwitch,list,modeChCoSw,number,off,switchTableOnly,titel,vari" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="key_checkCompilerSwitch" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <OrInclusive>
+                            <Terminating_Rule value="off" />
+                            <Sub>
+                                <Sequence>
+                                    <Terminating_Rule value="modeChCoSw" />
+                                    <ZeroOrOneOf>
+                                        <Sub>
+                                            <Terminating_Rule value="list" />
+                                        </Sub>
+                                    </ZeroOrOneOf>
+                                </Sequence>
+                            </Sub>
+                            <Terminating_Rule value="switchTableOnly" />
+                            <Sub>
+                                <Sequence>
+                                    <Terminating_Rule value="vari" />
+                                    <Terminating_Rule value="number" />
+                                    <Terminating_Rule value="titel" />
+                                </Sequence>
+                            </Sub>
+                        </OrInclusive>
+                    </Sub>
+                </ZeroOrOneOf>
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="key_checkCompilerSwitch" />
+            <Uses_Terminated value="list" />
+            <Uses_Terminated value="modeChCoSw" />
+            <Uses_Terminated value="number" />
+            <Uses_Terminated value="off" />
+            <Uses_Terminated value="switchTableOnly" />
+            <Uses_Terminated value="titel" />
+            <Uses_Terminated value="vari" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="key_checkCompilerSwitch" />
+            <C v="list">
+                <C v="bitList" c="9">
+                    <T v="bit" c="11" />
+                </C>
+                <C v="numberList" c="10">
+                    <T v="number" c="12" />
+                </C>
+            </C>
+            <T v="modeChCoSw" />
+            <T v="number" />
+            <T v="off" />
+            <T v="switchTableOnly" />
+            <C v="titel">
+                <T v="name" c="13" />
+            </C>
+            <T v="vari" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_cmd" uses="mrtz_automaticLink,mrtz_beginBlock,mrtz_changeSwitch,mrtz_checkCompilerSwitch,mrtz_commentModel,mrtz_condition,mrtz_defineCondition,mrtz_describe,mrtz_endBlock,mrtz_errorResponse,mrtz_exclude,mrtz_hideCommands,mrtz_hideComments,mrtz_ifElseChain,mrtz_include,mrtz_independent,mrtz_insertLink,mrtz_pointOut,mrtz_printCommands,mrtz_printComments,mrtz_showSource,mrtz_skip,mrtz_undefineCondition" usedBy=",command,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <Terminating_Rule value="mrtz_beginBlock" />
+                    <Terminating_Rule value="mrtz_endBlock" />
+                    <Terminating_Rule value="mrtz_errorResponse" />
+                    <Terminating_Rule value="mrtz_showSource" />
+                    <Terminating_Rule value="mrtz_exclude" />
+                    <Terminating_Rule value="mrtz_include" />
+                    <Terminating_Rule value="mrtz_skip" />
+                    <Terminating_Rule value="mrtz_pointOut" />
+                    <Terminating_Rule value="mrtz_independent" />
+                    <Terminating_Rule value="mrtz_printComments" />
+                    <Terminating_Rule value="mrtz_printCommands" />
+                    <Terminating_Rule value="mrtz_hideComments" />
+                    <Terminating_Rule value="mrtz_hideCommands" />
+                    <Terminating_Rule value="mrtz_condition" />
+                    <Terminating_Rule value="mrtz_defineCondition" />
+                    <Terminating_Rule value="mrtz_undefineCondition" />
+                    <Terminating_Rule value="mrtz_commentModel" />
+                    <Terminating_Rule value="mrtz_changeSwitch" />
+                    <Terminating_Rule value="mrtz_ifElseChain" />
+                    <Terminating_Rule value="mrtz_insertLink" />
+                    <Terminating_Rule value="mrtz_automaticLink" />
+                    <Terminating_Rule value="mrtz_describe" />
+                    <Terminating_Rule value="mrtz_checkCompilerSwitch" />
+                    <String value="@ENDMARKER" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="4" rootLevel="1" characterLevel="phrased">
+            <Uses_Terminated value="mrtz_automaticLink" />
+            <Uses_Terminated value="mrtz_beginBlock" />
+            <Uses_Terminated value="mrtz_changeSwitch" />
+            <Uses_Terminated value="mrtz_checkCompilerSwitch" />
+            <Uses_Terminated value="mrtz_commentModel" />
+            <Uses_Terminated value="mrtz_condition" />
+            <Uses_Terminated value="mrtz_defineCondition" />
+            <Uses_Terminated value="mrtz_describe" />
+            <Uses_Terminated value="mrtz_endBlock" />
+            <Uses_Terminated value="mrtz_errorResponse" />
+            <Uses_Terminated value="mrtz_exclude" />
+            <Uses_Terminated value="mrtz_hideCommands" />
+            <Uses_Terminated value="mrtz_hideComments" />
+            <Uses_Terminated value="mrtz_ifElseChain" />
+            <Uses_Terminated value="mrtz_include" />
+            <Uses_Terminated value="mrtz_independent" />
+            <Uses_Terminated value="mrtz_insertLink" />
+            <Uses_Terminated value="mrtz_pointOut" />
+            <Uses_Terminated value="mrtz_printCommands" />
+            <Uses_Terminated value="mrtz_printComments" />
+            <Uses_Terminated value="mrtz_showSource" />
+            <Uses_Terminated value="mrtz_skip" />
+            <Uses_Terminated value="mrtz_undefineCondition" />
+            <UsedBy_Terminated value="command" />
+        </Properties>
+        <Called>
+            <C v="mrtz_automaticLink">
+                <T v="key_automaticLink" c="24" />
+                <T v="onOff" c="25" />
+            </C>
+            <C v="mrtz_beginBlock">
+                <T v="key_beginBlock" c="26" />
+            </C>
+            <C v="mrtz_changeSwitch">
+                <T v="formSwitch" c="27" />
+                <T v="key_changeSwitch" c="28" />
+            </C>
+            <C v="mrtz_checkCompilerSwitch">
+                <T v="key_checkCompilerSwitch" c="29" />
+                <X v="list" c="30" />
+                <T v="modeChCoSw" c="31" />
+                <T v="number" c="32" />
+                <T v="off" c="33" />
+                <T v="switchTableOnly" c="34" />
+                <X v="titel" c="35" />
+                <T v="vari" c="36" />
+            </C>
+            <C v="mrtz_commentModel">
+                <T v="key_commentModel" c="37" />
+                <T v="modelComment" c="38" />
+            </C>
+            <C v="mrtz_condition">
+                <T v="condition_value" c="39" />
+                <T v="key_condition" c="40" />
+            </C>
+            <C v="mrtz_defineCondition">
+                <T v="condition_value" c="41" />
+                <T v="key_defineCondition" c="42" />
+            </C>
+            <C v="mrtz_describe">
+                <X v="PartName" c="43" />
+                <T v="key_describe" c="44" />
+            </C>
+            <C v="mrtz_endBlock">
+                <T v="key_endBlock" c="45" />
+            </C>
+            <C v="mrtz_errorResponse">
+                <T v="err_rsp_mode" c="46" />
+                <T v="key_errorResponse" c="47" />
+            </C>
+            <C v="mrtz_exclude">
+                <T v="direction" c="48" />
+                <T v="key_exclude" c="49" />
+                <X v="titel" c="50" />
+            </C>
+            <C v="mrtz_hideCommands">
+                <T v="key_hideCommands" c="51" />
+            </C>
+            <C v="mrtz_hideComments">
+                <T v="key_hideComments" c="52" />
+            </C>
+            <C v="mrtz_ifElseChain">
+                <T v="key_ifElseChain" c="53" />
+            </C>
+            <C v="mrtz_include">
+                <X v="file_name" c="54" />
+                <T v="key_include" c="55" />
+            </C>
+            <C v="mrtz_independent">
+                <T v="key_independent" c="56" />
+            </C>
+            <C v="mrtz_insertLink">
+                <X v="destinationAnchor" c="57" />
+                <X v="file_name" c="58" />
+                <T v="key_insertLink" c="59" />
+                <X v="titel" c="60" />
+            </C>
+            <C v="mrtz_pointOut">
+                <T v="color" c="61" />
+                <T v="key_pointOut" c="62" />
+                <X v="titel" c="63" />
+            </C>
+            <C v="mrtz_printCommands">
+                <T v="key_printCommands" c="64" />
+            </C>
+            <C v="mrtz_printComments">
+                <T v="key_printComments" c="65" />
+            </C>
+            <C v="mrtz_showSource">
+                <X v="fileName" c="66" />
+                <T v="key_showSource" c="67" />
+                <T v="lineNumber" c="68" />
+            </C>
+            <C v="mrtz_skip">
+                <T v="direction" c="69" />
+                <T v="key_skip" c="70" />
+                <X v="titel" c="71" />
+            </C>
+            <C v="mrtz_undefineCondition">
+                <T v="condition_value" c="72" />
+                <T v="key_undefineCondition" c="73" />
+            </C>
+        </Called>
+        <Caller>
+            <T v="command" />
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_commentModel" uses="key_commentModel,modelComment" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="key_commentModel" />
+                <Terminating_Rule value="modelComment" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="key_commentModel" />
+            <Uses_Terminated value="modelComment" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="key_commentModel" />
+            <T v="modelComment" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_condition" uses="condition_value,key_condition" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="key_condition" />
+                <Terminating_Rule value="condition_value" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="condition_value" />
+            <Uses_Terminated value="key_condition" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="condition_value" />
+            <T v="key_condition" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_defineCondition" uses="condition_value,key_defineCondition" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="key_defineCondition" />
+                <Terminating_Rule value="condition_value" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Sequence>
+                            <Terminating_Rule value="condition_value" />
+                            <Terminating_Rule value="condition_value" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrOneOf>
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="condition_value" />
+            <Uses_Terminated value="key_defineCondition" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="condition_value" />
+            <T v="key_defineCondition" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_describe" uses="PartName,key_describe" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="key_describe" />
+                <Terminating_Rule value="PartName" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="2" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="PartName" />
+            <Uses_Terminated value="key_describe" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <C v="PartName">
+                <T v="name" c="3" />
+            </C>
+            <T v="key_describe" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_endBlock" uses="key_endBlock" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Terminating_Rule value="key_endBlock" />
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="key_endBlock" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="key_endBlock" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_errorResponse" uses="err_rsp_mode,key_errorResponse" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="key_errorResponse" />
+                <Terminating_Rule value="err_rsp_mode" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="err_rsp_mode" />
+            <Uses_Terminated value="key_errorResponse" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="err_rsp_mode" />
+            <T v="key_errorResponse" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_exclude" uses="direction,key_exclude,titel" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="key_exclude" />
+                <Terminating_Rule value="titel" />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="direction" />
+                </ZeroOrOneOf>
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="2" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="direction" />
+            <Uses_Terminated value="key_exclude" />
+            <Uses_Terminated value="titel" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="direction" />
+            <T v="key_exclude" />
+            <C v="titel">
+                <T v="name" c="4" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_hideCommands" uses="key_hideCommands" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Terminating_Rule value="key_hideCommands" />
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="key_hideCommands" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="key_hideCommands" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_hideComments" uses="key_hideComments" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Terminating_Rule value="key_hideComments" />
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="key_hideComments" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="key_hideComments" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_ifElseChain" uses="key_ifElseChain" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Terminating_Rule value="key_ifElseChain" />
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="key_ifElseChain" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="key_ifElseChain" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_include" uses="file_name,key_include" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="key_include" />
+                <Character_Single value='\&quot;' />
+                <Terminating_Rule value="file_name" />
+                <Character_Single value='\&quot;' />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="2" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="file_name" />
+            <Uses_Terminated value="key_include" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <C v="file_name">
+                <T v="name" c="3" />
+            </C>
+            <T v="key_include" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_independent" uses="key_independent" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Terminating_Rule value="key_independent" />
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="key_independent" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="key_independent" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_insertLink" uses="destinationAnchor,file_name,key_insertLink,titel" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="key_insertLink" />
+                <Terminating_Rule value="destinationAnchor" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Sequence>
+                            <Terminating_Rule value="file_name" />
+                            <ZeroOrOneOf>
+                                <Terminating_Rule value="titel" />
+                            </ZeroOrOneOf>
+                        </Sequence>
+                    </Sub>
+                </ZeroOrOneOf>
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="2" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="destinationAnchor" />
+            <Uses_Terminated value="file_name" />
+            <Uses_Terminated value="key_insertLink" />
+            <Uses_Terminated value="titel" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <C v="destinationAnchor">
+                <T v="name" c="5" />
+            </C>
+            <C v="file_name">
+                <T v="name" c="6" />
+            </C>
+            <T v="key_insertLink" />
+            <C v="titel">
+                <T v="name" c="7" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_pointOut" uses="color,key_pointOut,titel" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="key_pointOut" />
+                <Terminating_Rule value="titel" />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="color" />
+                </ZeroOrOneOf>
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="2" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="color" />
+            <Uses_Terminated value="key_pointOut" />
+            <Uses_Terminated value="titel" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="color" />
+            <T v="key_pointOut" />
+            <C v="titel">
+                <T v="name" c="4" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_printCommands" uses="key_printCommands" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Terminating_Rule value="key_printCommands" />
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="key_printCommands" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="key_printCommands" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_printComments" uses="key_printComments" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Terminating_Rule value="key_printComments" />
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="key_printComments" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="key_printComments" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_showSource" uses="fileName,key_showSource,lineNumber" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="key_showSource" />
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Terminating_Rule value="lineNumber" />
+                    </Sub>
+                </ZeroOrOneOf>
+                <ZeroOrOneOf>
+                    <Sub>
+                        <Exclusion>
+                            <First>
+                                <Terminating_Rule value="fileName" />
+                            </First>
+                            <Second>
+                                <Terminating_Rule value="lineNumber" />
+                            </Second>
+                        </Exclusion>
+                    </Sub>
+                </ZeroOrOneOf>
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="2" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="fileName" />
+            <Uses_Terminated value="key_showSource" />
+            <Uses_Terminated value="lineNumber" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <C v="fileName">
+                <T v="name" c="4" />
+            </C>
+            <T v="key_showSource" />
+            <T v="lineNumber" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_skip" uses="direction,key_skip,titel" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="key_skip" />
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="titel" />
+                </ZeroOrOneOf>
+                <ZeroOrOneOf>
+                    <Terminating_Rule value="direction" />
+                </ZeroOrOneOf>
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="2" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="direction" />
+            <Uses_Terminated value="key_skip" />
+            <Uses_Terminated value="titel" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="direction" />
+            <T v="key_skip" />
+            <C v="titel">
+                <T v="name" c="4" />
+            </C>
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="mrtz_undefineCondition" uses="condition_value,key_undefineCondition" usedBy=",mrtz_cmd,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="key_undefineCondition" />
+                <Terminating_Rule value="condition_value" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="2" characterLevel="phrased">
+            <Uses_Terminated value="condition_value" />
+            <Uses_Terminated value="key_undefineCondition" />
+            <UsedBy_Terminated value="mrtz_cmd" />
+        </Properties>
+        <Called>
+            <T v="condition_value" />
+            <T v="key_undefineCondition" />
+        </Called>
+        <Caller>
+            <C v="mrtz_cmd">
+                <T v="command" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="name" uses="" usedBy=",fileName,titel,file_name,destinationAnchor,PartName,">
+        <Expression>
+            <Sub>
+                <Sequence>
+                    <Sub>
+                        <OrInclusive>
+                            <Character_Range value1="a" value2="z" />
+                            <Character_Range value1="A" value2="Z" />
+                            <Character_Single value="_" />
+                        </OrInclusive>
+                    </Sub>
+                    <ZeroOrMoreOf>
+                        <Sub>
+                            <OrInclusive>
+                                <Character_Range value1="a" value2="z" />
+                                <Character_Range value1="A" value2="Z" />
+                                <Character_Range value1="0" value2="9" />
+                                <Character_Single value="_" />
+                            </OrInclusive>
+                        </Sub>
+                    </ZeroOrMoreOf>
+                </Sequence>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="4" characterLevel="not phrased">
+            <UsedBy_Terminated value="fileName" />
+            <UsedBy_Terminated value="titel" />
+            <UsedBy_Terminated value="file_name" />
+            <UsedBy_Terminated value="destinationAnchor" />
+            <UsedBy_Terminated value="PartName" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="fileName">
+                <C v="mrtz_showSource" c="6">
+                    <C v="mrtz_cmd" c="7">
+                        <T v="command" c="8" />
+                    </C>
+                </C>
+            </C>
+            <C v="titel">
+                <C v="mrtz_exclude" c="9">
+                    <C v="mrtz_cmd" c="14" />
+                </C>
+                <C v="mrtz_skip" c="10">
+                    <R v="mrtz_cmd" c="15" />
+                </C>
+                <C v="mrtz_pointOut" c="11">
+                    <R v="mrtz_cmd" c="16" />
+                </C>
+                <C v="mrtz_insertLink" c="12">
+                    <R v="mrtz_cmd" c="17" />
+                </C>
+                <C v="mrtz_checkCompilerSwitch" c="13">
+                    <R v="mrtz_cmd" c="18" />
+                </C>
+            </C>
+            <C v="file_name">
+                <C v="mrtz_include" c="19">
+                    <C v="mrtz_cmd" c="21" />
+                </C>
+                <C v="mrtz_insertLink" c="20" />
+            </C>
+            <C v="destinationAnchor">
+                <C v="mrtz_insertLink" c="22" />
+            </C>
+            <C v="PartName">
+                <C v="mrtz_describe" c="23">
+                    <C v="mrtz_cmd" c="24" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="number" uses="" usedBy=",mrtz_checkCompilerSwitch,numberList,">
+        <Expression>
+            <Sequence>
+                <Character_Range value1="1" value2="9" />
+                <ZeroOrMoreOf>
+                    <Character_Range value1="0" value2="9" />
+                </ZeroOrMoreOf>
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="5" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_checkCompilerSwitch" />
+            <UsedBy_Terminated value="numberList" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_checkCompilerSwitch">
+                <C v="mrtz_cmd" c="3">
+                    <T v="command" c="4" />
+                </C>
+            </C>
+            <C v="numberList">
+                <C v="list" c="5">
+                    <C v="mrtz_checkCompilerSwitch" c="6" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="numberList" uses="number" usedBy=",list,">
+        <Expression>
+            <Sequence>
+                <Character_Single value="(" />
+                <Terminating_Rule value="number" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value=";" />
+                            <Terminating_Rule value="number" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+                <Character_Single value=")" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="4" characterLevel="phrased">
+            <Uses_Terminated value="number" />
+            <UsedBy_Terminated value="list" />
+        </Properties>
+        <Called>
+            <T v="number" />
+        </Called>
+        <Caller>
+            <C v="list">
+                <C v="mrtz_checkCompilerSwitch" c="2">
+                    <C v="mrtz_cmd" c="3">
+                        <T v="command" c="4" />
+                    </C>
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="off" uses="" usedBy=",mrtz_checkCompilerSwitch,">
+        <Expression>
+            <String value="Off" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_checkCompilerSwitch" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_checkCompilerSwitch">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="onOff" uses="" usedBy=",mrtz_automaticLink,">
+        <Expression>
+            <OrInclusive>
+                <String value="On" />
+                <String value="Off" />
+            </OrInclusive>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_automaticLink" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_automaticLink">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="open_std" uses="" usedBy=",comment_std,">
+        <Expression>
+            <String value="/*" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="not phrased">
+            <UsedBy_Terminated value="comment_std" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="comment_std">
+                <C v="comment" c="2">
+                    <T v="pass" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="PartName" uses="name" usedBy=",mrtz_describe,">
+        <Expression>
+            <Sequence>
+                <ZeroOrOneOf>
+                    <Character_Single value="~" />
+                </ZeroOrOneOf>
+                <Terminating_Rule value="name" />
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="name" />
+            <UsedBy_Terminated value="mrtz_describe" />
+        </Properties>
+        <Called>
+            <T v="name" />
+        </Called>
+        <Caller>
+            <C v="mrtz_describe">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="pass" uses="comment,preComment" usedBy="">
+        <Expression>
+            <Sub>
+                <Sequence>
+                    <ZeroOrMoreOf>
+                        <Terminating_Rule value="preComment" />
+                    </ZeroOrMoreOf>
+                    <Terminating_Rule value="comment" />
+                </Sequence>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="3" rootLevel="0" characterLevel="not phrased">
+            <Uses_Terminated value="comment" />
+            <Uses_Terminated value="preComment" />
+        </Properties>
+        <Called>
+            <C v="comment">
+                <T v="comment_cpp" c="3" />
+                <C v="comment_std" c="4">
+                    <T v="close_std" c="6" />
+                    <T v="open_std" c="7" />
+                </C>
+                <T v="directive" c="5" />
+            </C>
+            <T v="preComment" />
+        </Called>
+        <Caller />
+    </Rule>
+    <Rule value="preComment" uses="" usedBy=",pass,">
+        <Expression>
+            <Exclusion>
+                <First>
+                    <Primitive value="space_p" />
+                </First>
+                <Second>
+                    <Sub>
+                        <OrInclusive>
+                            <Character_Single value="\n" />
+                            <Character_Single value="\r" />
+                        </OrInclusive>
+                    </Sub>
+                </Second>
+            </Exclusion>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="1" characterLevel="not phrased">
+            <UsedBy_Terminated value="pass" />
+        </Properties>
+        <Called />
+        <Caller>
+            <T v="pass" />
+        </Caller>
+    </Rule>
+    <Rule value="reserved" usedBy="" uses="">
+        <Expression>
+            <OrInclusive>
+                <String value="*/" />
+                <String value="/*" />
+                <String value="//" />
+                <String value="//-" />
+                <String value="@ENDMARKER" />
+                <String value="@MRTZ_Condition" />
+                <String value="@MRTZ_automaticLink" />
+                <String value="@MRTZ_beginBlock" />
+                <String value="@MRTZ_changeSwitch" />
+                <String value="@MRTZ_checkCompilerSwitch" />
+                <String value="@MRTZ_commentModel" />
+                <String value="@MRTZ_defineCondition" />
+                <String value="@MRTZ_describe" />
+                <String value="@MRTZ_endBlock" />
+                <String value="@MRTZ_errorResponse" />
+                <String value="@MRTZ_exclude" />
+                <String value="@MRTZ_hideCommands" />
+                <String value="@MRTZ_hideComments" />
+                <String value="@MRTZ_ifElseChain" />
+                <String value="@MRTZ_include" />
+                <String value="@MRTZ_independent" />
+                <String value="@MRTZ_insertLink" />
+                <String value="@MRTZ_pointOut" />
+                <String value="@MRTZ_printCommands" />
+                <String value="@MRTZ_printComments" />
+                <String value="@MRTZ_showSource" />
+                <String value="@MRTZ_skip" />
+                <String value="@MRTZ_undefineCondition" />
+                <String value="CommentBefore" />
+                <String value="CommentBehind" />
+                <String value="CommentDefault" />
+                <String value="LineNumber" />
+                <String value="List" />
+                <String value="NoLineNumber" />
+                <String value="Off" />
+                <String value="On" />
+                <String value="SolveOff_TableOff" />
+                <String value="SolveOff_TableOn" />
+                <String value="SolveOn_TableOff" />
+                <String value="SolveOn_TableOn" />
+                <String value="SwitchTableOnly" />
+                <String value="Table" />
+                <String value="Variant" />
+                <String value="WaitOff_ScriptOffOff" />
+                <String value="WaitOff_ScriptOffOn" />
+                <String value="WaitOn_ScriptOffOff" />
+                <String value="WaitOn_ScriptOffOn" />
+                <String value="\MRTZ_Condition" />
+                <String value="\MRTZ_automaticLink" />
+                <String value="\MRTZ_beginBlock" />
+                <String value="\MRTZ_changeSwitch" />
+                <String value="\MRTZ_checkCompilerSwitch" />
+                <String value="\MRTZ_commentModel" />
+                <String value="\MRTZ_defineCondition" />
+                <String value="\MRTZ_describe" />
+                <String value="\MRTZ_endBlock" />
+                <String value="\MRTZ_errorResponse" />
+                <String value="\MRTZ_exclude" />
+                <String value="\MRTZ_hideCommands" />
+                <String value="\MRTZ_hideComments" />
+                <String value="\MRTZ_ifElseChain" />
+                <String value="\MRTZ_include" />
+                <String value="\MRTZ_independent" />
+                <String value="\MRTZ_insertLink" />
+                <String value="\MRTZ_pointOut" />
+                <String value="\MRTZ_printCommands" />
+                <String value="\MRTZ_printComments" />
+                <String value="\MRTZ_showSource" />
+                <String value="\MRTZ_skip" />
+                <String value="\MRTZ_undefineCondition" />
+                <String value="horizontal" />
+                <String value="vertical" />
+            </OrInclusive>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="0" characterLevel="not phrased" />
+        <Called />
+        <Caller />
+    </Rule>
+    <Rule value="skip" uses="" usedBy="">
+        <Expression>
+            <Primitive value="space_p" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="0" characterLevel="not phrased" />
+        <Called />
+        <Caller />
+    </Rule>
+    <Rule value="switchTableOnly" uses="" usedBy=",mrtz_checkCompilerSwitch,">
+        <Expression>
+            <String value="SwitchTableOnly" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_checkCompilerSwitch" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_checkCompilerSwitch">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="titel" uses="name" usedBy=",mrtz_exclude,mrtz_skip,mrtz_pointOut,mrtz_insertLink,mrtz_checkCompilerSwitch,">
+        <Expression>
+            <Sequence>
+                <Terminating_Rule value="name" />
+                <ZeroOrMoreOf>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="-" />
+                            <Terminating_Rule value="name" />
+                        </Sequence>
+                    </Sub>
+                </ZeroOrMoreOf>
+            </Sequence>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="3" characterLevel="phrased">
+            <Uses_Terminated value="name" />
+            <UsedBy_Terminated value="mrtz_exclude" />
+            <UsedBy_Terminated value="mrtz_skip" />
+            <UsedBy_Terminated value="mrtz_pointOut" />
+            <UsedBy_Terminated value="mrtz_insertLink" />
+            <UsedBy_Terminated value="mrtz_checkCompilerSwitch" />
+        </Properties>
+        <Called>
+            <T v="name" />
+        </Called>
+        <Caller>
+            <C v="mrtz_exclude">
+                <C v="mrtz_cmd" c="6">
+                    <T v="command" c="7" />
+                </C>
+            </C>
+            <C v="mrtz_skip">
+                <C v="mrtz_cmd" c="8" />
+            </C>
+            <C v="mrtz_pointOut">
+                <C v="mrtz_cmd" c="9" />
+            </C>
+            <C v="mrtz_insertLink">
+                <C v="mrtz_cmd" c="10" />
+            </C>
+            <C v="mrtz_checkCompilerSwitch">
+                <C v="mrtz_cmd" c="11" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="vari" uses="" usedBy=",mrtz_checkCompilerSwitch,">
+        <Expression>
+            <String value="Variant" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="3" characterLevel="phrased">
+            <UsedBy_Terminated value="mrtz_checkCompilerSwitch" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="mrtz_checkCompilerSwitch">
+                <C v="mrtz_cmd" c="2">
+                    <T v="command" c="3" />
+                </C>
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="word" uses="" usedBy=",description,">
+        <Expression>
+            <ZeroOrMoreOf>
+                <Sub>
+                    <Exclusion>
+                        <First>
+                            <Primitive value="anychar_p" />
+                        </First>
+                        <Second>
+                            <Primitive value="space_p" />
+                        </Second>
+                    </Exclusion>
+                </Sub>
+            </ZeroOrMoreOf>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="1" characterLevel="phrased">
+            <UsedBy_Terminated value="description" />
+        </Properties>
+        <Called />
+        <Caller>
+            <T v="description" />
+        </Caller>
+    </Rule>
+</Content>

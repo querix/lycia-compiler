@@ -1,0 +1,140 @@
+
+
+
+/*!
+ @defgroup GRAMMAR_Line Line
+ @ingroup GRAMMAR_SPECIFIC
+ @brief used for @ref PROCESS_LINE
+*/
+
+
+/*! 
+ @ingroup GRAMMAR_LINE
+ @defgroup GRAMMAR_Line_pass pass
+ 
+ will be used from abc2xml as root-parser
+ 
+ <h2>Grammar</h2>
+  @dotfile "Line_R_pass.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Line_R_pass_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Line_R_pass_Caller.dt"
+*/
+
+/*! 
+ @ingroup GRAMMAR_LINE
+ @defgroup GRAMMAR_Line_skip skip
+
+ will be used from abc2xml to define a phrased parser
+
+ <h2>Grammar</h2>
+  @dotfile "Line_R_skip.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Line_R_skip_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Line_R_skip_Caller.dt"
+*/
+
+/*  ! 
+ @ingroup GRAMMAR_Line
+ @defgroup GRAMMAR_Line_reserved reserved
+
+ this parser will be generated automaticly and contains all strings used in all other parsers
+
+ <h2>Grammar</h2>
+  @dotfile "Line_R_reserved.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Line_R_reserved_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Line_R_reserved_Caller.dt"
+*/
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_LINE
+ @defgroup GRAMMAR_Line_precut precut
+
+
+ <h2>Grammar</h2>
+  @dotfile "Line_R_precut.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Line_R_precut_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Line_R_precut_Caller.dt"
+*/
+precut = (ch_p('\\') >> eol_p);
+
+/*! 
+ @ingroup GRAMMAR_LINE
+ @defgroup GRAMMAR_Line_process_on process_on
+
+
+ <h2>Grammar</h2>
+  @dotfile "Line_R_process_on.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Line_R_process_on_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Line_R_process_on_Caller.dt"
+*/
+process_on  = ( '{' | '[' | '(' );
+
+/*! 
+ @ingroup GRAMMAR_LINE
+ @defgroup GRAMMAR_Line_process_off process_off
+
+
+ <h2>Grammar</h2>
+  @dotfile "Line_R_process_off.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Line_R_process_off_Called.dt"
+                     
+ <h2>Used by</h2>
+  @dotfile "Line_R_process_off_Caller.dt"
+*/
+process_off = ( ')' | ']' | '}' );
+
+/*! 
+ @ingroup GRAMMAR_LINE
+ @defgroup GRAMMAR_Line_process_swt process_swt
+
+
+ <h2>Grammar</h2>
+  @dotfile "Line_R_process_swt.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Line_R_process_swt_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Line_R_process_swt_Caller.dt"
+*/
+process_swt = ( '\'' | '\"' );
+ 
+/*! 
+ @ingroup GRAMMAR_LINE
+ @defgroup GRAMMAR_Line_process_do process_do
+
+
+ <h2>Grammar</h2>
+  @dotfile "Line_R_process_do.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Line_R_process_do_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Line_R_process_do_Caller.dt"
+*/
+process_do = (eol_p >> *blank_p);

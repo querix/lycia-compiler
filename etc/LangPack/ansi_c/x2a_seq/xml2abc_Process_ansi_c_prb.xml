@@ -1,0 +1,190 @@
+ <GeneratorNSD configuration="cpp">
+
+  <!-- configure the xml-levels to start the source-analysing 
+       reffer in documentation of Moritz_2: 
+         "How it works" "Script-Generation"   
+         "Configuration-File" "Configuration NSD-Generator" 
+                                       "XML-Jump_Ins of the Generation-Process"
+      -->
+  <Generate>
+   Content,
+  </Generate>
+
+  <!-- to configure the bnf-type and its xml-representation as debug-output
+       reffer in documentation of Moritz_2: 
+         "How it works" "Notation"
+         "Configuration-File" "Process-Details" "Notation-Process"
+      -->
+  <Notation>
+   <!-- currently only the type spirit classic will be supportet -->
+   <Type         value="spirit"/>
+   <!-- for every process the used gramma will be transfered to an xml-file 
+        if yes is configured -->
+   <OutputRule   value="Yes" folder="./LangPack/ansi_c/_log/grm/" root="LangPackPath" />
+   <!-- the xml-output may contain for every rule an additional tree that 
+        represents the rules called by this rules directly and indirectly 
+        but only in a limited amount-->
+   <OutputCalled value="Yes" minimumEdges="Yes" limitTree="5" limitNode="30"/>
+   <!-- the xml-output may contain for every rule an additional tree that 
+        represents the rules wich call this rule directly and indirectly 
+        but only in a limited amount-->
+   <OutputCaller value="Yes" minimumEdges="Yes" limitTree="5" limitNode="30"/>
+
+  </Notation>
+
+  <SnipetParser>
+
+   <!-- create additional log-output that represents the parsing-result in 
+        detail: level 0 == no output level 1 all rule hits 
+        level 2 all rule-hits and all hits of the built in base-parses-->
+   <DebugLevel value="0" file="./xml_prb/log_snipet" root=""/>
+
+   <!-- pre-definition of stacks and theit first top-level -->
+   <Stack>
+    <Key name="__SEPARATOR__"   content="/"/>
+
+    <Key name="eARRAY"          content="[&lt;93&gt;]"/>
+    <Key name="ARRAY"           content="[&lt;91&gt;][&lt;93&gt;]"/>
+
+    <Key name="eSNIPET"         content="|"/>
+    <Key name="OrAssign"        content="|="/>
+    <Key name="OrLog"           content="||"/>
+    <Key name="Or"              content="|"/>
+    <Key name="EmptyParameter"  content="( )"/>
+    <Key name="VoidParameter"   content="( void )"/>
+    <Key name="CmntBgn"         content="/*"/>
+    <Key name="CmntEnd"         content="*/"/>
+   </Stack>
+
+   <!-- collection of snippets to use togetehrt with the associated tags
+        in the xml-source to assemble the output-text -->
+   <Snipet outputLog="Yes" file="./LangPack/ansi_c/_log/snpt/Snipets_PRB.xml" root="LangPackPath" >
+    <!-- common snippets used before and after the actual use of the xml-data
+          -->
+    <File value="./LangPack/ansi_c/global.x2a"                root="LangPackPath" />
+    <!-- basic snippets associated with the programming-language -->
+    <File value="./LangPack/ansi_c/x2a_seq/prb_ansi_c_ext.x2a"        root="LangPackPath" />
+    <!-- basic snippets associated with the programming-language -->
+    <File value="./LangPack/ansi_c/x2a_seq/prb_ansi_c_log.x2a"        root="LangPackPath" />
+       
+
+
+/* construct the name of the destination file without attachment*/
+SourceName:[@replace("_c.xml",""),@replace("_cpp.xml",""), @stackRead("",__SOURCENAME__)]|
+
+/* construct the name of the destination file without attachment*/
+SourceFileName:[@replace("_c.xml",".c"),@replace("_cpp.xml",".cpp"), @stackRead("",__SOURCENAME__)]|
+
+
+/*name of a file that contains the extended source-files*/
+ExtFileName:[@stackRead("",__DESTINATIONPATH__)
+               ]/[@replace(".../",""),@replace("../",""),@replace("./",""),@attribute(relativeSourcePath)]/[@replace("_c.xml",".c"),@replace("_cpp.xml",".cpp"), @stackRead("",__SOURCENAME__)]|
+
+
+/*name of a file that contains the definition of the function entering log-opjects*/
+LogFileName:[@stackRead("",__DESTINATIONPATH__)
+               ]/c/[@replace(".../",""),@replace("../",""),@replace("./",""),@attribute(relativeSourcePath)]/prb_[@replace("_c.xml",".c"),@replace("_cpp.xml",".cpp"), @stackRead("",__SOURCENAME__)]|
+/*name of a file that contains the declaration of the function entering log-opjects*/
+LogHeaderName:[@stackRead("",__DESTINATIONPATH__)
+               ]/h/[@replace(".../",""),@replace("../",""),@replace("./",""),@attribute(relativeSourcePath)]/prb_[@replace("_c.xml",".h"),@replace("_cpp.xml",".h"), @stackRead("",__SOURCENAME__)]|
+
+
+
+
+
+
+/*start snippet to analyse the whole content of a source xml*/
+Content:[%Content2File%]|
+
+
+   </Snipet>
+
+   <!-- collection of rules used to define the grammar used to define the
+        replacement procedures of moritz_2 -->
+   <Grammar>
+    <File value="./LangPack/ansi_c/procedure.a2x" root="LangPackPath" />
+   </Grammar>
+
+   <!-- results of rules added here will be shown as leafe-node -->   
+   <GlobalToken>
+   </GlobalToken>
+
+   <!-- rules added here contain no additional whitespaces inside, rules not
+        added here may contain additional whitespaces between part-terms ascii,-->
+   <GlobalNotPhrased>
+     precut,
+     skip,
+     fail,
+     pass,
+     name,
+     string,
+     snipet_name,
+     beginSequ,
+     endSequ,
+     snipTerm,                                 
+     linePart,
+     raw_sequence,
+     raw_text,
+     tagPath,
+     pathSep,
+     newName ,
+     newPath,
+     fileName ,
+     filePath,
+
+     srcName,
+     srcPath,
+     dstName,
+     dstPath,
+
+     tolerant,
+     
+     cfg_path,
+     configuration,
+     prs_path,
+     grammar,      
+     textToParse,
+     rule,       
+     
+     format,
+     format_start,
+     format_end,
+
+     newLine,
+     indend,
+     dedend,
+     space,
+     tab,
+     
+     number,
+     
+   </GlobalNotPhrased>
+
+   <!-- results of rules added here will completly not be shown -->
+   <GlobalHide>
+   </GlobalHide>
+
+   <!-- tags of rules added here will not be shown -->
+   <GlobalSkipLevel>
+   </GlobalSkipLevel>
+
+   <!-- currently not used -->
+   <LokalToken>
+   </LokalToken>
+
+   <!-- currently not used -->
+   <LokalNotPhrased>
+   </LokalNotPhrased>
+
+   <!-- currently not used -->
+   <LokalHide>
+   </LokalHide>
+
+   <!-- currently not used -->
+   <LokalSkipLevel>
+   </LokalSkipLevel>
+
+  </SnipetParser>
+
+
+ </GeneratorNSD>

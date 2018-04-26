@@ -1,0 +1,1823 @@
+/*! [Snipet__Directive__D__] */
+D =
+ range_p('0','9')
+;
+/*! [Snipet__Directive__D__] */
+
+
+/*! [Snipet__Directive__L__] */
+L =
+  range_p('a','z')
+ |
+  range_p('A','Z')
+;
+/*! [Snipet__Directive__L__] */
+
+
+/*! [Snipet__Directive__H__] */
+H =
+  range_p('a','f')
+ |
+  range_p('A','F')
+ |
+  range_p('0','9')
+;
+/*! [Snipet__Directive__H__] */
+
+
+/*! [Snipet__Directive__E__] */
+E =
+  (
+    ch_p('E')
+   |
+    ch_p('e')
+  )
+ >>
+   !
+    (
+      ch_p('+')
+     |
+      ch_p('-')
+    )
+ >>
+   +
+    D
+;
+/*! [Snipet__Directive__E__] */
+
+
+/*! [Snipet__Directive__FS__] */
+FS =
+ (
+   ch_p('f')
+  |
+   ch_p('F')
+  |
+   ch_p('l')
+  |
+   ch_p('L')
+ )
+;
+/*! [Snipet__Directive__FS__] */
+
+
+/*! [Snipet__Directive__IS__] */
+IS =
+  *
+   (
+     ch_p('u')
+    |
+     ch_p('U')
+    |
+     ch_p('l')
+    |
+     ch_p('L')
+   )
+;
+/*! [Snipet__Directive__IS__] */
+
+
+/*! [Snipet__Directive__CONSTANT_HEX__] */
+CONSTANT_HEX =
+  ch_p('0')
+ >>
+  (
+    ch_p('x')
+   |
+    ch_p('X')
+  )
+ >>
+   +
+    H
+ >>
+   !
+    IS
+;
+/*! [Snipet__Directive__CONSTANT_HEX__] */
+
+
+/*! [Snipet__Directive__CONSTANT_INT0__] */
+CONSTANT_INT0 =
+  ch_p('0')
+ >>
+   +
+    D
+ >>
+   !
+    IS
+;
+/*! [Snipet__Directive__CONSTANT_INT0__] */
+
+
+/*! [Snipet__Directive__CONSTANT_INT1__] */
+CONSTANT_INT1 =
+   +
+    D
+ >>
+   !
+    IS
+;
+/*! [Snipet__Directive__CONSTANT_INT1__] */
+
+
+/*! [Snipet__Directive__CONSTANT_INT__] */
+CONSTANT_INT =
+  CONSTANT_INT0
+ |
+  CONSTANT_INT1
+;
+/*! [Snipet__Directive__CONSTANT_INT__] */
+
+
+/*! [Snipet__Directive__CONSTANT_CHAR__] */
+CONSTANT_CHAR =
+   !
+    ch_p('L')
+ >>
+  ch_p(''')
+ >>
+   +
+    (
+      (
+        ch_p('\')
+       >>
+        (
+          anychar_p
+         -
+          (
+            ch_p('\r')
+           |
+            ch_p('\n')
+          )
+        )
+      )
+     |
+      (
+        anychar_p
+       -
+        (
+          ch_p('\')
+         |
+          ch_p(''')
+        )
+      )
+    )
+ >>
+  ch_p(''')
+;
+/*! [Snipet__Directive__CONSTANT_CHAR__] */
+
+
+/*! [Snipet__Directive__CONSTANT_FLT1__] */
+CONSTANT_FLT1 =
+   +
+    D
+ >>
+  E
+ >>
+   !
+    FS
+;
+/*! [Snipet__Directive__CONSTANT_FLT1__] */
+
+
+/*! [Snipet__Directive__CONSTANT_FLT2__] */
+CONSTANT_FLT2 =
+   *
+    D
+ >>
+  ch_p('.')
+ >>
+   +
+    D
+ >>
+   !
+    (
+     E
+    )
+ >>
+   !
+    FS
+;
+/*! [Snipet__Directive__CONSTANT_FLT2__] */
+
+
+/*! [Snipet__Directive__CONSTANT_FLT3__] */
+CONSTANT_FLT3 =
+   +
+    D
+ >>
+  ch_p('.')
+ >>
+   *
+    D
+ >>
+   !
+    (
+     E
+    )
+ >>
+   !
+    FS
+;
+/*! [Snipet__Directive__CONSTANT_FLT3__] */
+
+
+/*! [Snipet__Directive__CONSTANT_FLT__] */
+CONSTANT_FLT =
+  CONSTANT_FLT1
+ |
+  CONSTANT_FLT2
+ |
+  CONSTANT_FLT3
+;
+/*! [Snipet__Directive__CONSTANT_FLT__] */
+
+
+/*! [Snipet__Directive__Number__] */
+Number =
+  CONSTANT_HEX
+ |
+  CONSTANT_INT
+ |
+  CONSTANT_CHAR
+ |
+  CONSTANT_FLT
+;
+/*! [Snipet__Directive__Number__] */
+
+
+/*! [Snipet__Directive__String__] */
+String =
+   !
+    ch_p('L')
+ >>
+  ch_p('"')
+ >>
+   *
+    (
+      (
+        ch_p('\')
+       >>
+        (
+          anychar_p
+         -
+          (
+            ch_p('\r')
+           |
+            ch_p('\n')
+          )
+        )
+      )
+     |
+      (
+        anychar_p
+       -
+        (
+          ch_p('\')
+         |
+          ch_p('"')
+        )
+      )
+    )
+ >>
+  ch_p('"')
+;
+/*! [Snipet__Directive__String__] */
+
+
+/*! [Snipet__Directive__NON_ID__] */
+NON_ID =
+ reserved
+;
+/*! [Snipet__Directive__NON_ID__] */
+
+
+/*! [Snipet__Directive__ID__] */
+ID =
+  (
+    (
+      L
+     |
+      ch_p('_')
+    )
+   >>
+     *
+      (
+        L
+       |
+        D
+       |
+        ch_p('_')
+      )
+  )
+ -
+  NON_ID
+;
+/*! [Snipet__Directive__ID__] */
+
+
+/*! [Snipet__Directive__p_defined__] */
+p_defined =
+  str_p("defined")
+ >>
+   *
+    lineChange
+ >>
+  (
+    (
+      ID
+     >>
+       *
+        lineChange
+    )
+   ||
+    (
+      (
+        str_p("(")
+       >>
+         *
+          lineChange
+      )
+     >>
+      ID
+     >>
+       *
+        lineChange
+     >>
+      (
+        str_p(")")
+       >>
+         *
+          lineChange
+      )
+    )
+  )
+;
+/*! [Snipet__Directive__p_defined__] */
+
+
+/*! [Snipet__Directive__primary_expression__] */
+primary_expression =
+  p_defined
+ |
+  (
+    ID
+   >>
+     *
+      lineChange
+  )
+ |
+  (
+    Number
+   >>
+     *
+      lineChange
+  )
+ |
+  (
+    String
+   >>
+     *
+      lineChange
+  )
+ |
+  (
+    subexpression
+   >>
+     *
+      lineChange
+  )
+ |
+  (
+    logical_or_expression
+   >>
+     *
+      lineChange
+  )
+ |
+  (
+    str_p("(")
+   >>
+     *
+      lineChange
+   >>
+    expression
+   >>
+     *
+      lineChange
+   >>
+    str_p(")")
+  )
+;
+/*! [Snipet__Directive__primary_expression__] */
+
+
+/*! [Snipet__Directive__subexpression__] */
+subexpression =
+  str_p("(")
+ >>
+   *
+    lineChange
+ >>
+   *
+    comment
+ >>
+  logical_or_expression
+ >>
+   *
+    comment
+ >>
+  str_p(")")
+ >>
+   *
+    lineChange
+;
+/*! [Snipet__Directive__subexpression__] */
+
+
+/*! [Snipet__Directive__unary_expression__] */
+unary_expression =
+  (
+    unary_operator
+   >>
+     *
+      comment
+   >>
+    primary_expression
+   >>
+     *
+      comment
+  )
+ |
+  (
+    primary_expression
+   >>
+     *
+      comment
+  )
+;
+/*! [Snipet__Directive__unary_expression__] */
+
+
+/*! [Snipet__Directive__unary_operator__] */
+unary_operator =
+  (
+    o_plus
+   |
+    o_minus
+   |
+    o_invert
+   |
+    o_negate
+  )
+ >>
+   *
+    lineChange
+;
+/*! [Snipet__Directive__unary_operator__] */
+
+
+/*! [Snipet__Directive__o_plus__] */
+o_plus =
+ str_p("+")
+;
+/*! [Snipet__Directive__o_plus__] */
+
+
+/*! [Snipet__Directive__o_minus__] */
+o_minus =
+ str_p("-")
+;
+/*! [Snipet__Directive__o_minus__] */
+
+
+/*! [Snipet__Directive__o_invert__] */
+o_invert =
+ str_p("~")
+;
+/*! [Snipet__Directive__o_invert__] */
+
+
+/*! [Snipet__Directive__o_negate__] */
+o_negate =
+ str_p("!")
+;
+/*! [Snipet__Directive__o_negate__] */
+
+
+/*! [Snipet__Directive__multiplicative_expression__] */
+multiplicative_expression =
+  unary_expression
+ >>
+   *
+    (
+      multiplicative_operator
+     >>
+       *
+        comment
+     >>
+      unary_expression
+    )
+;
+/*! [Snipet__Directive__multiplicative_expression__] */
+
+
+/*! [Snipet__Directive__multiplicative_operator__] */
+multiplicative_operator =
+  (
+    o_mul
+   |
+    o_div
+   |
+    o_mod
+  )
+ >>
+   *
+    lineChange
+;
+/*! [Snipet__Directive__multiplicative_operator__] */
+
+
+/*! [Snipet__Directive__o_mul__] */
+o_mul =
+  str_p("*")
+ -
+  str_p("*/")
+;
+/*! [Snipet__Directive__o_mul__] */
+
+
+/*! [Snipet__Directive__o_div__] */
+o_div =
+  str_p("/")
+ -
+  str_p("/*")
+;
+/*! [Snipet__Directive__o_div__] */
+
+
+/*! [Snipet__Directive__o_mod__] */
+o_mod =
+ str_p("%")
+;
+/*! [Snipet__Directive__o_mod__] */
+
+
+/*! [Snipet__Directive__additive_expression__] */
+additive_expression =
+  multiplicative_expression
+ >>
+   *
+    (
+      additive_operator
+     >>
+       *
+        comment
+     >>
+      multiplicative_expression
+    )
+;
+/*! [Snipet__Directive__additive_expression__] */
+
+
+/*! [Snipet__Directive__additive_operator__] */
+additive_operator =
+  (
+    o_plus
+   |
+    o_minus
+  )
+ >>
+   *
+    lineChange
+;
+/*! [Snipet__Directive__additive_operator__] */
+
+
+/*! [Snipet__Directive__shift_expression__] */
+shift_expression =
+  additive_expression
+ >>
+   *
+    (
+      shift_operator
+     >>
+       *
+        comment
+     >>
+      additive_expression
+    )
+;
+/*! [Snipet__Directive__shift_expression__] */
+
+
+/*! [Snipet__Directive__shift_operator__] */
+shift_operator =
+  (
+    o_shift_left
+   |
+    o_shift_right
+  )
+ >>
+   *
+    lineChange
+;
+/*! [Snipet__Directive__shift_operator__] */
+
+
+/*! [Snipet__Directive__o_shift_left__] */
+o_shift_left =
+ str_p("<<")
+;
+/*! [Snipet__Directive__o_shift_left__] */
+
+
+/*! [Snipet__Directive__o_shift_right__] */
+o_shift_right =
+ str_p(">>")
+;
+/*! [Snipet__Directive__o_shift_right__] */
+
+
+/*! [Snipet__Directive__relational_expression__] */
+relational_expression =
+  shift_expression
+ >>
+   *
+    (
+      relational_operator
+     >>
+       *
+        comment
+     >>
+      shift_expression
+    )
+;
+/*! [Snipet__Directive__relational_expression__] */
+
+
+/*! [Snipet__Directive__relational_operator__] */
+relational_operator =
+  (
+    o_less_equal
+   |
+    o_greater_equal
+   |
+    o_less
+   |
+    o_greater
+  )
+ >>
+   *
+    lineChange
+;
+/*! [Snipet__Directive__relational_operator__] */
+
+
+/*! [Snipet__Directive__o_less_equal__] */
+o_less_equal =
+ str_p("<=")
+;
+/*! [Snipet__Directive__o_less_equal__] */
+
+
+/*! [Snipet__Directive__o_greater_equal__] */
+o_greater_equal =
+ str_p(">=")
+;
+/*! [Snipet__Directive__o_greater_equal__] */
+
+
+/*! [Snipet__Directive__o_less__] */
+o_less =
+  str_p("<")
+ -
+  (
+    str_p("<=")
+   |
+    str_p("<<")
+  )
+;
+/*! [Snipet__Directive__o_less__] */
+
+
+/*! [Snipet__Directive__o_greater__] */
+o_greater =
+  str_p(">")
+ -
+  (
+    str_p(">=")
+   |
+    str_p(">>")
+  )
+;
+/*! [Snipet__Directive__o_greater__] */
+
+
+/*! [Snipet__Directive__equality_expression__] */
+equality_expression =
+  relational_expression
+ >>
+   *
+    (
+      equality_operator
+     >>
+       *
+        comment
+     >>
+      relational_expression
+    )
+;
+/*! [Snipet__Directive__equality_expression__] */
+
+
+/*! [Snipet__Directive__equality_operator__] */
+equality_operator =
+  (
+    o_equal
+   |
+    o_unequal
+  )
+ >>
+   *
+    lineChange
+;
+/*! [Snipet__Directive__equality_operator__] */
+
+
+/*! [Snipet__Directive__o_equal__] */
+o_equal =
+ str_p("==")
+;
+/*! [Snipet__Directive__o_equal__] */
+
+
+/*! [Snipet__Directive__o_unequal__] */
+o_unequal =
+ str_p("!=")
+;
+/*! [Snipet__Directive__o_unequal__] */
+
+
+/*! [Snipet__Directive__and_expression__] */
+and_expression =
+  equality_expression
+ >>
+   *
+    (
+      bit_and_operator
+     >>
+       *
+        comment
+     >>
+      equality_expression
+    )
+;
+/*! [Snipet__Directive__and_expression__] */
+
+
+/*! [Snipet__Directive__bit_and_operator__] */
+bit_and_operator =
+  (
+   o_bit_and
+  )
+ >>
+   *
+    lineChange
+;
+/*! [Snipet__Directive__bit_and_operator__] */
+
+
+/*! [Snipet__Directive__o_bit_and__] */
+o_bit_and =
+  str_p("&")
+ -
+  str_p("&&")
+;
+/*! [Snipet__Directive__o_bit_and__] */
+
+
+/*! [Snipet__Directive__exclusive_or_expression__] */
+exclusive_or_expression =
+  and_expression
+ >>
+   *
+    (
+      bit_exor_opeartor
+     >>
+       *
+        comment
+     >>
+      and_expression
+    )
+;
+/*! [Snipet__Directive__exclusive_or_expression__] */
+
+
+/*! [Snipet__Directive__bit_exor_opeartor__] */
+bit_exor_opeartor =
+  (
+   o_bit_exor
+  )
+ >>
+   *
+    lineChange
+;
+/*! [Snipet__Directive__bit_exor_opeartor__] */
+
+
+/*! [Snipet__Directive__o_bit_exor__] */
+o_bit_exor =
+ str_p("^")
+;
+/*! [Snipet__Directive__o_bit_exor__] */
+
+
+/*! [Snipet__Directive__inclusive_or_expression__] */
+inclusive_or_expression =
+  exclusive_or_expression
+ >>
+   *
+    (
+      bit_or_operator
+     >>
+       *
+        comment
+     >>
+      exclusive_or_expression
+    )
+;
+/*! [Snipet__Directive__inclusive_or_expression__] */
+
+
+/*! [Snipet__Directive__bit_or_operator__] */
+bit_or_operator =
+  (
+   o_bit_or
+  )
+ >>
+   *
+    lineChange
+;
+/*! [Snipet__Directive__bit_or_operator__] */
+
+
+/*! [Snipet__Directive__o_bit_or__] */
+o_bit_or =
+  str_p("|")
+ -
+  str_p("||")
+;
+/*! [Snipet__Directive__o_bit_or__] */
+
+
+/*! [Snipet__Directive__logical_and_expression__] */
+logical_and_expression =
+  inclusive_or_expression
+ >>
+   *
+    (
+      log_and_operator
+     >>
+       *
+        comment
+     >>
+      inclusive_or_expression
+    )
+;
+/*! [Snipet__Directive__logical_and_expression__] */
+
+
+/*! [Snipet__Directive__log_and_operator__] */
+log_and_operator =
+  (
+   o_log_and
+  )
+ >>
+   *
+    lineChange
+;
+/*! [Snipet__Directive__log_and_operator__] */
+
+
+/*! [Snipet__Directive__o_log_and__] */
+o_log_and =
+  str_p("&&")
+ -
+  str_p("&")
+;
+/*! [Snipet__Directive__o_log_and__] */
+
+
+/*! [Snipet__Directive__logical_or_expression__] */
+logical_or_expression =
+  logical_and_expression
+ >>
+   *
+    (
+      log_or_operator
+     >>
+       *
+        comment
+     >>
+      logical_and_expression
+    )
+;
+/*! [Snipet__Directive__logical_or_expression__] */
+
+
+/*! [Snipet__Directive__log_or_operator__] */
+log_or_operator =
+  (
+   o_log_or
+  )
+ >>
+   *
+    lineChange
+;
+/*! [Snipet__Directive__log_or_operator__] */
+
+
+/*! [Snipet__Directive__o_log_or__] */
+o_log_or =
+  str_p("||")
+ -
+  str_p("|")
+;
+/*! [Snipet__Directive__o_log_or__] */
+
+
+/*! [Snipet__Directive__expression__] */
+expression =
+ logical_or_expression
+;
+/*! [Snipet__Directive__expression__] */
+
+
+/*! [Snipet__Directive__comment_cpp__] */
+comment_cpp =
+  +
+   (
+     str_p("//")
+    >>
+      *
+       (
+         anychar_p
+        -
+         (
+           eol_p
+          |
+           ch_p('\')
+         )
+       )
+   )
+;
+/*! [Snipet__Directive__comment_cpp__] */
+
+
+/*! [Snipet__Directive__open_std__] */
+open_std =
+  str_p("/*")
+ -
+  (
+    str_p("/")
+   |
+    str_p("//")
+  )
+;
+/*! [Snipet__Directive__open_std__] */
+
+
+/*! [Snipet__Directive__close_std__] */
+close_std =
+  str_p("*/")
+ -
+  (
+   str_p("*")
+  )
+;
+/*! [Snipet__Directive__close_std__] */
+
+
+/*! [Snipet__Directive__comment_std__] */
+comment_std =
+ (
+   open_std
+  >>
+    *
+     (
+       anychar_p
+      -
+       close_std
+     )
+  >>
+   close_std
+ )
+;
+/*! [Snipet__Directive__comment_std__] */
+
+
+/*! [Snipet__Directive__comment__] */
+comment =
+ (
+   comment_std
+  |
+   comment_cpp
+  |
+   (
+     ch_p('\')
+    >>
+     eol_p
+   )
+ )
+;
+/*! [Snipet__Directive__comment__] */
+
+
+/*! [Snipet__Directive__precut__] */
+precut =
+  (
+    ch_p('\')
+   >>
+    eol_p
+  )
+ |
+  comment_std
+;
+/*! [Snipet__Directive__precut__] */
+
+
+/*! [Snipet__Directive__lineChange__] */
+lineChange =
+ (
+   ch_p('\')
+  >>
+   eol_p
+ )
+;
+/*! [Snipet__Directive__lineChange__] */
+
+
+/*! [Snipet__Directive__p_ifdef__] */
+p_ifdef =
+  p_ifdef_expr
+ >>
+   !
+    p_Block
+;
+/*! [Snipet__Directive__p_ifdef__] */
+
+
+/*! [Snipet__Directive__p_ifdef_expr__] */
+p_ifdef_expr =
+  ch_p('#')
+ >>
+  str_p("ifdef")
+ >>
+  (
+   expression
+  )
+;
+/*! [Snipet__Directive__p_ifdef_expr__] */
+
+
+/*! [Snipet__Directive__p_ifndef__] */
+p_ifndef =
+  p_ifndef_expr
+ >>
+   !
+    p_Block
+;
+/*! [Snipet__Directive__p_ifndef__] */
+
+
+/*! [Snipet__Directive__p_ifndef_expr__] */
+p_ifndef_expr =
+  ch_p('#')
+ >>
+  str_p("ifndef")
+ >>
+  (
+   expression
+  )
+;
+/*! [Snipet__Directive__p_ifndef_expr__] */
+
+
+/*! [Snipet__Directive__p_if__] */
+p_if =
+  p_if_expr
+ >>
+   !
+    p_Block
+;
+/*! [Snipet__Directive__p_if__] */
+
+
+/*! [Snipet__Directive__p_if_expr__] */
+p_if_expr =
+  ch_p('#')
+ >>
+  (
+    str_p("if")
+   -
+    (
+      str_p("ifdef")
+     |
+      str_p("ifndef")
+    )
+  )
+ >>
+  (
+   expression
+  )
+;
+/*! [Snipet__Directive__p_if_expr__] */
+
+
+/*! [Snipet__Directive__p_elif__] */
+p_elif =
+  p_elif_expr
+ >>
+   !
+    p_Block
+;
+/*! [Snipet__Directive__p_elif__] */
+
+
+/*! [Snipet__Directive__p_elif_expr__] */
+p_elif_expr =
+  ch_p('#')
+ >>
+  str_p("elif")
+ >>
+  (
+   expression
+  )
+;
+/*! [Snipet__Directive__p_elif_expr__] */
+
+
+/*! [Snipet__Directive__p_else__] */
+p_else =
+  p_else_expr
+ >>
+   !
+    p_Block
+;
+/*! [Snipet__Directive__p_else__] */
+
+
+/*! [Snipet__Directive__p_else_expr__] */
+p_else_expr =
+  ch_p('#')
+ >>
+  str_p("else")
+;
+/*! [Snipet__Directive__p_else_expr__] */
+
+
+/*! [Snipet__Directive__p_endif__] */
+p_endif =
+  ch_p('#')
+ >>
+  str_p("endif")
+;
+/*! [Snipet__Directive__p_endif__] */
+
+
+/*! [Snipet__Directive__p_define__] */
+p_define =
+  ch_p('#')
+ >>
+   *
+    (
+      space_p
+     -
+      (
+        ch_p('\r')
+       |
+        ch_p('\n')
+      )
+    )
+ >>
+  str_p("define")
+ >>
+   *
+    (
+      anychar_p
+     -
+      (
+        (
+          ch_p('\')
+         >>
+          eol_p
+        )
+       |
+        eol_p
+      )
+    )
+ >>
+   *
+    (
+      (
+        ch_p('\')
+       >>
+        eol_p
+      )
+     >>
+       *
+        (
+          anychar_p
+         -
+          (
+            (
+              ch_p('\')
+             >>
+              eol_p
+            )
+           |
+            eol_p
+          )
+        )
+    )
+ >>
+  eol_p
+;
+/*! [Snipet__Directive__p_define__] */
+
+
+/*! [Snipet__Directive__p_undefine__] */
+p_undefine =
+  ch_p('#')
+ >>
+  str_p("undef")
+ >>
+  ID
+;
+/*! [Snipet__Directive__p_undefine__] */
+
+
+/*! [Snipet__Directive__p_include__] */
+p_include =
+  ch_p('#')
+ >>
+  str_p("include")
+ >>
+  statement
+;
+/*! [Snipet__Directive__p_include__] */
+
+
+/*! [Snipet__Directive__p_pragma__] */
+p_pragma =
+  ch_p('#')
+ >>
+  str_p("pragma")
+ >>
+  statement
+;
+/*! [Snipet__Directive__p_pragma__] */
+
+
+/*! [Snipet__Directive__p_line__] */
+p_line =
+  ch_p('#')
+ >>
+  str_p("line")
+ >>
+  statement
+;
+/*! [Snipet__Directive__p_line__] */
+
+
+/*! [Snipet__Directive__p_error__] */
+p_error =
+  ch_p('#')
+ >>
+  str_p("error")
+ >>
+  statement
+;
+/*! [Snipet__Directive__p_error__] */
+
+
+/*! [Snipet__Directive__p_warning__] */
+p_warning =
+  ch_p('#')
+ >>
+  str_p("warning")
+ >>
+  statement
+;
+/*! [Snipet__Directive__p_warning__] */
+
+
+/*! [Snipet__Directive__compilerSwitch__] */
+compilerSwitch =
+  (
+    p_ifdef
+   |
+    p_ifndef
+   |
+    p_if
+  )
+ >>
+   *
+    p_elif
+ >>
+   !
+    p_else
+ >>
+  p_endif
+;
+/*! [Snipet__Directive__compilerSwitch__] */
+
+
+/*! [Snipet__Directive__preprocedure__] */
+preprocedure =
+   *
+    comment_std
+ >>
+   *
+    (
+      space_p
+     -
+      (
+        ch_p('\r')
+       |
+        ch_p('\n')
+      )
+    )
+ >>
+  (
+    compilerSwitch
+   |
+    p_include
+   |
+    p_define
+   |
+    p_undefine
+   |
+    p_pragma
+   |
+    p_line
+   |
+    p_error
+   |
+    p_warning
+  )
+;
+/*! [Snipet__Directive__preprocedure__] */
+
+
+/*! [Snipet__Directive__p_Block__] */
+p_Block =
+  +
+   (
+     text_line
+    |
+     preprocedure
+   )
+;
+/*! [Snipet__Directive__p_Block__] */
+
+
+/*! [Snipet__Directive__sp_only__] */
+sp_only =
+  space_p
+ -
+  (
+    ch_p('\r')
+   |
+    ch_p('\n')
+  )
+;
+/*! [Snipet__Directive__sp_only__] */
+
+
+/*! [Snipet__Directive__p_parameterlist__] */
+p_parameterlist =
+  str_p("(")
+ >>
+   *
+    sp_only
+ >>
+  ID
+ >>
+   *
+    sp_only
+ >>
+   *
+    (
+      str_p(",")
+     >>
+       *
+        sp_only
+     >>
+      ID
+     >>
+       *
+        sp_only
+    )
+ >>
+  str_p(")")
+ >>
+  sp_only
+;
+/*! [Snipet__Directive__p_parameterlist__] */
+
+
+/*! [Snipet__Directive__p_declarator__] */
+p_declarator =
+  ID
+ >>
+   *
+    sp_only
+ >>
+   !
+    p_parameterlist
+;
+/*! [Snipet__Directive__p_declarator__] */
+
+
+/*! [Snipet__Directive__statement__] */
+statement =
+   !
+    (
+      ch_p('\')
+     >>
+      eol_p
+    )
+ >>
+  (
+     +
+      (
+        anychar_p
+       -
+        (
+          (
+            ch_p('\')
+           >>
+            eol_p
+          )
+         |
+          eol_p
+        )
+      )
+   >>
+     *
+      (
+        (
+          ch_p('\')
+         >>
+          eol_p
+        )
+       >>
+         *
+          (
+            anychar_p
+           -
+            (
+              (
+                ch_p('\')
+               >>
+                eol_p
+              )
+             |
+              eol_p
+            )
+          )
+      )
+   >>
+    eol_p
+  )
+;
+/*! [Snipet__Directive__statement__] */
+
+
+/*! [Snipet__Directive__open_std__] */
+open_std =
+ str_p("/*")
+;
+/*! [Snipet__Directive__open_std__] */
+
+
+/*! [Snipet__Directive__close_std__] */
+close_std =
+ str_p("*/")
+;
+/*! [Snipet__Directive__close_std__] */
+
+
+/*! [Snipet__Directive__comment_std__] */
+comment_std =
+  open_std
+ >>
+   *
+    (
+      anychar_p
+     -
+      (
+        close_std
+       |
+        ch_p('\r')
+       |
+        ch_p('\n')
+      )
+    )
+ >>
+  close_std
+;
+/*! [Snipet__Directive__comment_std__] */
+
+
+/*! [Snipet__Directive__endOfTextLine__] */
+endOfTextLine =
+ (
+   (
+     ch_p('\r')
+    >>
+      !
+       ch_p('\n')
+   )
+  |
+   ch_p('\n')
+ )
+;
+/*! [Snipet__Directive__endOfTextLine__] */
+
+
+/*! [Snipet__Directive__NonText__] */
+NonText =
+ reserved
+;
+/*! [Snipet__Directive__NonText__] */
+
+
+/*! [Snipet__Directive__text_line__] */
+text_line =
+  (
+    (
+       *
+        comment_std
+     >>
+       *
+        (
+          space_p
+         -
+          (
+            ch_p('\r')
+           |
+            ch_p('\n')
+          )
+        )
+     >>
+      (
+        anychar_p
+       -
+        (
+          (
+            p_ifdef_expr
+           |
+            p_ifndef_expr
+           |
+            p_if_expr
+           |
+            p_elif_expr
+           |
+            p_else_expr
+           |
+            p_endif
+           |
+            p_define
+           |
+            p_undefine
+           |
+            p_include
+           |
+            p_pragma
+           |
+            p_line
+           |
+            p_error
+           |
+            p_warning
+          )
+         |
+          ch_p('\r')
+         |
+          ch_p('\n')
+        )
+      )
+     >>
+      (
+       *
+        (
+          anychar_p
+         -
+          (
+            ch_p('\r')
+           |
+            ch_p('\n')
+          )
+        )
+      )
+     >>
+      endOfTextLine
+    )
+   |
+    (
+       *
+        comment_std
+     >>
+       *
+        (
+          space_p
+         -
+          (
+            ch_p('\r')
+           |
+            ch_p('\n')
+          )
+        )
+     >>
+      endOfTextLine
+    )
+   |
+    (
+      str_p("//")
+     >>
+       *
+        (
+          anychar_p
+         -
+          (
+            ch_p('\r')
+           |
+            ch_p('\n')
+          )
+        )
+     >>
+      endOfTextLine
+    )
+   |
+    (
+      str_p("/*")
+     >>
+       *
+        (
+          anychar_p
+         -
+          (
+            ch_p('\r')
+           |
+            ch_p('\n')
+          )
+        )
+     >>
+      endOfTextLine
+    )
+   |
+    (
+      (
+        ch_p('#')
+       >>
+        (
+           *
+            (
+              anychar_p
+             -
+              space_p
+            )
+         -
+          NonText
+        )
+       >>
+         *
+          (
+            anychar_p
+           -
+            (
+              close_std
+             |
+              ch_p('\r')
+             |
+              ch_p('\n')
+            )
+          )
+      )
+     >>
+      close_std
+     >>
+      endOfTextLine
+    )
+   |
+    eol_p
+  )
+ -
+  lineChange
+;
+/*! [Snipet__Directive__text_line__] */
+
+
+/*! [Snipet__Directive__skip__] */
+skip =
+ space_p
+;
+/*! [Snipet__Directive__skip__] */
+
+
+/*! [Snipet__Directive__pass__] */
+pass =
+ p_Block
+;
+/*! [Snipet__Directive__pass__] */
+
+
+/*! [Snipet__Directive__reserved__] */
+reserved =
+  str_p("!")
+ |
+  str_p("!=")
+ |
+  str_p("%")
+ |
+  str_p("&")
+ |
+  str_p("&&")
+ |
+  str_p("(")
+ |
+  str_p(")")
+ |
+  str_p("*")
+ |
+  str_p("*/")
+ |
+  str_p("+")
+ |
+  str_p(",")
+ |
+  str_p("-")
+ |
+  str_p("/")
+ |
+  str_p("/*")
+ |
+  str_p("//")
+ |
+  str_p("<")
+ |
+  str_p("<<")
+ |
+  str_p("<=")
+ |
+  str_p("==")
+ |
+  str_p(">")
+ |
+  str_p(">=")
+ |
+  str_p(">>")
+ |
+  str_p("^")
+ |
+  str_p("define")
+ |
+  str_p("defined")
+ |
+  str_p("elif")
+ |
+  str_p("else")
+ |
+  str_p("endif")
+ |
+  str_p("error")
+ |
+  str_p("if")
+ |
+  str_p("ifdef")
+ |
+  str_p("ifndef")
+ |
+  str_p("include")
+ |
+  str_p("line")
+ |
+  str_p("pragma")
+ |
+  str_p("undef")
+ |
+  str_p("warning")
+ |
+  str_p("|")
+ |
+  str_p("||")
+ |
+  str_p("~")
+;
+/*! [Snipet__Directive__reserved__] */
+
+

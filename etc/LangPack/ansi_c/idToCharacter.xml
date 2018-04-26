@@ -1,0 +1,79 @@
+<Content>
+  <Notation>
+   <Type       value="spirit"/>
+   <OutputRule   value="Yes" folder="./LangPack/ansi_c/grm/" root="LangPackPath" />
+   <OutputCalled value="Yes" minimumEdges="Yes" limitTree="5" limitNode="30"/>
+   <OutputCaller value="Yes" minimumEdges="Yes" limitTree="5" limitNode="30"/>
+
+  </Notation>
+
+
+  <Parser>
+
+   <SavePartResult            value="No" attachment="_idToCharacter.xml"/>
+   <DebugLevel                value="0"   file="./xml/log/code_log" root="" />
+   <NormalizeKeywordsOfSource value="No"/>
+   <ShowTextToParse           value="No"/>
+   <ParseTolerant             value="No"/>
+   <PositionOutput            value="2"/>
+
+
+
+   <StartLine     value="1"/>
+   <StartColumn   value="1"/>
+
+   <Indent    value=""/>
+   <Dedent    value=""/>
+   <NewLine   value=""/>
+   <EndMarker value=""/>
+
+
+   
+   
+   <Grammar>
+    <File value="" root="" />
+
+     skip = space_p;
+     pass = +(ID);
+
+    </Grammar>
+   
+   <Symbol>
+    <Class value="">
+    </Class>    
+   </Symbol>
+
+   
+   <GlobalToken>
+   </GlobalToken>
+                            
+   <GlobalNotPhrased>
+    skip,
+    Character, 
+    Digit, 
+    Underscore,
+    ID,
+   </GlobalNotPhrased>    
+                        
+   <GlobalHide>
+   </GlobalHide>
+                            
+   <GlobalSkipLevel>
+   </GlobalSkipLevel>
+   
+   <LokalToken>
+   </LokalToken>
+   
+   <LokalNotPhrased>
+   </LokalNotPhrased>
+   
+   <LokalHide>
+   </LokalHide>
+   
+   <LokalSkipLevel>
+   </LokalSkipLevel>
+
+  </Parser>
+
+
+</Content>

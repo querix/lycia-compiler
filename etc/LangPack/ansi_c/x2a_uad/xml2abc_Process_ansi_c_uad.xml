@@ -1,0 +1,277 @@
+ <GeneratorNSD configuration="cpp">
+
+  <!-- configure the xml-levels to start the source-analysing 
+       reffer in documentation of Moritz_2: 
+         "How it works" "Script-Generation"   
+         "Configuration-File" "Configuration NSD-Generator" 
+                                       "XML-Jump_Ins of the Generation-Process"
+      -->
+  <Generate>
+   doxygenindex,
+   compounddef,
+   classdef,
+   Content,
+  </Generate>
+
+  <!-- to configure the bnf-type and its xml-representation as debug-output
+       reffer in documentation of Moritz_2: 
+         "How it works" "Notation"
+         "Configuration-File" "Process-Details" "Notation-Process"
+      -->
+  <Notation>
+   <!-- currently only the type spirit classic will be supportet -->
+   <Type         value="spirit"/>
+   <!-- for every process the used gramma will be transfered to an xml-file 
+        if yes is configured -->
+   <OutputRule   value="Yes" folder="./LangPack/ansi_c/_log/grm/" root="LangPackPath" />
+   <!-- the xml-output may contain for every rule an additional tree that 
+        represents the rules called by this rules directly and indirectly 
+        but only in a limited amount-->
+   <OutputCalled value="Yes" minimumEdges="Yes" limitTree="5" limitNode="30"/>
+   <!-- the xml-output may contain for every rule an additional tree that 
+        represents the rules wich call this rule directly and indirectly 
+        but only in a limited amount-->
+   <OutputCaller value="Yes" minimumEdges="Yes" limitTree="5" limitNode="30"/>
+
+  </Notation>
+
+  <SnipetParser>
+
+   <!-- create additional log-output that represents the parsing-result in 
+        detail: level 0 == no output level 1 all rule hits 
+        level 2 all rule-hits and all hits of the built in base-parses-->
+   <DebugLevel value="0" file="./xml/log_snipet" root=""/>
+
+   <!-- pre-definition of stacks and theit first top-level -->
+   <Stack>
+    <Key name="__SEPARATOR__"   content="/"/>
+    <Key name="NL"              content="
+"/>
+    <Key name="_INIT_STACK_"    content="-"/>
+  
+    <Key name="eARRAY"          content="[&lt;93&gt;]"/>
+    <Key name="ARRAY"           content="[&lt;91&gt;][&lt;93&gt;]"/>
+    <Key name="eSNIPET"         content="|"/>
+    <Key name="OrAssign"        content="|="/>
+    <Key name="OrLog"           content="||"/>
+    <Key name="Or"              content="|"/>
+    <Key name="DQ"              content="&quot;&quot;&quot;"/>
+
+    <Key name="__Pb__"          content="[&lt;91&gt;]"/>
+    <Key name="__Pe__"          content="[&lt;93&gt;]"/>
+    <Key name="_Arrow_"         content="-&gt;"/>
+
+    <Key name="CmntBgn"         content="/*"/>
+    <Key name="CmntEnd"         content="*/"/>
+
+    <Key_ name="_Dump_"          content="-"/>
+    <Key_ name="_ReturnOccured_" content="-"/>
+     
+
+
+   </Stack>
+
+   <!-- collection of snippets to use togetehrt with the associated tags
+        in the xml-source to assemble the output-text -->
+   <Snipet outputLog="Yes" file="./LangPack/ansi_c/_log/snpt/Snipets_UAD.xml" root="LangPackPath" >
+    <!-- common snippets used before and after the actual use of the xml-data
+          -->
+    <File value="./LangPack/ansi_c/global.x2a"                root="LangPackPath" />
+    <!-- diverse helping snippets -->
+    <File value="./LangPack/ansi_c/x2a_uad/uad_tool_cfg.x2a"          root="LangPackPath" />
+    <!-- basic snippets associated with the programming-language -->
+    <File value="./LangPack/ansi_c/x2a_uad/uad_ansi_c_cfg.x2a"        root="LangPackPath" />
+    <!-- extended snippets associated with c/cpp preprocessor directives-->
+    <File value="./LangPack/ansi_c/x2a_uad/uad_ansi_c_prepro.x2a"     root="LangPackPath" />
+    <!-- extended snippets associated with the programming-language 
+         to considder moritz-commands-->
+    <File value="./LangPack/ansi_c/x2a_uad/uad_ansi_c_mrtz_cmd.x2a"   root="LangPackPath" />
+    <!-- extended snippets associated with doxigen generated xml-files-->
+    <File value="./LangPack/ansi_c/x2a_uad/uad_doxygen_index_xml.x2a" root="LangPackPath" />
+
+
+
+/*name of a file that contains diagrams wich are not part of a class*/
+ContentFileName:[@stackRead("",__DESTINATIONPATH__)
+               ][@replace(".xml",""), @stackRead("",__SOURCENAME__)].txt|
+
+/*name of a file that contains diagrams wich are part of a class*/
+classdefFileName:[@stackRead("",__DESTINATIONPATH__)
+               ][@replace(".xml",""), @stackRead("",__SOURCENAME__)]_C_[@text(NAME)].txt|
+
+/*name of a file that contains diagrams wich describe a single function*/
+funcdefFileName:[@stackRead("",__DESTINATIONPATH__)
+               ][@replace(".xml",""),@stackRead("",__SOURCENAME__)
+               ]_F_[@replace(" ","_"),@replace(":",""),
+                    @useForSnipet(declarator,declarator_text),
+                    @snipet(declarator)].dt|
+
+/*name of a file that includes diagrams wich describe a single function*/
+funcdefIncludeName:[@stackRead("",__DESTINATIONPATH__)
+                  ][@replace(".xml",""),@stackRead("",__SOURCENAME__)
+               ]_F_[@replace(" ","_"),@replace(":",""),
+                    @useForSnipet(declarator,declarator_text),
+                    @snipet(declarator)].txt|
+
+/*name of a file that contains the source of a single function*/
+funcSrcFileName:./txt/[@replace(".xml",""),@stackRead("",__SOURCENAME__)
+                  ]_F_[@replace(" ","_"),@replace(":",""),
+                       @useForSnipet(declarator,declarator_text),
+                       @snipet(declarator)
+                     ][@ifStackUnequal("",_ShowSource_AttributeFileName_),
+                       @stackRead("",_ShowSource_AttributeFileName_)].dt|
+
+
+
+
+
+
+/*name of a file that contains an excluded diagram
+mrtz_exclude_name:
+ [@stackRead("",__DESTINATIONPATH__)
+][@replace(" ","_"),@replace("/","_"),@stackRead("",_ExcludeParentName_)
+]_[@replace(" ","_"),@attribute(titel)].html|  */
+
+
+/*name of a file that contains an excluded diagram*/
+mrtz_exclude_name:[@stackRead("",__DESTINATIONPATH__)
+                 ][@replace(".xml",""),@stackRead("",__SOURCENAME__)
+              ]_F_[@replace(" ","_"),@replace("/","_"),@stackRead("",_ExcludeParentName_)
+                ]_[@replace(" ","_"),@attribute(titel)].dt|
+
+
+
+/*name of a file that contains a description-table*/
+mrtz_describe_name:[@useForSnipet(direct_declarator,mrtz_describe_name2),
+                    @snipet(direct_declarator)]|
+
+
+*/
+
+
+mrtz_describe_name2:[@stackRead("",__DescriptionPath__)
+                   ][@useForSnipet(direct_declarator,fileNameOwner),@snipet(__SELF__)
+                   ][@useForSnipet(owned_ID,file_owned_ID),
+                     @replace(" ","_"),@replace(":",""),
+                     @snipet(owned_ID),@text(ID)].txt|
+
+file_owned_ID:[@text(KeyChr),@text(ID),@text(operator_id)]|
+
+
+
+fileNameOwner:[@text(owned_ID/Owner)][@ifAbsent(owned_ID,DescribeFileOwner)]_|
+
+DescribeFileOwner:[@replace("_cpp.xml","_cpp"),@replace("_c.xml","_c"),
+                   @replace("_hpp.xml","_hpp"),@replace("_h.xml","_h"),
+                   @stackRead("",__SOURCENAME__)]_F|
+
+
+
+/*start-snipet to analyse the whole content of a source-xml*/
+Content:[%Content2File%]|
+
+/*start-snipet to analyse the class-definitions of a source-xml*/
+classdef:[%classdef2File%]|
+     
+/*snipet to use for analysing functions
+   func2file was formaly used to save function diagrams into
+    single destination files only
+   func_def_Variantdata is used to save diagrams in collections and
+    single destination files
+*/
+/* function_definition:[%funcdef2File%]*/|
+function_definition:[%funcdef_VariantData%]|
+
+/*start-snipet to analyse the whole content of a doxygen-index xml*/
+doxygenindex:[%doxygenindex2File%]|
+
+   </Snipet>
+
+   <!-- collection of rules used to define the grammar used to define the
+        replacement procedures of moritz_2 -->
+   <Grammar>
+    <File value="./LangPack/ansi_c/procedure.a2x" root="LangPackPath" />
+   </Grammar>
+
+   <!-- results of rules added here will be shown as leafe-node -->   
+   <GlobalToken>
+   </GlobalToken>
+
+   <!-- rules added here contain no additional whitespaces inside, rules not
+        added here may contain additional whitespaces between part-terms -->
+   <GlobalNotPhrased>
+     precut,
+     skip,
+     fail,
+     pass,
+     name,
+     string,
+     snipet_name,
+     beginSequ,
+     endSequ,
+     snipTerm,
+     linePart,
+     raw_sequence,
+     raw_text,
+     tagPath,
+     pathSep,
+     newName ,
+     newPath,
+     fileName ,
+     filePath,
+
+     srcName,
+     srcPath,
+     dstName,
+     dstPath,
+
+     tolerant,
+     
+     cfg_path,
+     configuration,
+     prs_path,
+     grammar,      
+     textToParse,
+     rule,       
+          
+     format,
+     format_start,
+     format_end,
+
+     newLine,
+     indend,
+     dedend,
+     space,
+     tab,
+ 
+     number,
+   </GlobalNotPhrased>
+
+   <!-- results of rules added here will completly not be shown -->
+   <GlobalHide>
+   </GlobalHide>
+
+   <!-- tags of rules added here will not be shown -->
+   <GlobalSkipLevel>
+   </GlobalSkipLevel>
+
+   <!-- currently not used -->
+   <LokalToken>
+   </LokalToken>
+
+   <!-- currently not used -->
+   <LokalNotPhrased>
+   </LokalNotPhrased>
+
+   <!-- currently not used -->
+   <LokalHide>
+   </LokalHide>
+
+   <!-- currently not used -->
+   <LokalSkipLevel>
+   </LokalSkipLevel>
+
+  </SnipetParser>
+
+
+ </GeneratorNSD>

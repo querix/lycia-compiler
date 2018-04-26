@@ -1,0 +1,114 @@
+<Content>
+    <Rule value="Character" uses="" usedBy=",ID,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <Character_Range value1="a" value2="z" />
+                    <Character_Range value1="A" value2="Z" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="2" characterLevel="not phrased">
+            <UsedBy_Terminated value="ID" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="ID">
+                <T v="pass" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="Digit" uses="" usedBy=",ID,">
+        <Expression>
+            <Character_Range value1="0" value2="9" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="2" characterLevel="not phrased">
+            <UsedBy_Terminated value="ID" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="ID">
+                <T v="pass" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+    <Rule value="ID" uses="Character,Digit,Underscore" usedBy=",pass,">
+        <Expression>
+            <Sub>
+                <Sequence>
+                    <Sub>
+                        <OrInclusive>
+                            <Terminating_Rule value="Character" />
+                            <Terminating_Rule value="Underscore" />
+                        </OrInclusive>
+                    </Sub>
+                    <ZeroOrMoreOf>
+                        <Sub>
+                            <OrInclusive>
+                                <Terminating_Rule value="Character" />
+                                <Terminating_Rule value="Digit" />
+                                <Terminating_Rule value="Underscore" />
+                            </OrInclusive>
+                        </Sub>
+                    </ZeroOrMoreOf>
+                </Sequence>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="1" characterLevel="not phrased">
+            <Uses_Terminated value="Character" />
+            <Uses_Terminated value="Digit" />
+            <Uses_Terminated value="Underscore" />
+            <UsedBy_Terminated value="pass" />
+        </Properties>
+        <Called>
+            <T v="Character" />
+            <T v="Digit" />
+            <T v="Underscore" />
+        </Called>
+        <Caller>
+            <T v="pass" />
+        </Caller>
+    </Rule>
+    <Rule value="pass" uses="ID" usedBy="">
+        <Expression>
+            <OneOrMoreOf>
+                <Sub>
+                    <Terminating_Rule value="ID" />
+                </Sub>
+            </OneOrMoreOf>
+        </Expression>
+        <Properties leafLevel="2" rootLevel="0" characterLevel="phrased">
+            <Uses_Terminated value="ID" />
+        </Properties>
+        <Called>
+            <C v="ID">
+                <T v="Character" c="2" />
+                <T v="Digit" c="3" />
+                <T v="Underscore" c="4" />
+            </C>
+        </Called>
+        <Caller />
+    </Rule>
+    <Rule value="skip" uses="" usedBy="">
+        <Expression>
+            <Primitive value="space_p" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="0" characterLevel="not phrased" />
+        <Called />
+        <Caller />
+    </Rule>
+    <Rule value="Underscore" uses="" usedBy=",ID,">
+        <Expression>
+            <Character_Single value="_" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="2" characterLevel="not phrased">
+            <UsedBy_Terminated value="ID" />
+        </Properties>
+        <Called />
+        <Caller>
+            <C v="ID">
+                <T v="pass" c="2" />
+            </C>
+        </Caller>
+    </Rule>
+</Content>

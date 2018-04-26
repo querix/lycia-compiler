@@ -1,0 +1,128 @@
+
+
+
+
+/*!
+ @ingroup GRAMMAR_PreProPragma
+ @defgroup GRAMMAR_Source_p_pragma p_pragma
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_pragma.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_pragma_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_pragma_Caller.dt"
+*/
+p_pragma   =  p_pragma_asm
+            | p_pragma_simple;
+
+
+
+
+/*!
+ @ingroup GRAMMAR_PreProPragma
+ @defgroup GRAMMAR_Source_p_pragma_simple p_pragma_simple
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_pragma_simple.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_pragma_simple_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_pragma_simple_Caller.dt"
+*/
+p_pragma_simple   = '#' >> "pragma"   >> p_text
+                 >> p_preproend;
+
+
+
+
+/*!
+ @ingroup GRAMMAR_PreProPragma_asm
+ @defgroup GRAMMAR_Source_p_pragma_asm_content p_pragma_asm_content
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_pragma_asm_content.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_pragma_asm_content_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_pragma_asm_content_Caller.dt"
+p_pragma_asm_content = *(anychar_p - '#' );
+*/
+p_pragma_line = +(anychar_p - ('\r' | '\n' )) ;
+
+
+
+/*!
+ @defgroup GRAMMAR_PreProPragma_asm Pragma
+ @ingroup GRAMMAR_PreProPragma
+*/
+
+/*!
+ @ingroup GRAMMAR_PreProPragma_asm
+ @defgroup GRAMMAR_Source_p_pragma_asm_begin p_pragma_asm_begin
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_pragma_asm_begin.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_pragma_asm_begin_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_pragma_asm_begin_Caller.dt"
+*/
+p_pragma_asm_begin =  '#' >> "pragma" >> "asm"    >> p_preproend;
+
+/*!
+ @ingroup GRAMMAR_PreProPragma_asm
+ @defgroup GRAMMAR_Source_p_pragma_asm_end p_pragma_asm_end
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_pragma_asm_end.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_pragma_asm_end_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_pragma_asm_end_Caller.dt"
+*/
+p_pragma_asm_end   = '#' >> "pragma" >> "endasm" >> p_preproend ;
+
+/*!
+ @ingroup GRAMMAR_PreProPragma_asm
+ @defgroup GRAMMAR_Source_p_pragma_asm_content p_pragma_asm_content
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_pragma_asm_content.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_pragma_asm_content_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_pragma_asm_content_Caller.dt"
+p_pragma_asm_content = *(anychar_p - '#' ) >> endOfTextLine;
+*/
+p_pragma_asm_content = *(p_pragma_line - p_pragma_asm_end);
+
+/*!
+ @ingroup GRAMMAR_PreProPragma_asm
+ @defgroup GRAMMAR_Source_p_pragma_asm p_pragma_asm
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_pragma_asm.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_pragma_asm_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_pragma_asm_Caller.dt"
+*/
+p_pragma_asm   =      p_pragma_asm_begin
+                   >> p_pragma_asm_content
+                   >> p_pragma_asm_end ;
+

@@ -1,0 +1,2243 @@
+/*! [Snipet__Snipet__precut__] */
+precut =
+  str_p("/*")
+ >>
+   *
+    (
+     ~
+     ch_p('*')
+    )
+ >>
+  str_p("*/")
+;
+/*! [Snipet__Snipet__precut__] */
+
+
+/*! [Snipet__Snipet__name__] */
+name =
+ (
+   (
+     range_p('a','z')
+    |
+     range_p('A','Z')
+    |
+     ch_p('_')
+   )
+  >>
+    *
+     (
+       range_p('a','z')
+      |
+       range_p('A','Z')
+      |
+       range_p('0','9')
+      |
+       ch_p('_')
+     )
+ )
+;
+/*! [Snipet__Snipet__name__] */
+
+
+/*! [Snipet__Snipet__snipet_name__] */
+snipet_name =
+  name
+ >>
+  ch_p(':')
+;
+/*! [Snipet__Snipet__snipet_name__] */
+
+
+/*! [Snipet__Snipet__string__] */
+string =
+ (
+   ch_p('"')
+  >>
+    *
+     (
+       (
+         ch_p('\')
+        >>
+         anychar_p
+       )
+      |
+       (
+         anychar_p
+        -
+         ch_p('"')
+       )
+     )
+  >>
+   ch_p('"')
+ )
+;
+/*! [Snipet__Snipet__string__] */
+
+
+/*! [Snipet__Snipet__parameter__] */
+parameter =
+ (
+   name
+  |
+   string
+ )
+;
+/*! [Snipet__Snipet__parameter__] */
+
+
+/*! [Snipet__Snipet__number__] */
+number =
+  +
+   (
+    range_p('0','9')
+   )
+;
+/*! [Snipet__Snipet__number__] */
+
+
+/*! [Snipet__Snipet__linePart__] */
+linePart =
+  +
+   (
+     anychar_p
+    -
+     (
+       ch_p('[')
+      |
+       ch_p('|')
+     )
+   )
+;
+/*! [Snipet__Snipet__linePart__] */
+
+
+/*! [Snipet__Snipet__raw_sequence__] */
+raw_sequence =
+  ch_p('[')
+ >>
+   +
+    (
+      anychar_p
+     -
+      (
+       ch_p(']')
+      )
+    )
+ >>
+  ch_p(']')
+;
+/*! [Snipet__Snipet__raw_sequence__] */
+
+
+/*! [Snipet__Snipet__useAlsoFor__] */
+useAlsoFor =
+  str_p("useAlsoFor")
+ >>
+  ch_p('(')
+ >>
+  parameter
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      parameter
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__useAlsoFor__] */
+
+
+/*! [Snipet__Snipet__raw_text__] */
+raw_text =
+ (
+   snipet_name
+  >>
+    *
+     (
+       linePart
+      |
+       raw_sequence
+     )
+  >>
+   ch_p('|')
+  >>
+    !
+     useAlsoFor
+ )
+;
+/*! [Snipet__Snipet__raw_text__] */
+
+
+/*! [Snipet__Snipet__tagName__] */
+tagName =
+ parameter
+;
+/*! [Snipet__Snipet__tagName__] */
+
+
+/*! [Snipet__Snipet__tagPath__] */
+tagPath =
+  +
+   (
+     ch_p('/')
+    >>
+     name
+   )
+;
+/*! [Snipet__Snipet__tagPath__] */
+
+
+/*! [Snipet__Snipet__newName__] */
+newName =
+ parameter
+;
+/*! [Snipet__Snipet__newName__] */
+
+
+/*! [Snipet__Snipet__newPath__] */
+newPath =
+  +
+   (
+     ch_p('/')
+    >>
+     name
+   )
+;
+/*! [Snipet__Snipet__newPath__] */
+
+
+/*! [Snipet__Snipet__fileName__] */
+fileName =
+  name
+ >>
+   !
+    (
+      ch_p('.')
+     >>
+      name
+    )
+;
+/*! [Snipet__Snipet__fileName__] */
+
+
+/*! [Snipet__Snipet__filePath__] */
+filePath =
+  +
+   (
+     name
+    >>
+     ch_p('/')
+   )
+;
+/*! [Snipet__Snipet__filePath__] */
+
+
+/*! [Snipet__Snipet__snipetName__] */
+snipetName =
+ parameter
+;
+/*! [Snipet__Snipet__snipetName__] */
+
+
+/*! [Snipet__Snipet__value__] */
+value =
+ parameter
+;
+/*! [Snipet__Snipet__value__] */
+
+
+/*! [Snipet__Snipet__stackName__] */
+stackName =
+ parameter
+;
+/*! [Snipet__Snipet__stackName__] */
+
+
+/*! [Snipet__Snipet__snipet__] */
+snipet =
+  (
+    str_p("@snipet")
+   |
+    str_p("snipet")
+  )
+ >>
+  ch_p('(')
+ >>
+  (
+    tagName
+   >>
+     !
+      tagPath
+  )
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      (
+        tagName
+       >>
+         !
+          tagPath
+      )
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__snipet__] */
+
+
+/*! [Snipet__Snipet__drop__] */
+drop =
+  (
+    str_p("@drop")
+   |
+    str_p("drop")
+  )
+ >>
+  ch_p('(')
+ >>
+  tagName
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      tagName
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__drop__] */
+
+
+/*! [Snipet__Snipet__replace__] */
+replace =
+  (
+    str_p("@replace")
+   |
+    str_p("replace")
+  )
+ >>
+  (
+    (
+      ch_p('(')
+     >>
+      oldPart
+     >>
+      ch_p(',')
+     >>
+      newPart
+     >>
+       !
+        (
+         ch_p(',')
+        )
+     >>
+      ch_p(')')
+    )
+   |
+    (
+      ch_p('(')
+     >>
+      replaceReset
+     >>
+       !
+        (
+         ch_p(',')
+        )
+     >>
+      ch_p(')')
+    )
+  )
+;
+/*! [Snipet__Snipet__replace__] */
+
+
+/*! [Snipet__Snipet__oldPart__] */
+oldPart =
+ parameter
+;
+/*! [Snipet__Snipet__oldPart__] */
+
+
+/*! [Snipet__Snipet__newPart__] */
+newPart =
+ parameter
+;
+/*! [Snipet__Snipet__newPart__] */
+
+
+/*! [Snipet__Snipet__replaceReset__] */
+replaceReset =
+ str_p("__RESET__")
+;
+/*! [Snipet__Snipet__replaceReset__] */
+
+
+/*! [Snipet__Snipet__text__] */
+text =
+  (
+    str_p("@text")
+   |
+    str_p("text")
+  )
+ >>
+  ch_p('(')
+ >>
+  tagName
+ >>
+   !
+    tagPath
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      tagName
+     >>
+       !
+        tagPath
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__text__] */
+
+
+/*! [Snipet__Snipet__collection__] */
+collection =
+  (
+    str_p("@collection")
+   |
+    str_p("collection")
+  )
+ >>
+  ch_p('(')
+ >>
+  tagName
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      tagName
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__collection__] */
+
+
+/*! [Snipet__Snipet__destination__] */
+destination =
+  (
+    str_p("@destination")
+   |
+    str_p("destination")
+  )
+ >>
+  ch_p('(')
+ >>
+  tagName
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      tagName
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__destination__] */
+
+
+/*! [Snipet__Snipet__useForSnipet__] */
+useForSnipet =
+  (
+    str_p("@useForSnipet")
+   |
+    str_p("@useForSnipet_Local")
+   |
+    str_p("useForSnipet")
+   |
+    str_p("useForSnipet_Local")
+  )
+ >>
+  ch_p('(')
+ >>
+  tagName
+ >>
+  ch_p(',')
+ >>
+  snipetName
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__useForSnipet__] */
+
+
+/*! [Snipet__Snipet__useForSnipetDownwards__] */
+useForSnipetDownwards =
+  (
+    str_p("@useForSnipetDownwards")
+   |
+    str_p("useForSnipetDownwards")
+  )
+ >>
+  ch_p('(')
+ >>
+  tagName
+ >>
+  ch_p(',')
+ >>
+  snipetName
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__useForSnipetDownwards__] */
+
+
+/*! [Snipet__Snipet__forAll__] */
+forAll =
+  (
+    str_p("@forAll")
+   |
+    str_p("forAll")
+  )
+ >>
+  ch_p('(')
+ >>
+  snipetName
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__forAll__] */
+
+
+/*! [Snipet__Snipet__statistic__] */
+statistic =
+  (
+    str_p("@statistic")
+   |
+    str_p("statistic")
+  )
+ >>
+  ch_p('(')
+ >>
+  tagToCount
+ >>
+  ch_p(',')
+ >>
+  tagToSave
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__statistic__] */
+
+
+/*! [Snipet__Snipet__tagToCount__] */
+tagToCount =
+ parameter
+;
+/*! [Snipet__Snipet__tagToCount__] */
+
+
+/*! [Snipet__Snipet__tagToSave__] */
+tagToSave =
+ parameter
+;
+/*! [Snipet__Snipet__tagToSave__] */
+
+
+/*! [Snipet__Snipet__ifAbsent__] */
+ifAbsent =
+  (
+    str_p("@ifAbsent")
+   |
+    str_p("ifAbsent")
+  )
+ >>
+  ch_p('(')
+ >>
+  tagName
+ >>
+  ch_p(',')
+ >>
+  snipetName
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__ifAbsent__] */
+
+
+/*! [Snipet__Snipet__ifEmpty__] */
+ifEmpty =
+  (
+    str_p("@ifEmpty")
+   |
+    str_p("ifEmpty")
+  )
+ >>
+  ch_p('(')
+ >>
+  snipetName
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__ifEmpty__] */
+
+
+/*! [Snipet__Snipet__tag__] */
+tag =
+  (
+    str_p("@tag")
+   |
+    str_p("tag")
+  )
+ >>
+  ch_p('(')
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__tag__] */
+
+
+/*! [Snipet__Snipet__attribute__] */
+attribute =
+  (
+    str_p("@attribute")
+   |
+    str_p("attribute")
+  )
+ >>
+  ch_p('(')
+ >>
+  attributeName
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__attribute__] */
+
+
+/*! [Snipet__Snipet__attributeName__] */
+attributeName =
+ parameter
+;
+/*! [Snipet__Snipet__attributeName__] */
+
+
+/*! [Snipet__Snipet__ifOlderAs__] */
+ifOlderAs =
+  (
+    str_p("@ifOlderAs")
+   |
+    str_p("ifOlderAs")
+  )
+ >>
+  ch_p('(')
+ >>
+   !
+    dstPath
+ >>
+  dstName
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__ifOlderAs__] */
+
+
+/*! [Snipet__Snipet__dstName__] */
+dstName =
+ fileName
+;
+/*! [Snipet__Snipet__dstName__] */
+
+
+/*! [Snipet__Snipet__dstPath__] */
+dstPath =
+ filePath
+;
+/*! [Snipet__Snipet__dstPath__] */
+
+
+/*! [Snipet__Snipet__ifNotExist__] */
+ifNotExist =
+  (
+    str_p("@ifNotExist")
+   |
+    str_p("ifNotExist")
+  )
+ >>
+  ch_p('(')
+ >>
+   !
+    dstPath
+ >>
+  dstName
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__ifNotExist__] */
+
+
+/*! [Snipet__Snipet__stackPush__] */
+stackPush =
+  (
+    str_p("@stackPush")
+   |
+    str_p("stackPush")
+  )
+ >>
+  ch_p('(')
+ >>
+  stackName
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      snipetName
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__stackPush__] */
+
+
+/*! [Snipet__Snipet__stackRead__] */
+stackRead =
+  (
+    str_p("@stackRead")
+   |
+    str_p("stackRead")
+  )
+ >>
+  ch_p('(')
+ >>
+  value
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      stackName
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__stackRead__] */
+
+
+/*! [Snipet__Snipet__stackReadAll__] */
+stackReadAll =
+  (
+    str_p("@stackReadAll")
+   |
+    str_p("stackReadAll")
+  )
+ >>
+  ch_p('(')
+ >>
+  value
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      stackName
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__stackReadAll__] */
+
+
+/*! [Snipet__Snipet__stackPop__] */
+stackPop =
+  (
+    str_p("@stackPop")
+   |
+    str_p("stackPop")
+  )
+ >>
+  ch_p('(')
+ >>
+  value
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      stackName
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__stackPop__] */
+
+
+/*! [Snipet__Snipet__stackPopAll__] */
+stackPopAll =
+  (
+    str_p("@stackPopAll")
+   |
+    str_p("stackPopAll")
+  )
+ >>
+  ch_p('(')
+ >>
+  value
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      stackName
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__stackPopAll__] */
+
+
+/*! [Snipet__Snipet__ifStackEqual__] */
+ifStackEqual =
+  (
+    str_p("@ifStackEqual")
+   |
+    str_p("ifStackEqual")
+  )
+ >>
+  ch_p('(')
+ >>
+  value
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      stackName
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__ifStackEqual__] */
+
+
+/*! [Snipet__Snipet__ifStackUnequal__] */
+ifStackUnequal =
+  (
+    str_p("@ifStackUnequal")
+   |
+    str_p("ifStackUnequal")
+  )
+ >>
+  ch_p('(')
+ >>
+  value
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      stackName
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__ifStackUnequal__] */
+
+
+/*! [Snipet__Snipet__repeat_ifStackEqual__] */
+repeat_ifStackEqual =
+  (
+    str_p("@repeat_ifStackEqual")
+   |
+    str_p("repeat_ifStackEqual")
+  )
+ >>
+  ch_p('(')
+ >>
+  value
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      stackName
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__repeat_ifStackEqual__] */
+
+
+/*! [Snipet__Snipet__repeat_ifStackUnequal__] */
+repeat_ifStackUnequal =
+  (
+    str_p("@repeat_ifStackUnequal")
+   |
+    str_p("repeat_ifStackUnequal")
+  )
+ >>
+  ch_p('(')
+ >>
+  value
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      stackName
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__repeat_ifStackUnequal__] */
+
+
+/*! [Snipet__Snipet__stackPushSize__] */
+stackPushSize =
+  (
+    str_p("stackPushSize")
+   |
+    str_p("@stackPushSize")
+  )
+ >>
+  ch_p('(')
+ >>
+  sourceStack
+ >>
+  ch_p(',')
+ >>
+  dstntnStack
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__stackPushSize__] */
+
+
+/*! [Snipet__Snipet__sourceStack__] */
+sourceStack =
+ stackName
+;
+/*! [Snipet__Snipet__sourceStack__] */
+
+
+/*! [Snipet__Snipet__dstntnStack__] */
+dstntnStack =
+ stackName
+;
+/*! [Snipet__Snipet__dstntnStack__] */
+
+
+/*! [Snipet__Snipet__stackClear__] */
+stackClear =
+  (
+    str_p("@stackClear")
+   |
+    str_p("stackClear")
+  )
+ >>
+  ch_p('(')
+ >>
+  stackName
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      stackName
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__stackClear__] */
+
+
+/*! [Snipet__Snipet__xmlCreate__] */
+xmlCreate =
+  (
+    str_p("@xmlCreate")
+   |
+    str_p("xmlCreate")
+  )
+ >>
+  ch_p('(')
+ >>
+  newName
+ >>
+   !
+    newPath
+ >>
+  ch_p(',')
+ >>
+  snipetName
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__xmlCreate__] */
+
+
+/*! [Snipet__Snipet__xmlCopy__] */
+xmlCopy =
+  (
+    str_p("@xmlCopy")
+   |
+    str_p("xmlCopy")
+  )
+ >>
+  ch_p('(')
+ >>
+  newName
+ >>
+   !
+    newPath
+ >>
+  ch_p(',')
+ >>
+  (
+    tagName
+   >>
+     !
+      tagPath
+  )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__xmlCopy__] */
+
+
+/*! [Snipet__Snipet__xmlCut__] */
+xmlCut =
+  (
+    str_p("@xmlCut")
+   |
+    str_p("xmlCut")
+  )
+ >>
+  ch_p('(')
+ >>
+  newName
+ >>
+   !
+    newPath
+ >>
+  ch_p(',')
+ >>
+  (
+    tagName
+   >>
+     !
+      tagPath
+  )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__xmlCut__] */
+
+
+/*! [Snipet__Snipet__xmlCode__] */
+xmlCode =
+  (
+    str_p("@xmlCode")
+   |
+    str_p("xmlCode")
+  )
+ >>
+  ch_p('(')
+ >>
+  newName
+ >>
+   !
+    newPath
+ >>
+  ch_p(',')
+ >>
+  (
+    tagName
+   >>
+     !
+      tagPath
+  )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__xmlCode__] */
+
+
+/*! [Snipet__Snipet__xmlInsert__] */
+xmlInsert =
+  (
+    str_p("@xmlInsert")
+   |
+    str_p("xmlInsert")
+  )
+ >>
+  ch_p('(')
+ >>
+  newName
+ >>
+   !
+    newPath
+ >>
+  ch_p(',')
+ >>
+  position
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__xmlInsert__] */
+
+
+/*! [Snipet__Snipet__position__] */
+position =
+  str_p("__BEFORE__")
+ |
+  str_p("__AFTER__")
+ |
+  str_p("__FIRST__")
+ |
+  str_p("__LAST__")
+ |
+  number
+;
+/*! [Snipet__Snipet__position__] */
+
+
+/*! [Snipet__Snipet__xmlPrint__] */
+xmlPrint =
+  (
+    str_p("@xmlPrint")
+   |
+    str_p("xmlPrint")
+  )
+ >>
+  ch_p('(')
+ >>
+  prefix
+ >>
+   !
+    (
+      ch_p(',')
+     >>
+      tagName
+     >>
+       !
+        tagPath
+     >>
+       !
+        (
+          ch_p('/')
+         >>
+          xmlProperty
+        )
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__xmlPrint__] */
+
+
+/*! [Snipet__Snipet__prefix__] */
+prefix =
+ string
+;
+/*! [Snipet__Snipet__prefix__] */
+
+
+/*! [Snipet__Snipet__xmlProperty__] */
+xmlProperty =
+ string
+;
+/*! [Snipet__Snipet__xmlProperty__] */
+
+
+/*! [Snipet__Snipet__ifXmlEqual__] */
+ifXmlEqual =
+  (
+    str_p("@ifXmlEqual")
+   |
+    str_p("ifXmlEqual")
+  )
+ >>
+  ch_p('(')
+ >>
+  value
+ >>
+  ch_p(',')
+ >>
+  (
+    tagName
+   >>
+     !
+      tagPath
+   >>
+     !
+      (
+        ch_p('/')
+       >>
+        xmlProperty
+      )
+  )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__ifXmlEqual__] */
+
+
+/*! [Snipet__Snipet__ifXmlUnequal__] */
+ifXmlUnequal =
+  (
+    str_p("@ifXmlUnequal")
+   |
+    str_p("ifXmlUnequal")
+  )
+ >>
+  ch_p('(')
+ >>
+  value
+ >>
+  ch_p(',')
+ >>
+  (
+    tagName
+   >>
+     !
+      tagPath
+   >>
+     !
+      (
+        ch_p('/')
+       >>
+        xmlProperty
+      )
+  )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__ifXmlUnequal__] */
+
+
+/*! [Snipet__Snipet__ifXmlExisting__] */
+ifXmlExisting =
+  (
+    str_p("@ifXmlExisting")
+   |
+    str_p("ifXmlExisting")
+  )
+ >>
+  ch_p('(')
+ >>
+  (
+    tagName
+   >>
+     !
+      tagPath
+   >>
+     !
+      (
+        ch_p('/')
+       >>
+        xmlProperty
+      )
+  )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__ifXmlExisting__] */
+
+
+/*! [Snipet__Snipet__ifXmlMissing__] */
+ifXmlMissing =
+  (
+    str_p("@ifXmlMissing")
+   |
+    str_p("ifXmlMissing")
+  )
+ >>
+  ch_p('(')
+ >>
+  (
+    tagName
+   >>
+     !
+      tagPath
+   >>
+     !
+      (
+        ch_p('/')
+       >>
+        xmlProperty
+      )
+  )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__ifXmlMissing__] */
+
+
+/*! [Snipet__Snipet__xmlSnipet__] */
+xmlSnipet =
+  (
+    str_p("@xmlSnipet")
+   |
+    str_p("xmlSnipet")
+  )
+ >>
+  ch_p('(')
+ >>
+  (
+    newName
+   >>
+     !
+      tagPath
+  )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+   !
+    tolerant
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__xmlSnipet__] */
+
+
+/*! [Snipet__Snipet__tolerant__] */
+tolerant =
+ str_p("__TOLERANT__")
+;
+/*! [Snipet__Snipet__tolerant__] */
+
+
+/*! [Snipet__Snipet__xmlSave__] */
+xmlSave =
+  (
+    str_p("@xmlSave")
+   |
+    str_p("xmlSave")
+  )
+ >>
+  ch_p('(')
+ >>
+  newName
+ >>
+   !
+    newPath
+ >>
+  ch_p(',')
+ >>
+   !
+    filePath
+ >>
+  fileName
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__xmlSave__] */
+
+
+/*! [Snipet__Snipet__xmlDelete__] */
+xmlDelete =
+  (
+    str_p("@xmlDelete")
+   |
+    str_p("xmlDelete")
+  )
+ >>
+  ch_p('(')
+ >>
+  newName
+ >>
+   !
+    newPath
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      newName
+     >>
+       !
+        newPath
+    )
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__xmlDelete__] */
+
+
+/*! [Snipet__Snipet__parserSet__] */
+parserSet =
+  (
+    str_p("@parserSet")
+   |
+    str_p("parserSet")
+  )
+ >>
+  ch_p('(')
+ >>
+   !
+    cfg_path
+ >>
+  configuration
+ >>
+  ch_p(',')
+ >>
+   !
+    grm_path
+ >>
+  grammar
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__parserSet__] */
+
+
+/*! [Snipet__Snipet__cfg_path__] */
+cfg_path =
+ filePath
+;
+/*! [Snipet__Snipet__cfg_path__] */
+
+
+/*! [Snipet__Snipet__configuration__] */
+configuration =
+ fileName
+;
+/*! [Snipet__Snipet__configuration__] */
+
+
+/*! [Snipet__Snipet__grm_path__] */
+grm_path =
+ filePath
+;
+/*! [Snipet__Snipet__grm_path__] */
+
+
+/*! [Snipet__Snipet__grammar__] */
+grammar =
+ fileName
+;
+/*! [Snipet__Snipet__grammar__] */
+
+
+/*! [Snipet__Snipet__parse__] */
+parse =
+  (
+    str_p("@parse")
+   |
+    str_p("parse")
+  )
+ >>
+  ch_p('(')
+ >>
+  textToParse
+ >>
+  ch_p(',')
+ >>
+  rule
+ >>
+  (
+   ch_p(',')
+  )
+ >>
+  newName
+ >>
+   !
+    newPath
+ >>
+   !
+    (
+     ch_p(',')
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__Snipet__parse__] */
+
+
+/*! [Snipet__Snipet__textToParse__] */
+textToParse =
+ parameter
+;
+/*! [Snipet__Snipet__textToParse__] */
+
+
+/*! [Snipet__Snipet__rule__] */
+rule =
+ parameter
+;
+/*! [Snipet__Snipet__rule__] */
+
+
+/*! [Snipet__Snipet__option__] */
+option =
+  (
+    ch_p('[')
+   -
+    (
+      str_p("[<")
+     |
+      str_p("[!")
+     |
+      str_p("[%")
+    )
+  )
+ >>
+   +
+    (
+      (
+        snipet
+       |
+        replace
+       |
+        drop
+       |
+        text
+       |
+        collection
+       |
+        destination
+       |
+        forAll
+       |
+        statistic
+       |
+        useForSnipet
+       |
+        useForSnipetDownwards
+       |
+        attribute
+       |
+        tag
+       |
+        ifAbsent
+       |
+        ifEmpty
+       |
+        ifOlderAs
+       |
+        ifNotExist
+       |
+        stackPush
+       |
+        stackPushSize
+       |
+        stackClear
+       |
+        ifStackEqual
+       |
+        ifStackUnequal
+       |
+        repeat_ifStackEqual
+       |
+        repeat_ifStackUnequal
+       |
+        stackRead
+       |
+        stackPop
+       |
+        stackReadAll
+       |
+        stackPopAll
+       |
+        xmlCreate
+       |
+        xmlCopy
+       |
+        xmlCut
+       |
+        xmlCode
+       |
+        xmlInsert
+       |
+        xmlPrint
+       |
+        xmlSnipet
+       |
+        xmlSave
+       |
+        xmlDelete
+       |
+        ifXmlEqual
+       |
+        ifXmlUnequal
+       |
+        ifXmlExisting
+       |
+        ifXmlMissing
+       |
+        parserSet
+       |
+        parse
+      )
+     >>
+       !
+        ch_p(',')
+    )
+ >>
+  ch_p(']')
+;
+/*! [Snipet__Snipet__option__] */
+
+
+/*! [Snipet__Snipet__onlyOnce__] */
+onlyOnce =
+  str_p("[!")
+ >>
+   +
+    (
+      (
+        snipet
+       |
+        replace
+       |
+        drop
+       |
+        text
+       |
+        collection
+       |
+        destination
+       |
+        forAll
+       |
+        statistic
+       |
+        useForSnipet
+       |
+        useForSnipetDownwards
+       |
+        attribute
+       |
+        tag
+       |
+        ifAbsent
+       |
+        ifEmpty
+       |
+        ifOlderAs
+       |
+        ifNotExist
+       |
+        stackPush
+       |
+        stackPushSize
+       |
+        stackClear
+       |
+        ifStackEqual
+       |
+        ifStackUnequal
+       |
+        repeat_ifStackEqual
+       |
+        repeat_ifStackUnequal
+       |
+        stackRead
+       |
+        stackPop
+       |
+        stackReadAll
+       |
+        stackPopAll
+       |
+        xmlCreate
+       |
+        xmlCopy
+       |
+        xmlCut
+       |
+        xmlCode
+       |
+        xmlInsert
+       |
+        xmlPrint
+       |
+        xmlSnipet
+       |
+        xmlSave
+       |
+        xmlDelete
+       |
+        ifXmlEqual
+       |
+        ifXmlUnequal
+       |
+        ifXmlExisting
+       |
+        ifXmlMissing
+       |
+        parserSet
+       |
+        parse
+      )
+     >>
+       !
+        ch_p(',')
+    )
+ >>
+  str_p("!]")
+;
+/*! [Snipet__Snipet__onlyOnce__] */
+
+
+/*! [Snipet__Snipet__macro__] */
+macro =
+  str_p("[%")
+ >>
+   *
+    (
+      replace
+     >>
+      ch_p(',')
+    )
+ >>
+  name
+ >>
+   *
+    (
+      ch_p(',')
+     >>
+      replace
+    )
+ >>
+   !
+    ch_p(',')
+ >>
+  str_p("%]")
+;
+/*! [Snipet__Snipet__macro__] */
+
+
+/*! [Snipet__Snipet__newLine__] */
+newLine =
+  (
+    ch_p('N')
+   |
+    ch_p('n')
+  )
+ >>
+  number
+;
+/*! [Snipet__Snipet__newLine__] */
+
+
+/*! [Snipet__Snipet__indend__] */
+indend =
+  (
+    ch_p('I')
+   |
+    ch_p('i')
+  )
+ >>
+  number
+;
+/*! [Snipet__Snipet__indend__] */
+
+
+/*! [Snipet__Snipet__dedend__] */
+dedend =
+  (
+    ch_p('D')
+   |
+    ch_p('d')
+  )
+ >>
+  number
+;
+/*! [Snipet__Snipet__dedend__] */
+
+
+/*! [Snipet__Snipet__space__] */
+space =
+  (
+    ch_p('S')
+   |
+    ch_p('s')
+  )
+ >>
+  number
+;
+/*! [Snipet__Snipet__space__] */
+
+
+/*! [Snipet__Snipet__tab__] */
+tab =
+  (
+    ch_p('T')
+   |
+    ch_p('t')
+  )
+ >>
+  number
+;
+/*! [Snipet__Snipet__tab__] */
+
+
+/*! [Snipet__Snipet__ascii__] */
+ascii =
+ number
+;
+/*! [Snipet__Snipet__ascii__] */
+
+
+/*! [Snipet__Snipet__format_start__] */
+format_start =
+ str_p("[<")
+;
+/*! [Snipet__Snipet__format_start__] */
+
+
+/*! [Snipet__Snipet__format_end__] */
+format_end =
+ str_p(">]")
+;
+/*! [Snipet__Snipet__format_end__] */
+
+
+/*! [Snipet__Snipet__format__] */
+format =
+  format_start
+ >>
+  (
+    newLine
+   |
+    indend
+   |
+    dedend
+   |
+    space
+   |
+    tab
+   |
+    ascii
+  )
+ >>
+  format_end
+;
+/*! [Snipet__Snipet__format__] */
+
+
+/*! [Snipet__Snipet__sequence__] */
+sequence =
+  (
+    option
+   |
+    onlyOnce
+   |
+    macro
+   |
+    format
+  )
+ -
+  (
+   str_p("[]")
+  )
+;
+/*! [Snipet__Snipet__sequence__] */
+
+
+/*! [Snipet__Snipet__reserved__] */
+reserved =
+  str_p("!]")
+ |
+  str_p("%]")
+ |
+  str_p("*/")
+ |
+  str_p("/*")
+ |
+  str_p(">]")
+ |
+  str_p("@attribute")
+ |
+  str_p("@collection")
+ |
+  str_p("@destination")
+ |
+  str_p("@drop")
+ |
+  str_p("@forAll")
+ |
+  str_p("@ifAbsent")
+ |
+  str_p("@ifEmpty")
+ |
+  str_p("@ifNotExist")
+ |
+  str_p("@ifOlderAs")
+ |
+  str_p("@ifStackEqual")
+ |
+  str_p("@ifStackUnequal")
+ |
+  str_p("@ifXmlEqual")
+ |
+  str_p("@ifXmlExisting")
+ |
+  str_p("@ifXmlMissing")
+ |
+  str_p("@ifXmlUnequal")
+ |
+  str_p("@parse")
+ |
+  str_p("@parserSet")
+ |
+  str_p("@repeat_ifStackEqual")
+ |
+  str_p("@repeat_ifStackUnequal")
+ |
+  str_p("@replace")
+ |
+  str_p("@snipet")
+ |
+  str_p("@stackClear")
+ |
+  str_p("@stackPop")
+ |
+  str_p("@stackPopAll")
+ |
+  str_p("@stackPush")
+ |
+  str_p("@stackPushSize")
+ |
+  str_p("@stackRead")
+ |
+  str_p("@stackReadAll")
+ |
+  str_p("@statistic")
+ |
+  str_p("@tag")
+ |
+  str_p("@text")
+ |
+  str_p("@useForSnipet")
+ |
+  str_p("@useForSnipetDownwards")
+ |
+  str_p("@useForSnipet_Local")
+ |
+  str_p("@xmlCode")
+ |
+  str_p("@xmlCopy")
+ |
+  str_p("@xmlCreate")
+ |
+  str_p("@xmlCut")
+ |
+  str_p("@xmlDelete")
+ |
+  str_p("@xmlInsert")
+ |
+  str_p("@xmlPrint")
+ |
+  str_p("@xmlSave")
+ |
+  str_p("@xmlSnipet")
+ |
+  str_p("[!")
+ |
+  str_p("[%")
+ |
+  str_p("[<")
+ |
+  str_p("[]")
+ |
+  str_p("__AFTER__")
+ |
+  str_p("__BEFORE__")
+ |
+  str_p("__FIRST__")
+ |
+  str_p("__LAST__")
+ |
+  str_p("__RESET__")
+ |
+  str_p("__TOLERANT__")
+ |
+  str_p("attribute")
+ |
+  str_p("collection")
+ |
+  str_p("destination")
+ |
+  str_p("drop")
+ |
+  str_p("forAll")
+ |
+  str_p("ifAbsent")
+ |
+  str_p("ifEmpty")
+ |
+  str_p("ifNotExist")
+ |
+  str_p("ifOlderAs")
+ |
+  str_p("ifStackEqual")
+ |
+  str_p("ifStackUnequal")
+ |
+  str_p("ifXmlEqual")
+ |
+  str_p("ifXmlExisting")
+ |
+  str_p("ifXmlMissing")
+ |
+  str_p("ifXmlUnequal")
+ |
+  str_p("parse")
+ |
+  str_p("parserSet")
+ |
+  str_p("repeat_ifStackEqual")
+ |
+  str_p("repeat_ifStackUnequal")
+ |
+  str_p("replace")
+ |
+  str_p("snipet")
+ |
+  str_p("stackClear")
+ |
+  str_p("stackPop")
+ |
+  str_p("stackPopAll")
+ |
+  str_p("stackPush")
+ |
+  str_p("stackPushSize")
+ |
+  str_p("stackRead")
+ |
+  str_p("stackReadAll")
+ |
+  str_p("statistic")
+ |
+  str_p("tag")
+ |
+  str_p("text")
+ |
+  str_p("useAlsoFor")
+ |
+  str_p("useForSnipet")
+ |
+  str_p("useForSnipetDownwards")
+ |
+  str_p("useForSnipet_Local")
+ |
+  str_p("xmlCode")
+ |
+  str_p("xmlCopy")
+ |
+  str_p("xmlCreate")
+ |
+  str_p("xmlCut")
+ |
+  str_p("xmlDelete")
+ |
+  str_p("xmlInsert")
+ |
+  str_p("xmlPrint")
+ |
+  str_p("xmlSave")
+ |
+  str_p("xmlSnipet")
+;
+/*! [Snipet__Snipet__reserved__] */
+
+

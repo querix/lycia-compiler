@@ -1,0 +1,716 @@
+
+
+/*!
+ @defgroup GRAMMAR_Directive Preprocedure Directives
+ @ingroup GRAMMAR_SPECIFIC
+ @brief used for @ref DIRECTIVES
+*/
+
+
+
+
+
+/*!
+ @defgroup GRAMMAR_Directive_ABC2XML abc2xml
+ @ingroup GRAMMAR_Directive
+ 
+ this parsers contain language depending definitions but they are used from 
+ abc2xml for tool-specific purposes.  
+*/
+
+/*! 
+ @ingroup GRAMMAR_Directive_ABC2XML
+ @defgroup GRAMMAR_Directive_pass pass
+ 
+ will be used from abc2xml as root-parser
+ 
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_pass.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_pass_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_pass_Caller.dt"
+*/
+
+/*! 
+ @ingroup GRAMMAR_Directive_ABC2XML
+ @defgroup GRAMMAR_Directive_skip skip
+
+ will be used from abc2xml to define a phrased parser
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_skip.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_skip_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_skip_Caller.dt"
+*/
+
+/*! 
+ @ingroup GRAMMAR_Directive_ABC2XML
+ @defgroup GRAMMAR_Directive_reserved reserved
+
+ this parser will be generated automaticly and contains all strings used in all other parsers
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_reserved.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_reserved_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_reserved_Caller.dt"
+*/
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive_compilerSwitch
+ @defgroup GRAMMAR_Directive_p_ifdef p_ifdef
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_ifdef.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_ifdef_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_ifdef_Caller.dt"
+*/
+p_ifdef      = p_ifdef_expr >> ! p_Block;
+
+
+/*! 
+ @ingroup GRAMMAR_Directive_p_ifdef
+ @defgroup GRAMMAR_Directive_p_ifdef_expr p_ifdef_expr
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_ifdef_expr.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_ifdef_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_ifdef_expr_Caller.dt"
+*/
+p_ifdef_expr = '#' >> "ifdef"    >> (expression);
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive_compilerSwitch
+ @defgroup GRAMMAR_Directive_p_ifndef p_ifndef
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_ifndef.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_ifndef_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_ifndef_Caller.dt"
+*/
+p_ifndef        = p_ifndef_expr >> ! p_Block;
+
+
+/*! 
+ @ingroup GRAMMAR_Directive_p_ifndef
+ @defgroup GRAMMAR_Directive_p_ifndef_expr p_ifndef_expr
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_ifndef_expr.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_ifndef_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_ifndef_expr_Caller.dt"
+*/
+p_ifndef_expr   = '#' >> "ifndef"   >> (expression);
+
+
+
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive_compilerSwitch
+ @defgroup GRAMMAR_Directive_p_if p_if
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_if.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_if_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_if_Caller.dt"
+*/
+p_if        = p_if_expr >> ! p_Block;
+
+
+/*! 
+ @ingroup GRAMMAR_Directive_p_if
+ @defgroup GRAMMAR_Directive_p_if_expr p_if_expr
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_if_expr.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_if_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_if_expr_Caller.dt"
+*/
+p_if_expr   = '#' >> ("if" - ("ifdef" | "ifndef")) >> (expression );
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive_compilerSwitch
+ @defgroup GRAMMAR_Directive_p_elif p_elif
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_elif.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_elif_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_elif_Caller.dt"
+*/
+p_elif      = p_elif_expr >> ! p_Block;
+
+
+/*! 
+ @ingroup GRAMMAR_Directive_p_elif
+ @defgroup GRAMMAR_Directive_p_elif_expr p_elif_expr
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_elif_expr.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_elif_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_elif_expr_Caller.dt"
+*/
+p_elif_expr = '#' >> "elif"     >> (expression );
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive_compilerSwitch
+ @defgroup GRAMMAR_Directive_p_else p_else
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_else.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_else_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_else_Caller.dt"
+*/
+p_else      = p_else_expr >> ! p_Block;
+
+
+/*! 
+ @ingroup GRAMMAR_Directive_p_else
+ @defgroup GRAMMAR_Directive_p_else_expr p_else_expr
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_else_expr.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_else_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_else_expr_Caller.dt"
+*/
+p_else_expr = '#' >> "else";
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive_compilerSwitch
+ @defgroup GRAMMAR_Directive_p_endif p_endif
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_endif.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_endif_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_endif_Caller.dt"
+*/
+p_endif    =  '#' >> "endif"  ;
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_p_define p_define
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_define.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_define_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_define_Caller.dt"
+*/
+p_define = '#'   >> *(space_p-('\r'|'\n'))  >> "define"
+                 >>                    *(anychar_p -(('\\'>>eol_p)|eol_p))
+                 >> *(('\\'>>eol_p) >> *(anychar_p -(('\\'>>eol_p)|eol_p)))
+                 >> eol_p;
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_p_undefine p_undefine
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_undefine.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_undefine_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_undefine_Caller.dt"
+*/
+p_undefine = '#' >> "undef" >> ID;
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_p_include p_include
+                   
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_include.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_include_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_include_Caller.dt"
+*/
+p_include  = '#' >> "include"  >> statement;
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_p_pragma p_pragma
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_pragma.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_pragma_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_pragma_Caller.dt"
+*/
+p_pragma   = '#' >> "pragma"   >> statement;
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_p_line p_line
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_line.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_line_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_line_Caller.dt"
+*/
+p_line     = '#' >> "line"     >> statement;
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_p_error p_error
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_error.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_error_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_error_Caller.dt"
+*/
+p_error    = '#' >> "error"    >> statement;
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_p_warning p_warning
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_warning.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_warning_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_warning_Caller.dt"
+*/
+p_warning  = '#' >> "warning"  >> statement;
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_compilerSwitch compilerSwitch
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_compilerSwitch.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_compilerSwitch_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_compilerSwitch_Caller.dt"
+*/
+compilerSwitch = (p_ifdef | p_ifndef | p_if) >> *p_elif >> !p_else >> p_endif;            
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_preprocedure preprocedure
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_preprocedure.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_preprocedure_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_preprocedure_Caller.dt"
+*/
+preprocedure =    *comment_std
+               >> *(space_p - ('\r' | '\n' ))
+               >>  (  compilerSwitch
+                    | p_include
+                    | p_define
+                    | p_undefine
+                    | p_pragma
+                    | p_line
+                    | p_error
+                    | p_warning
+                   );
+
+
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_p_Block p_Block
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_Block.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_Block_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_Block_Caller.dt"
+*/
+p_Block = + (text_line | preprocedure);
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_sp_only sp_only 
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_sp_only.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_sp_only_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_sp_only_Caller.dt"
+*/
+sp_only = space_p-('\r'|'\n');
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_p_parameterlist p_parameterlist
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_parameterlist.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_parameterlist_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_parameterlist_Caller.dt"
+*/
+p_parameterlist = "("  >> *sp_only >> ID >> *sp_only >> *("," >> *sp_only >> ID >> *sp_only)  >> ")" >> sp_only;
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_p_declarator p_declarator
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_declarator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_declarator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_declarator_Caller.dt"
+*/
+p_declarator    = ID >> *sp_only >> !p_parameterlist;
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_statement statement
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_statement.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_statement_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_statement_Caller.dt"
+*/
+statement    =      !( '\\' >> eol_p)
+                   >>(   +(anychar_p -( ('\\' >> eol_p)
+                                   |eol_p
+                                  )
+                          )
+                      >> *(    ('\\' >> eol_p)
+                           >> *(anychar_p -( ('\\' >> eol_p)
+                                        |eol_p
+                                       )
+                               )
+                          )
+                      >> eol_p
+                     ) ;
+
+
+
+
+/*!
+ @defgroup GRAMMAR_Directive_COMMENT  Comments
+ @ingroup GRAMMAR_Directive
+ 
+*/
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive_COMMENT
+ @defgroup GRAMMAR_Directive_open_std open_std
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_open_std.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_open_std_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_open_std_Caller.dt"
+*/
+open_std  = "/*";
+
+
+/*! 
+ @ingroup GRAMMAR_Directive_COMMENT
+ @defgroup GRAMMAR_Directive_close_std close_std
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_close_std.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Directive_R_close_std_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_close_std_Caller.dt"
+*/
+close_std = "*/";
+
+
+/*! 
+ @ingroup GRAMMAR_Directive_COMMENT
+ @defgroup GRAMMAR_Directive_comment_std comment_std
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_comment_std.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_comment_std_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_comment_std_Caller.dt"
+*/
+comment_std   =    open_std
+                >> *(anychar_p - (close_std |'\r' | '\n'))
+                >> close_std ;
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_endOfTextLine endOfTextLine
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_endOfTextLine.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Directive_R_endOfTextLine_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_endOfTextLine_Caller.dt"
+*/
+endOfTextLine = (('\r' >> !'\n' ) | '\n' );
+
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_NonText NonText
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_NonText.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Directive_R_NonText_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_NonText_Caller.dt"
+*/
+NonText = reserved;
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Directive
+ @defgroup GRAMMAR_Directive_text_line text_line
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_text_line.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Directive_R_text_line_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_text_line_Caller.dt"
+*/
+text_line =  (  (    *comment_std
+                  >> *(space_p - ('\r' | '\n' ))
+                  >> (anychar_p - ((  p_ifdef_expr 
+                                    | p_ifndef_expr 
+                                    | p_if_expr 
+                                    | p_elif_expr 
+                                    | p_else_expr 
+                                    | p_endif 
+                                    | p_define 
+                                    | p_undefine 
+                                    | p_include 
+                                    | p_pragma 
+                                    | p_line 
+                                    | p_error 
+                                    | p_warning) | '\r' | '\n' ))
+                  >>  (*(anychar_p - ('\r' | '\n' ) ))
+                  >> endOfTextLine
+                )
+              | (    *comment_std
+                  >> *(space_p - ('\r' | '\n' ))
+                  >> endOfTextLine
+                )
+              | (   "//"
+                  >>*(anychar_p - ('\r' | '\n') ) 
+                  >> endOfTextLine
+                 )  
+              | (   "/*"
+                  >>*(anychar_p - ('\r' | '\n') ) 
+                  >> endOfTextLine
+                 )  
+              | (   (   '#'
+                       >> (*(anychar_p - space_p)- NonText)
+                       >>  *(anychar_p - (close_std|'\r' | '\n'))
+                    )
+                 >> close_std
+                 >> endOfTextLine
+                )
+              | eol_p
+             ) - lineChange ;
+               

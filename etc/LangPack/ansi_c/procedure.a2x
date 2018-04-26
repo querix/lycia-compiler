@@ -1,0 +1,620 @@
+
+/******************************************************************************/
+/*                               basic elements                               */
+/******************************************************************************/
+
+/* definition of comments which will be deleted before the real parsing starts*/
+ precut = "/*" >> *(~'*') >> "*/" ;
+
+
+/*basic definition of an element used as name*/
+ name     = (     (range_p('a','z') | range_p('A','Z') | '_')
+              >> *(range_p('a','z') | range_p('A','Z') | range_p('0','9') | '_')
+            );
+
+/*name of a snippet*/
+ snipet_name = name >> ':';
+
+
+/*sequence of characters and escape sequences*/
+ string = (    '"'
+            >> *(  (ch_p('\\') >> anychar_p)
+                 | (anychar_p -  '"')
+                )
+            >>  '"'
+           );
+
+/*argument of a command used in procedure sequence*/
+ parameter = (name | string) ;
+
+/*  positive integer number   */
+ number  = +(range_p('0','9'));
+
+
+/******************************************************************************/
+/*             raw construction of the text of a snippet                       */
+/******************************************************************************/
+
+/* part of a snippet that holds a non command text written in the destination
+   language that just has to be copied*/
+ linePart = +( anychar_p - ('[' | '|') );
+
+/*replacement for begin of sequence '['
+will be defined as <Key name="bARRAY" content="["/> in <GeneratorNSD><Stack> */
+
+/*replacement for end of sequence ']'
+will be defined as <Key name="eARRAY" content="]"/> in <GeneratorNSD><Stack> */
+
+/*replacement for snippet termination '|'
+will be defined as Key name="eSNIPET" content="|"/> in <GeneratorNSD><Stack> */
+
+
+
+
+/* part of a snippet that holds a procedure sequence that has to be processed to
+   create text content*/
+ raw_sequence = '[' >> +(anychar_p - (']')) >> ']';
+
+/*declaration of reusing the snippet for other xml tags*/
+ useAlsoFor  = "useAlsoFor" >> '(' >> parameter >> *(',' >> parameter) >> !(',') >> ')';
+
+/*definition of a snippet*/
+ raw_text  = (snipet_name >> *(linePart | raw_sequence) >> '|' >> !useAlsoFor);
+
+
+
+/******************************************************************************/
+/*                   commands usable in a procedure sequence                   */
+/******************************************************************************/
+
+/***********************************/
+/*   often used parameter names    */
+/***********************************/
+
+/*name of a tag in the xml tree to analyse*/
+ tagName    = parameter;
+
+/*path to a sub tag inside the xml tree*/
+ tagPath =     +('/' >> name);
+
+/*name of the root in a new independent xml tree*/
+ newName    = parameter;
+
+/*path to a sub tag inside a new independent xml tree*/
+ newPath =     +('/' >> name);
+
+
+/*name of the root in a new independent xml tree*/
+ fileName    = name >> !('.' >> name);
+
+/*path to a sub tag inside a new independent xml tree*/
+ filePath =     +(name >> '/');
+
+
+
+
+
+/*name of a snippet in the definition file*/
+ snipetName = parameter;
+
+/*content of common string value*/
+ value      = parameter;
+
+/*name of a stack buffer defined in a snippet*/
+ stackName  = parameter;
+
+
+/***************************************************************/
+/*   commands to use xml content to build the output content   */
+/***************************************************************/
+
+
+/* call of an other snippet if its tag is found*/
+ snipet =  ("@snipet"|"snipet")
+          >> '(' >> (tagName >> !tagPath) >> *(',' >> (tagName >> !tagPath)) >> !(',') >> ')';
+
+
+/* delete xml childes with a special tag name*/
+ drop   =   ("@drop"|"drop")
+          >> '(' >> tagName >> *(',' >> tagName) >> !(',') >> ')';
+
+
+
+/* define of replacement rules for tags, attributes and texts
+*/
+ replace = ("@replace"|"replace")
+           >>(  ('(' >> oldPart >> ',' >> newPart >> !(',') >> ')')
+               |('(' >> replaceReset              >> !(',') >> ')')
+             );
+ oldPart      = parameter;
+ newPart      = parameter;
+ replaceReset = "__RESET__";
+
+
+/* collect all text content only
+*/
+ text = ("@text"|"text")
+        >> '(' >> tagName >> !tagPath >> *(',' >> tagName >> !tagPath) >> !(',') >> ')';
+
+
+
+
+/*current snippet is a collection of sub snippets
+ */
+ collection = ("@collection"|"collection")
+              >> '(' >> tagName >> *(',' >> tagName) >> !(',') >> ')';
+
+/*use to create diagram name*/
+ destination = ("@destination"|"destination")
+                >> '(' >> tagName >> *(',' >> tagName) >> !(',') >> ')';
+
+
+/*
+ use an other snippet content for one special tag
+ only for the direct childes of the current source tag
+*/
+ useForSnipet =   ("@useForSnipet" | "@useForSnipet_Local" | "useForSnipet" | "useForSnipet_Local")
+                >> '(' >> tagName >> ',' >> snipetName >> !(',') >> ')';
+
+
+/*
+ use an other snippet content for one special tag
+ for the indirect childes of the current source tag also
+*/
+ useForSnipetDownwards  =   ("@useForSnipetDownwards"|"useForSnipetDownwards")
+                          >> '(' >> tagName >> ',' >> snipetName >> !(',') >> ')';
+
+/*
+every available child information will be processed by the snippet called parameter
+*/
+ forAll =    ("@forAll"|"forAll")
+           >> '(' >> snipetName >> ')';
+
+
+
+
+/*
+count sub childes with a given name and save the result in a given child
+*/
+ statistic =   ("@statistic"|"statistic")
+            >> '(' >> tagToCount >> ',' >> tagToSave >> !(',') >> ')';
+/*name of a tag to count in sub tree of current node*/
+ tagToCount    = parameter;
+/*name of a tag to save result in*/
+ tagToSave     = parameter;
+
+
+
+/*
+ call a substitute if the tag does not exist
+*/
+ ifAbsent = ("@ifAbsent"|"ifAbsent")
+             >> '(' >> tagName >> ',' >> snipetName >> !(',') >> ')';
+
+/*
+ call of alternative snippet if no childes are available
+*/
+ ifEmpty = ("@ifEmpty"|"ifEmpty")
+           >> '(' >> snipetName >> ')';
+
+
+/*
+ use tag name of current xml level
+*/
+ tag = ("@tag"|"tag")
+         >> '(' >> ')';
+
+/*
+ use attribute value of current xml level
+*/
+ attribute     = ("@attribute"|"attribute")
+                 >> '(' >> attributeName >> ')';
+ attributeName = parameter;
+
+
+/*
+ check if given destination file is older as source to analyze 
+ to decide if the rest of the current sequence should be processed
+*/
+ ifOlderAs =    ("@ifOlderAs"|"ifOlderAs")
+             >> '(' >> !dstPath >> dstName >> !(',') >> ')';
+
+
+ dstName = fileName;
+ dstPath = filePath;
+
+/*
+ check if given destination file not already exists to decide
+ if the rest of the current sequence should be processed
+*/
+ ifNotExist =    ("@ifNotExist"|"ifNotExist")
+             >> '(' >> !dstPath >> dstName >> !(',') >> ')';
+
+
+
+
+
+/**************************************************************/
+/*    commands to manage stack buffers as temporary memory    */
+/**************************************************************/
+
+/*
+ save the content of a ready evaluated snippet in on a stack with the given name
+*/
+ stackPush = ("@stackPush"|"stackPush")
+             >> '(' >> stackName >> *(',' >> snipetName) >> !(',') >> ')';
+
+/*
+ read out the snippet content stored on a stack with the given name
+ to save it in a diagram or a file
+*/
+ stackRead = ("@stackRead"|"stackRead")
+             >> '(' >> value >> *(',' >> stackName) >> !(',') >> ')';
+
+/*
+ read out the snippet content stored on a stack with the given name
+ to save it in a diagram or a file
+*/
+ stackReadAll = ("@stackReadAll"|"stackReadAll")
+                >> '(' >> value >> *(',' >> stackName) >> !(',') >> ')';
+
+/*
+ read out the snippet content stored on a stack with the given name
+ to save it in a diagram or a file and delete it on the stack
+*/
+ stackPop  = ("@stackPop"|"stackPop")
+             >> '(' >> value >> *(',' >> stackName) >> !(',') >> ')';
+
+/*
+ read out the snippet content stored on a stack with the given name
+ to save it in a diagram or a file and delete it on the stack
+*/
+ stackPopAll  = ("@stackPopAll"|"stackPopAll")
+                 >> '(' >> value >> *(',' >> stackName) >> !(',') >> ')';
+
+
+/*
+ define an equal to test on a current stack element to decide if the
+ rest of the current sequence should be processed
+*/
+ ifStackEqual  = ("@ifStackEqual"|"ifStackEqual")
+                 >> '(' >> value >> *(',' >> stackName) >> !(',') >> ')';
+
+/*
+ define an unequal to test on a current stack element to decide if the
+ rest of the current sequence should be processed
+*/
+ ifStackUnequal  = ("@ifStackUnequal"|"ifStackUnequal")
+                    >> '(' >> value >> *(',' >> stackName) >> !(',') >> ')';
+
+
+/*
+ define an equal to test on a current stack element to decide if the
+ current sequence should be processed again
+*/
+ repeat_ifStackEqual  = ("@repeat_ifStackEqual"|"repeat_ifStackEqual")
+                 >> '(' >> value >> *(',' >> stackName) >> !(',') >> ')';
+
+/*
+ define an unequal t test on a current stack element to decide if the
+ current sequence should be processed again
+*/
+ repeat_ifStackUnequal  = ("@repeat_ifStackUnequal"|"repeat_ifStackUnequal")
+                    >> '(' >> value >> *(',' >> stackName) >> !(',') >> ')';
+
+
+
+
+/*
+ push the number of elements in the source stack as value on the destination stack
+*/
+ stackPushSize = ("stackPushSize"|"@stackPushSize")
+                 >> '(' >> sourceStack >> ',' >> dstntnStack >> !(',') >> ')';
+ sourceStack   = stackName;
+ dstntnStack   = stackName;
+
+
+/*
+ delete the stack with the given name
+*/
+ stackClear = ("@stackClear"|"stackClear")
+              >> '(' >> stackName >> *(',' >> stackName) >> !(',') >> ')';
+
+
+
+/**************************************************************/
+/*     commands to manage xml buffers as temporary memory     */
+/**************************************************************/
+
+/*
+ call a snippet that creates a source of a new independent xml root and store it
+ under the given tag name
+*/
+ xmlCreate = ("@xmlCreate"|"xmlCreate")
+             >> '(' >> newName >> !newPath >> ',' >> snipetName >> !(',') >> ')';
+
+/*
+ copy the content of the given child or sub child to create a new
+ independent xml root and store it under the given tag name
+*/
+ xmlCopy = ("@xmlCopy"|"xmlCopy")
+             >> '(' >> newName >> !newPath >> ',' >> (tagName >> !tagPath) >> !(',') >> ')';
+
+/*
+ cut out the content of the given child or sub child to create a new
+ independent xml root and store it under the given tag name
+*/
+ xmlCut = ("@xmlCut"|"xmlCut")
+             >> '(' >> newName >> !newPath >> ',' >> (tagName >> !tagPath) >> !(',') >> ')';
+
+
+
+/*
+ transfer the content of the given child or sub child into its code structure
+ and create a new independent xml root to store it under the given tag name
+*/
+ xmlCode = ("@xmlCode"|"xmlCode")
+             >> '(' >> newName >> !newPath >> ',' >> (tagName >> !tagPath) >> !(',') >> ')';
+
+
+/*
+ insert a new xml child treated as independent xml node
+*/
+ xmlInsert = ("@xmlInsert"|"xmlInsert")
+              >> '(' >> newName >> !newPath >> ',' >> position >> !(',') >> ')';
+              
+ position = "__BEFORE__" | "__AFTER__"|"__FIRST__"|"__LAST__"| number;
+
+
+
+
+ 
+/*
+ print a special part of the given xml element
+ xmlProperty is not used      -> tag of given node will be printed 
+ xmlProperty is empty string  -> whole text content of given node will be printed 
+ xmlProperty is filled string -> content of attribute defined in string will be printed if it exists 
+*/
+ xmlPrint  = ("@xmlPrint"|"xmlPrint")
+                 >> '(' >> prefix   >>  !(',' >> tagName >> !tagPath >> !('/' >> xmlProperty)) >> !(',') >> ')';
+ prefix      = string;
+ xmlProperty = string;
+
+
+
+
+ 
+/*
+ define an equal to test on a current xml element to decide if the
+ rest of the current sequence should be processed
+ xmlProperty is not used      -> tag of given node will be tested
+ xmlProperty is empty string  -> whole text content of given node will be tested 
+ xmlProperty is filled string -> content of attribute defined in string will be tested if it exists 
+ if xml-element or given property is existing and the test returns true 
+ if xml-element or given property is not existing or not fitting to the value the test returns false
+*/
+ ifXmlEqual  = ("@ifXmlEqual"|"ifXmlEqual")
+                 >> '(' >> value >> ',' >> (tagName >> !tagPath >> !('/' >> xmlProperty)) >> !(',') >> ')';
+
+
+/*
+ define an unequal to test on a current xml element to decide if the
+ rest of the current sequence should be processed
+ xmlProperty is not used      -> tag of given node will be tested
+ xmlProperty is empty string  -> whole text content of given node will be tested 
+ xmlProperty is filled string -> content of attribute defined in string will be tested if it exists 
+ if xml-element or given property is existing and the test returns false 
+ if xml-element or given property is not existing or not fitting to the value the test returns true
+*/
+ ifXmlUnequal  = ("@ifXmlUnequal"|"ifXmlUnequal")
+                    >> '(' >> value >> ',' >> (tagName >> !tagPath >> !('/' >> xmlProperty)) >> !(',') >> ')';
+
+
+
+ 
+/*
+ define an equal to test on a current xml element to decide if the
+ rest of the current sequence should be processed
+ xmlProperty is not used      -> tag of given node will be tested
+ xmlProperty is empty string  -> whole text content of given node will be tested 
+ xmlProperty is filled string -> content of attribute defined in string will be tested if it exists 
+ if xml-element or given property is not existing the test returns false
+*/
+ ifXmlExisting = ("@ifXmlExisting"|"ifXmlExisting")
+                 >> '(' >>  (tagName >> !tagPath >> !('/' >> xmlProperty)) >> !(',') >> ')';
+
+
+/*
+ define an unequal to test on a current xml element to decide if the
+ rest of the current sequence should be processed
+ xmlProperty is not used      -> tag of given node will be tested
+ xmlProperty is empty string  -> whole text content of given node will be tested 
+ xmlProperty is filled string -> content of attribute defined in string will be tested if it exists 
+ if xml-element or given property is not existing the test returns true
+*/
+ ifXmlMissing  = ("@ifXmlMissing"|"ifXmlMissing")
+                    >> '(' >>  (tagName >> !tagPath >> !('/' >> xmlProperty)) >> !(',') >> ')';
+
+
+
+
+
+/*
+ start the evaluation of an independent xml root or node
+*/
+ xmlSnipet = ("@xmlSnipet"|"xmlSnipet")
+          >> '(' >> (newName >> !tagPath) >> !(',') >> !tolerant >> !(',') >>')';
+
+/**/
+ tolerant = "__TOLERANT__";
+
+/*
+ save an independent xml root or node
+*/
+ xmlSave  = ("@xmlSave"|"xmlSave")
+             >> '(' >> newName >> !newPath >> ',' >> !filePath >> fileName >> !(',') >> ')';
+
+/*
+ delete an independent xml root or node
+*/
+ xmlDelete  = ("@xmlDelete"|"xmlDelete")
+             >> '(' >> newName >> !newPath >> *(',' >> newName >> !newPath ) >> !(',') >> ')';
+
+
+
+/**************************************************************/
+/* parse tag ids, attribute values or content of text elements  */
+/**************************************************************/
+
+/*
+ configure the parser and define its rules 
+*/
+
+ parserSet  =   ("@parserSet"|"parserSet")
+             >> '(' >> !cfg_path >> configuration >>   ',' 
+                    >> !grm_path >> grammar       >> !(',')
+             >> ')';
+
+/*folder path to xml configuration file of the parser*/
+ cfg_path =     filePath;
+
+/*xml configuration file of the parser*/
+ configuration  = fileName;
+
+/*folder path to gramar file of the parser*/
+ grm_path =     filePath;
+
+/*gramar file of the parser*/
+ grammar  = fileName;
+
+/*
+ use the parser to analyse the given text and create a
+ xml based parser tree as result
+ 
+*/
+ parse      = ("@parse"|"parse")
+             >> '(' >> textToParse >> ',' >> rule >>  (',')
+                    >> newName     >> !newPath    >> !(',') 
+             >> ')';
+ textToParse = parameter;
+ rule        = parameter;
+
+
+
+
+/**************************************************************/
+/*     using of single commands in a sequence of commands     */
+/**************************************************************/
+/**/
+/*normal sequence that allows the reusing of tag content in an other sequences*/
+ option   = ('['-("[<" | "[!" | "[%" ))
+                 >> +( (  snipet              | replace
+                        | drop                | text
+                        | collection          | destination
+                        | forAll              | statistic
+                        | useForSnipet        | useForSnipetDownwards
+                        | attribute           | tag
+                        | ifAbsent            | ifEmpty
+                        | ifOlderAs           | ifNotExist
+                        | stackPush           | stackPushSize | stackClear
+                        | ifStackEqual        | ifStackUnequal
+                        | repeat_ifStackEqual | repeat_ifStackUnequal
+                        | stackRead           | stackPop
+                        | stackReadAll        | stackPopAll
+                        | xmlCreate           | xmlCopy       | xmlCut
+                        | xmlCode             | xmlInsert     | xmlPrint
+                        | xmlSnipet           | xmlSave       | xmlDelete 
+                        | ifXmlEqual          | ifXmlUnequal
+                        | ifXmlExisting       | ifXmlMissing
+                        | parserSet           | parse                     ) >> !',') >>  ']';
+
+/*
+ one time sequence that makes it impossible to reuse th tag content in an
+ other sequences if it was processed one times in this sequence
+*/
+ onlyOnce = "[!" >> +( (  snipet              | replace
+                        | drop                | text
+                        | collection          | destination
+                        | forAll              | statistic
+                        | useForSnipet        | useForSnipetDownwards
+                        | attribute           | tag
+                        | ifAbsent            | ifEmpty
+                        | ifOlderAs           | ifNotExist
+                        | stackPush           | stackPushSize | stackClear
+                        | ifStackEqual        | ifStackUnequal
+                        | repeat_ifStackEqual | repeat_ifStackUnequal
+                        | stackRead           | stackPop
+                        | stackReadAll        | stackPopAll
+                        | xmlCreate           | xmlCopy       | xmlCut       
+                        | xmlCode             | xmlInsert     | xmlPrint
+                        | xmlSnipet           | xmlSave       | xmlDelete 
+                        | ifXmlEqual          | ifXmlUnequal
+                        | ifXmlExisting       | ifXmlMissing
+                        | parserSet           | parse                     ) >> !',') >> "!]";
+
+/*
+ definition of a location to insert the content of an other snippet
+*/
+ macro    = "[%" >> *(replace >> ',') >>  name >> *( ',' >> replace ) >> !',' >> "%]";
+
+ 
+ /*
+  insert a line change followed by the given number of spaces 
+  additional to the current indention
+ */
+ newLine = ('N' | 'n') >> number;
+    
+ /*
+  increment the number of spaces with the given number at the beginning of this
+  line and all following
+ */
+ indend  = ('I' | 'i') >> number;
+
+ /*
+  decrement the number of spaces with the given number at the beginning of this
+  line and all following
+ */
+ dedend  = ('D' | 'd') >> number;
+
+ /*
+  insert a number of spaces
+ */
+ space   = ('S' | 's') >> number;
+
+ /*
+  insert a number of spaces less to the given number until the text position 
+   after is a integer multiple of the given number
+ */
+ tab     = ('T' | 't') >> number;
+
+
+ /*
+  print a character with the given ascci number
+ */
+ ascii = number;
+
+
+ format_start = "[<";
+
+ format_end   = ">]";
+
+
+
+/*
+ formating the output
+*/
+ format = format_start   
+          >> (   newLine    
+               | indend
+               | dedend
+               | space
+               | tab
+               | ascii
+             )
+          >> format_end;
+
+
+
+
+/*master parser to analyse a raw sequence part of a snippet*/
+ sequence = ( option | onlyOnce | macro | format)-("[]");

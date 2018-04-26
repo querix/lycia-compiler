@@ -1,0 +1,257 @@
+
+name              = (     (range_p('a','z') | range_p('A','Z') | '_')
+                      >> *(range_p('a','z') | range_p('A','Z') | range_p('0','9') | '_') 
+                     );
+
+
+
+/*defines the begin of a command-block*/
+mrtz_beginBlock  = key_beginBlock   ;
+key_beginBlock   = ("@MRTZ_beginBlock" | "\MRTZ_beginBlock") ;
+
+
+
+/*defines the end of a command-block */
+mrtz_endBlock         = key_endBlock;
+key_endBlock          = ("@MRTZ_endBlock" | "\MRTZ_endBlock") ;
+
+
+
+/*changes the reaction if an source-error is noticed */
+mrtz_errorResponse     =    key_errorResponse 
+                         >> err_rsp_mode;
+key_errorResponse = ("@MRTZ_errorResponse" | "\MRTZ_errorResponse"); 
+err_rsp_mode      =   "WaitOff_ScriptOffOff"  
+                    | "WaitOn_ScriptOffOff"  
+                    | "WaitOff_ScriptOffOn"  
+                    | "WaitOn_ScriptOffOn";  
+
+
+
+/*showing the a source-command as original source-line */
+mrtz_showSource        =     key_showSource
+                          >> !(lineNumber)
+                          >> !(fileName-lineNumber);
+key_showSource    = ("@MRTZ_showSource" | "\MRTZ_showSource");
+lineNumber        = "LineNumber" | "NoLineNumber" ;
+fileName          = name;
+
+
+/*hiding a source-part in the diagram and generation of an extra-diagram */
+mrtz_exclude           =    key_exclude 
+                         >> titel 
+                         >> !direction ;
+key_exclude       =   ("@MRTZ_exclude" | "\MRTZ_exclude"); 
+titel             =  name>>*('-'>>name);
+direction         =  "horizontal" | "vertical";    
+
+
+
+/*include the content of an external file*/
+mrtz_include           =    key_include 
+                         >> '\"' 
+                         >> file_name 
+                         >> '\"';
+key_include       =    ("@MRTZ_include" | "\MRTZ_include"); 
+file_name         =     !range_p('0','9') >> name 
+                     >> *(('\\'|'/') >> !range_p('0','9') >> name) 
+                     >> !('.'        >> !range_p('0','9') >> name);
+
+
+
+/*hiding a source-part in the diagram without generation of an extra-diagram */
+mrtz_skip              =     key_skip 
+                          >> !titel 
+                          >> !direction ;
+key_skip               =   ("@MRTZ_skip" | "\MRTZ_skip"); 
+
+
+
+/*Block highlighting a source-part with an extra-titel and a background-color*/
+mrtz_pointOut          =    key_pointOut 
+                         >> titel 
+                         >> !color ;
+color             =    (range_p('a','f') | range_p('A','F') | range_p('0','9')) 
+                     >>(range_p('a','f') | range_p('A','F') | range_p('0','9')) 
+                     >>(range_p('a','f') | range_p('A','F') | range_p('0','9')) 
+                     >>(range_p('a','f') | range_p('A','F') | range_p('0','9')) 
+                     >>(range_p('a','f') | range_p('A','F') | range_p('0','9')) 
+                     >>(range_p('a','f') | range_p('A','F') | range_p('0','9')); 
+key_pointOut      =    ("@MRTZ_pointOut" | "\MRTZ_pointOut"); 
+
+
+/*print a comment as independent part*/
+mrtz_independent      = key_independent ;
+key_independent       = ("@MRTZ_independent" | "\MRTZ_independent") ;
+
+
+
+/*print comments also if this was switched off before */
+mrtz_printComments    = key_printComments ;
+key_printComments     = (str_p("@MRTZ_printComments") | str_p("\MRTZ_printComments")) ;
+
+
+
+/*print all command-details also if this was switched off before*/
+mrtz_printCommands    = key_printCommands ;
+key_printCommands     = ("@MRTZ_printCommands" | "\MRTZ_printCommands") ;
+
+
+
+/*print no comments also if this was switched on before*/
+mrtz_hideComments     = key_hideComments ;
+key_hideComments      = ("@MRTZ_hideComments" | "\MRTZ_hideComments") ;
+
+
+
+/*print not all command-details also if this was switched on before */
+mrtz_hideCommands     = key_hideCommands ;
+key_hideCommands      = ("@MRTZ_hideCommands" | "\MRTZ_hideCommands") ;
+
+
+
+/*condition to execute the following nsd-command */
+mrtz_condition         =    key_condition 
+                         >> condition_value;
+key_condition     =   ("@MRTZ_Condition" | "\MRTZ_Condition"); 
+condition_value   =  (anychar_p-space_p) >> *(anychar_p-('\n' | '\r')) >> eol_p;
+
+
+
+/*define a condition to execute a nsd-command or a preprocessor-value */
+mrtz_defineCondition   =     key_defineCondition 
+                         >>  condition_value
+                         >>!( condition_value >> condition_value);
+key_defineCondition    =    ("@MRTZ_defineCondition" | "\MRTZ_defineCondition"); 
+
+
+
+/*undefine a condition to execute a nsd-command or a preprocessor-value */
+mrtz_undefineCondition =    key_undefineCondition 
+                         >> condition_value;
+key_undefineCondition = ("@MRTZ_undefineCondition" | "\MRTZ_undefineCondition"); 
+
+
+
+/*local change the comment-modell*/
+mrtz_commentModel      =    key_commentModel 
+                         >> modelComment;
+key_commentModel  = ("@MRTZ_commentModel" | "\MRTZ_commentModel"); 
+modelComment      = "CommentBehind" | "CommentBefore"  | "CommentDefault" ;
+
+
+
+/*define if switch-structures are generated as table or in list-form */
+mrtz_changeSwitch      =   key_changeSwitch 
+                        >> formSwitch;
+key_changeSwitch  = ("@MRTZ_changeSwitch" | "\MRTZ_changeSwitch"); 
+formSwitch        = "Table" | "List" ;
+
+
+
+/*print a chain of "if else if else if ... else" like a switch-structure */
+mrtz_ifElseChain       = key_ifElseChain ;
+key_ifElseChain        = ("@MRTZ_ifElseChain" | "\MRTZ_ifElseChain") ;
+
+
+
+/*
+mrtz_ifIfChain         =  key_ifIfChain ;
+key_ifIfChain          = ("@MRTZ_ifIfChain" | "\MRTZ_ifIfChain") ;
+*/
+
+
+
+/*insert a link to an other document*/ 
+mrtz_insertLink        =    key_insertLink 
+                         >> destinationAnchor 
+                         >>!(    file_name
+                             >> !titel     ) ;
+key_insertLink         =   ("@MRTZ_insertLink" | "\MRTZ_insertLink"); 
+destinationAnchor = name;
+
+
+
+/*define if links to other parts of the documentation should be generated 
+  automaticly, if the necessary informationthe is available*/
+mrtz_automaticLink     =    key_automaticLink
+                         >> onOff;
+key_automaticLink =   ("@MRTZ_automaticLink" | "\MRTZ_automaticLink");
+onOff             = "On" | "Off";
+
+
+
+/*add a description of an excluded part-diagramm to the description-table of 
+  the function */
+mrtz_describe             =     key_describe 
+                             >> PartName;
+                            /* >> !description;*/
+key_describe         =  ("@MRTZ_describe" | "\MRTZ_describe"); 
+PartName             =  !'~' >> name ;
+word                 = *(anychar_p - space_p);
+description          =    (word-key_describe)
+                      >> *(space_p >> *space_p >> (word-key_describe));
+
+/*check the rest of thefunction for occurrence of compiler-switches and controll
+  which variants should be analysed*/
+mrtz_checkCompilerSwitch  =    key_checkCompilerSwitch 
+                            >> !(  off 
+                                 |(modeChCoSw >> !(list))
+                                 | switchTableOnly
+                                 |(vari >> number >> titel)
+                                );
+key_checkCompilerSwitch  =     ("@MRTZ_checkCompilerSwitch" | "\MRTZ_checkCompilerSwitch"); 
+off                  = "Off";
+modeChCoSw           =  "SolveOff_TableOff" 
+                      | "SolveOn_TableOff" 
+                      | "SolveOff_TableOn" 
+                      | "SolveOn_TableOn";
+list                 = numberList | bitList;
+numberList           = '(' >> number >> *(';' >> number) >>')'; 
+number               =  range_p('1','9') >> *range_p('0','9');
+bitList              = '(' >> bit >> *bit >>')'; 
+bit                  = '0' | '1';                    
+switchTableOnly      = "SwitchTableOnly";                                                             
+vari                 = "Variant";
+
+     
+     
+                      
+/*to control the generation of the diagrams it is possible to use commands in
+  the source-code which are used as are special-comments*/
+mrtz_cmd             =   (  mrtz_beginBlock
+                          | mrtz_endBlock
+                          | mrtz_errorResponse
+                          | mrtz_showSource
+                          | mrtz_exclude
+                          | mrtz_include
+                          | mrtz_skip
+                          | mrtz_pointOut
+                          | mrtz_independent
+                          | mrtz_printComments
+                          | mrtz_printCommands
+                          | mrtz_hideComments
+                          | mrtz_hideCommands
+                          | mrtz_condition
+                          | mrtz_defineCondition
+                          | mrtz_undefineCondition
+                          | mrtz_commentModel
+                          | mrtz_changeSwitch
+                          | mrtz_ifElseChain
+                          | mrtz_insertLink
+                          | mrtz_automaticLink
+                          | mrtz_describe
+                          | mrtz_checkCompilerSwitch
+                          | "@ENDMARKER"
+                        ); 
+                         
+/*                          | ifIfChain */ 
+  
+  
+                        
+
+/*necessary prefix for Moritz to differ between commands and normal comments
+  of the source-code
+prefix            = "@MRTZ_" | "\MRTZ_";
+*/                         
+                                             

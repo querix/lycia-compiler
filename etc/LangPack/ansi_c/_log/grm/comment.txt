@@ -1,0 +1,1225 @@
+/*! [Snipet__comment__name__] */
+name =
+ (
+   (
+     range_p('a','z')
+    |
+     range_p('A','Z')
+    |
+     ch_p('_')
+   )
+  >>
+    *
+     (
+       range_p('a','z')
+      |
+       range_p('A','Z')
+      |
+       range_p('0','9')
+      |
+       ch_p('_')
+     )
+ )
+;
+/*! [Snipet__comment__name__] */
+
+
+/*! [Snipet__comment__mrtz_beginBlock__] */
+mrtz_beginBlock =
+ key_beginBlock
+;
+/*! [Snipet__comment__mrtz_beginBlock__] */
+
+
+/*! [Snipet__comment__key_beginBlock__] */
+key_beginBlock =
+ (
+   str_p("@MRTZ_beginBlock")
+  |
+   str_p("\MRTZ_beginBlock")
+ )
+;
+/*! [Snipet__comment__key_beginBlock__] */
+
+
+/*! [Snipet__comment__mrtz_endBlock__] */
+mrtz_endBlock =
+ key_endBlock
+;
+/*! [Snipet__comment__mrtz_endBlock__] */
+
+
+/*! [Snipet__comment__key_endBlock__] */
+key_endBlock =
+ (
+   str_p("@MRTZ_endBlock")
+  |
+   str_p("\MRTZ_endBlock")
+ )
+;
+/*! [Snipet__comment__key_endBlock__] */
+
+
+/*! [Snipet__comment__mrtz_errorResponse__] */
+mrtz_errorResponse =
+  key_errorResponse
+ >>
+  err_rsp_mode
+;
+/*! [Snipet__comment__mrtz_errorResponse__] */
+
+
+/*! [Snipet__comment__key_errorResponse__] */
+key_errorResponse =
+ (
+   str_p("@MRTZ_errorResponse")
+  |
+   str_p("\MRTZ_errorResponse")
+ )
+;
+/*! [Snipet__comment__key_errorResponse__] */
+
+
+/*! [Snipet__comment__err_rsp_mode__] */
+err_rsp_mode =
+  str_p("WaitOff_ScriptOffOff")
+ |
+  str_p("WaitOn_ScriptOffOff")
+ |
+  str_p("WaitOff_ScriptOffOn")
+ |
+  str_p("WaitOn_ScriptOffOn")
+;
+/*! [Snipet__comment__err_rsp_mode__] */
+
+
+/*! [Snipet__comment__mrtz_showSource__] */
+mrtz_showSource =
+  key_showSource
+ >>
+   !
+    (
+     lineNumber
+    )
+ >>
+   !
+    (
+      fileName
+     -
+      lineNumber
+    )
+;
+/*! [Snipet__comment__mrtz_showSource__] */
+
+
+/*! [Snipet__comment__key_showSource__] */
+key_showSource =
+ (
+   str_p("@MRTZ_showSource")
+  |
+   str_p("\MRTZ_showSource")
+ )
+;
+/*! [Snipet__comment__key_showSource__] */
+
+
+/*! [Snipet__comment__lineNumber__] */
+lineNumber =
+  str_p("LineNumber")
+ |
+  str_p("NoLineNumber")
+;
+/*! [Snipet__comment__lineNumber__] */
+
+
+/*! [Snipet__comment__fileName__] */
+fileName =
+ name
+;
+/*! [Snipet__comment__fileName__] */
+
+
+/*! [Snipet__comment__mrtz_exclude__] */
+mrtz_exclude =
+  key_exclude
+ >>
+  titel
+ >>
+   !
+    direction
+;
+/*! [Snipet__comment__mrtz_exclude__] */
+
+
+/*! [Snipet__comment__key_exclude__] */
+key_exclude =
+ (
+   str_p("@MRTZ_exclude")
+  |
+   str_p("\MRTZ_exclude")
+ )
+;
+/*! [Snipet__comment__key_exclude__] */
+
+
+/*! [Snipet__comment__titel__] */
+titel =
+  name
+ >>
+   *
+    (
+      ch_p('-')
+     >>
+      name
+    )
+;
+/*! [Snipet__comment__titel__] */
+
+
+/*! [Snipet__comment__direction__] */
+direction =
+  str_p("horizontal")
+ |
+  str_p("vertical")
+;
+/*! [Snipet__comment__direction__] */
+
+
+/*! [Snipet__comment__mrtz_include__] */
+mrtz_include =
+  key_include
+ >>
+  ch_p('"')
+ >>
+  file_name
+ >>
+  ch_p('"')
+;
+/*! [Snipet__comment__mrtz_include__] */
+
+
+/*! [Snipet__comment__key_include__] */
+key_include =
+ (
+   str_p("@MRTZ_include")
+  |
+   str_p("\MRTZ_include")
+ )
+;
+/*! [Snipet__comment__key_include__] */
+
+
+/*! [Snipet__comment__file_name__] */
+file_name =
+   !
+    range_p('0','9')
+ >>
+  name
+ >>
+   *
+    (
+      (
+        ch_p('\')
+       |
+        ch_p('/')
+      )
+     >>
+       !
+        range_p('0','9')
+     >>
+      name
+    )
+ >>
+   !
+    (
+      ch_p('.')
+     >>
+       !
+        range_p('0','9')
+     >>
+      name
+    )
+;
+/*! [Snipet__comment__file_name__] */
+
+
+/*! [Snipet__comment__mrtz_skip__] */
+mrtz_skip =
+  key_skip
+ >>
+   !
+    titel
+ >>
+   !
+    direction
+;
+/*! [Snipet__comment__mrtz_skip__] */
+
+
+/*! [Snipet__comment__key_skip__] */
+key_skip =
+ (
+   str_p("@MRTZ_skip")
+  |
+   str_p("\MRTZ_skip")
+ )
+;
+/*! [Snipet__comment__key_skip__] */
+
+
+/*! [Snipet__comment__mrtz_pointOut__] */
+mrtz_pointOut =
+  key_pointOut
+ >>
+  titel
+ >>
+   !
+    color
+;
+/*! [Snipet__comment__mrtz_pointOut__] */
+
+
+/*! [Snipet__comment__color__] */
+color =
+  (
+    range_p('a','f')
+   |
+    range_p('A','F')
+   |
+    range_p('0','9')
+  )
+ >>
+  (
+    range_p('a','f')
+   |
+    range_p('A','F')
+   |
+    range_p('0','9')
+  )
+ >>
+  (
+    range_p('a','f')
+   |
+    range_p('A','F')
+   |
+    range_p('0','9')
+  )
+ >>
+  (
+    range_p('a','f')
+   |
+    range_p('A','F')
+   |
+    range_p('0','9')
+  )
+ >>
+  (
+    range_p('a','f')
+   |
+    range_p('A','F')
+   |
+    range_p('0','9')
+  )
+ >>
+  (
+    range_p('a','f')
+   |
+    range_p('A','F')
+   |
+    range_p('0','9')
+  )
+;
+/*! [Snipet__comment__color__] */
+
+
+/*! [Snipet__comment__key_pointOut__] */
+key_pointOut =
+ (
+   str_p("@MRTZ_pointOut")
+  |
+   str_p("\MRTZ_pointOut")
+ )
+;
+/*! [Snipet__comment__key_pointOut__] */
+
+
+/*! [Snipet__comment__mrtz_independent__] */
+mrtz_independent =
+ key_independent
+;
+/*! [Snipet__comment__mrtz_independent__] */
+
+
+/*! [Snipet__comment__key_independent__] */
+key_independent =
+ (
+   str_p("@MRTZ_independent")
+  |
+   str_p("\MRTZ_independent")
+ )
+;
+/*! [Snipet__comment__key_independent__] */
+
+
+/*! [Snipet__comment__mrtz_printComments__] */
+mrtz_printComments =
+ key_printComments
+;
+/*! [Snipet__comment__mrtz_printComments__] */
+
+
+/*! [Snipet__comment__key_printComments__] */
+key_printComments =
+ (
+   str_p("@MRTZ_printComments")
+  |
+   str_p("\MRTZ_printComments")
+ )
+;
+/*! [Snipet__comment__key_printComments__] */
+
+
+/*! [Snipet__comment__mrtz_printCommands__] */
+mrtz_printCommands =
+ key_printCommands
+;
+/*! [Snipet__comment__mrtz_printCommands__] */
+
+
+/*! [Snipet__comment__key_printCommands__] */
+key_printCommands =
+ (
+   str_p("@MRTZ_printCommands")
+  |
+   str_p("\MRTZ_printCommands")
+ )
+;
+/*! [Snipet__comment__key_printCommands__] */
+
+
+/*! [Snipet__comment__mrtz_hideComments__] */
+mrtz_hideComments =
+ key_hideComments
+;
+/*! [Snipet__comment__mrtz_hideComments__] */
+
+
+/*! [Snipet__comment__key_hideComments__] */
+key_hideComments =
+ (
+   str_p("@MRTZ_hideComments")
+  |
+   str_p("\MRTZ_hideComments")
+ )
+;
+/*! [Snipet__comment__key_hideComments__] */
+
+
+/*! [Snipet__comment__mrtz_hideCommands__] */
+mrtz_hideCommands =
+ key_hideCommands
+;
+/*! [Snipet__comment__mrtz_hideCommands__] */
+
+
+/*! [Snipet__comment__key_hideCommands__] */
+key_hideCommands =
+ (
+   str_p("@MRTZ_hideCommands")
+  |
+   str_p("\MRTZ_hideCommands")
+ )
+;
+/*! [Snipet__comment__key_hideCommands__] */
+
+
+/*! [Snipet__comment__mrtz_condition__] */
+mrtz_condition =
+  key_condition
+ >>
+  condition_value
+;
+/*! [Snipet__comment__mrtz_condition__] */
+
+
+/*! [Snipet__comment__key_condition__] */
+key_condition =
+ (
+   str_p("@MRTZ_Condition")
+  |
+   str_p("\MRTZ_Condition")
+ )
+;
+/*! [Snipet__comment__key_condition__] */
+
+
+/*! [Snipet__comment__condition_value__] */
+condition_value =
+  (
+    anychar_p
+   -
+    space_p
+  )
+ >>
+   *
+    (
+      anychar_p
+     -
+      (
+        ch_p('\n')
+       |
+        ch_p('\r')
+      )
+    )
+ >>
+  eol_p
+;
+/*! [Snipet__comment__condition_value__] */
+
+
+/*! [Snipet__comment__mrtz_defineCondition__] */
+mrtz_defineCondition =
+  key_defineCondition
+ >>
+  condition_value
+ >>
+   !
+    (
+      condition_value
+     >>
+      condition_value
+    )
+;
+/*! [Snipet__comment__mrtz_defineCondition__] */
+
+
+/*! [Snipet__comment__key_defineCondition__] */
+key_defineCondition =
+ (
+   str_p("@MRTZ_defineCondition")
+  |
+   str_p("\MRTZ_defineCondition")
+ )
+;
+/*! [Snipet__comment__key_defineCondition__] */
+
+
+/*! [Snipet__comment__mrtz_undefineCondition__] */
+mrtz_undefineCondition =
+  key_undefineCondition
+ >>
+  condition_value
+;
+/*! [Snipet__comment__mrtz_undefineCondition__] */
+
+
+/*! [Snipet__comment__key_undefineCondition__] */
+key_undefineCondition =
+ (
+   str_p("@MRTZ_undefineCondition")
+  |
+   str_p("\MRTZ_undefineCondition")
+ )
+;
+/*! [Snipet__comment__key_undefineCondition__] */
+
+
+/*! [Snipet__comment__mrtz_commentModel__] */
+mrtz_commentModel =
+  key_commentModel
+ >>
+  modelComment
+;
+/*! [Snipet__comment__mrtz_commentModel__] */
+
+
+/*! [Snipet__comment__key_commentModel__] */
+key_commentModel =
+ (
+   str_p("@MRTZ_commentModel")
+  |
+   str_p("\MRTZ_commentModel")
+ )
+;
+/*! [Snipet__comment__key_commentModel__] */
+
+
+/*! [Snipet__comment__modelComment__] */
+modelComment =
+  str_p("CommentBehind")
+ |
+  str_p("CommentBefore")
+ |
+  str_p("CommentDefault")
+;
+/*! [Snipet__comment__modelComment__] */
+
+
+/*! [Snipet__comment__mrtz_changeSwitch__] */
+mrtz_changeSwitch =
+  key_changeSwitch
+ >>
+  formSwitch
+;
+/*! [Snipet__comment__mrtz_changeSwitch__] */
+
+
+/*! [Snipet__comment__key_changeSwitch__] */
+key_changeSwitch =
+ (
+   str_p("@MRTZ_changeSwitch")
+  |
+   str_p("\MRTZ_changeSwitch")
+ )
+;
+/*! [Snipet__comment__key_changeSwitch__] */
+
+
+/*! [Snipet__comment__formSwitch__] */
+formSwitch =
+  str_p("Table")
+ |
+  str_p("List")
+;
+/*! [Snipet__comment__formSwitch__] */
+
+
+/*! [Snipet__comment__mrtz_ifElseChain__] */
+mrtz_ifElseChain =
+ key_ifElseChain
+;
+/*! [Snipet__comment__mrtz_ifElseChain__] */
+
+
+/*! [Snipet__comment__key_ifElseChain__] */
+key_ifElseChain =
+ (
+   str_p("@MRTZ_ifElseChain")
+  |
+   str_p("\MRTZ_ifElseChain")
+ )
+;
+/*! [Snipet__comment__key_ifElseChain__] */
+
+
+/*! [Snipet__comment__mrtz_insertLink__] */
+mrtz_insertLink =
+  key_insertLink
+ >>
+  destinationAnchor
+ >>
+   !
+    (
+      file_name
+     >>
+       !
+        titel
+    )
+;
+/*! [Snipet__comment__mrtz_insertLink__] */
+
+
+/*! [Snipet__comment__key_insertLink__] */
+key_insertLink =
+ (
+   str_p("@MRTZ_insertLink")
+  |
+   str_p("\MRTZ_insertLink")
+ )
+;
+/*! [Snipet__comment__key_insertLink__] */
+
+
+/*! [Snipet__comment__destinationAnchor__] */
+destinationAnchor =
+ name
+;
+/*! [Snipet__comment__destinationAnchor__] */
+
+
+/*! [Snipet__comment__mrtz_automaticLink__] */
+mrtz_automaticLink =
+  key_automaticLink
+ >>
+  onOff
+;
+/*! [Snipet__comment__mrtz_automaticLink__] */
+
+
+/*! [Snipet__comment__key_automaticLink__] */
+key_automaticLink =
+ (
+   str_p("@MRTZ_automaticLink")
+  |
+   str_p("\MRTZ_automaticLink")
+ )
+;
+/*! [Snipet__comment__key_automaticLink__] */
+
+
+/*! [Snipet__comment__onOff__] */
+onOff =
+  str_p("On")
+ |
+  str_p("Off")
+;
+/*! [Snipet__comment__onOff__] */
+
+
+/*! [Snipet__comment__mrtz_describe__] */
+mrtz_describe =
+  key_describe
+ >>
+  PartName
+;
+/*! [Snipet__comment__mrtz_describe__] */
+
+
+/*! [Snipet__comment__key_describe__] */
+key_describe =
+ (
+   str_p("@MRTZ_describe")
+  |
+   str_p("\MRTZ_describe")
+ )
+;
+/*! [Snipet__comment__key_describe__] */
+
+
+/*! [Snipet__comment__PartName__] */
+PartName =
+   !
+    ch_p('~')
+ >>
+  name
+;
+/*! [Snipet__comment__PartName__] */
+
+
+/*! [Snipet__comment__word__] */
+word =
+  *
+   (
+     anychar_p
+    -
+     space_p
+   )
+;
+/*! [Snipet__comment__word__] */
+
+
+/*! [Snipet__comment__description__] */
+description =
+  (
+    word
+   -
+    key_describe
+  )
+ >>
+   *
+    (
+      space_p
+     >>
+       *
+        space_p
+     >>
+      (
+        word
+       -
+        key_describe
+      )
+    )
+;
+/*! [Snipet__comment__description__] */
+
+
+/*! [Snipet__comment__mrtz_checkCompilerSwitch__] */
+mrtz_checkCompilerSwitch =
+  key_checkCompilerSwitch
+ >>
+   !
+    (
+      off
+     |
+      (
+        modeChCoSw
+       >>
+         !
+          (
+           list
+          )
+      )
+     |
+      switchTableOnly
+     |
+      (
+        vari
+       >>
+        number
+       >>
+        titel
+      )
+    )
+;
+/*! [Snipet__comment__mrtz_checkCompilerSwitch__] */
+
+
+/*! [Snipet__comment__key_checkCompilerSwitch__] */
+key_checkCompilerSwitch =
+ (
+   str_p("@MRTZ_checkCompilerSwitch")
+  |
+   str_p("\MRTZ_checkCompilerSwitch")
+ )
+;
+/*! [Snipet__comment__key_checkCompilerSwitch__] */
+
+
+/*! [Snipet__comment__off__] */
+off =
+ str_p("Off")
+;
+/*! [Snipet__comment__off__] */
+
+
+/*! [Snipet__comment__modeChCoSw__] */
+modeChCoSw =
+  str_p("SolveOff_TableOff")
+ |
+  str_p("SolveOn_TableOff")
+ |
+  str_p("SolveOff_TableOn")
+ |
+  str_p("SolveOn_TableOn")
+;
+/*! [Snipet__comment__modeChCoSw__] */
+
+
+/*! [Snipet__comment__list__] */
+list =
+  numberList
+ |
+  bitList
+;
+/*! [Snipet__comment__list__] */
+
+
+/*! [Snipet__comment__numberList__] */
+numberList =
+  ch_p('(')
+ >>
+  number
+ >>
+   *
+    (
+      ch_p(';')
+     >>
+      number
+    )
+ >>
+  ch_p(')')
+;
+/*! [Snipet__comment__numberList__] */
+
+
+/*! [Snipet__comment__number__] */
+number =
+  range_p('1','9')
+ >>
+   *
+    range_p('0','9')
+;
+/*! [Snipet__comment__number__] */
+
+
+/*! [Snipet__comment__bitList__] */
+bitList =
+  ch_p('(')
+ >>
+  bit
+ >>
+   *
+    bit
+ >>
+  ch_p(')')
+;
+/*! [Snipet__comment__bitList__] */
+
+
+/*! [Snipet__comment__bit__] */
+bit =
+  ch_p('0')
+ |
+  ch_p('1')
+;
+/*! [Snipet__comment__bit__] */
+
+
+/*! [Snipet__comment__switchTableOnly__] */
+switchTableOnly =
+ str_p("SwitchTableOnly")
+;
+/*! [Snipet__comment__switchTableOnly__] */
+
+
+/*! [Snipet__comment__vari__] */
+vari =
+ str_p("Variant")
+;
+/*! [Snipet__comment__vari__] */
+
+
+/*! [Snipet__comment__mrtz_cmd__] */
+mrtz_cmd =
+ (
+   mrtz_beginBlock
+  |
+   mrtz_endBlock
+  |
+   mrtz_errorResponse
+  |
+   mrtz_showSource
+  |
+   mrtz_exclude
+  |
+   mrtz_include
+  |
+   mrtz_skip
+  |
+   mrtz_pointOut
+  |
+   mrtz_independent
+  |
+   mrtz_printComments
+  |
+   mrtz_printCommands
+  |
+   mrtz_hideComments
+  |
+   mrtz_hideCommands
+  |
+   mrtz_condition
+  |
+   mrtz_defineCondition
+  |
+   mrtz_undefineCondition
+  |
+   mrtz_commentModel
+  |
+   mrtz_changeSwitch
+  |
+   mrtz_ifElseChain
+  |
+   mrtz_insertLink
+  |
+   mrtz_automaticLink
+  |
+   mrtz_describe
+  |
+   mrtz_checkCompilerSwitch
+  |
+   str_p("@ENDMARKER")
+ )
+;
+/*! [Snipet__comment__mrtz_cmd__] */
+
+
+/*! [Snipet__comment__preComment__] */
+preComment =
+  space_p
+ -
+  (
+    ch_p('\n')
+   |
+    ch_p('\r')
+  )
+;
+/*! [Snipet__comment__preComment__] */
+
+
+/*! [Snipet__comment__directive__] */
+directive =
+  +
+   (
+     str_p("//-")
+    >>
+      *
+       (
+         anychar_p
+        -
+         (
+           ch_p('\n')
+          |
+           ch_p('\r')
+         )
+       )
+    >>
+     eol_p
+   )
+;
+/*! [Snipet__comment__directive__] */
+
+
+/*! [Snipet__comment__comment_cpp__] */
+comment_cpp =
+  +
+   (
+     (
+       str_p("//")
+      >>
+       (
+         anychar_p
+        -
+         (
+           ch_p('-')
+          |
+           ch_p('\n')
+          |
+           ch_p('\r')
+         )
+       )
+      >>
+        *
+         (
+           anychar_p
+          -
+           (
+             ch_p('\n')
+            |
+             ch_p('\r')
+           )
+         )
+      >>
+       eol_p
+     )
+    |
+     (
+       str_p("//")
+      >>
+       eol_p
+     )
+   )
+;
+/*! [Snipet__comment__comment_cpp__] */
+
+
+/*! [Snipet__comment__open_std__] */
+open_std =
+ str_p("/*")
+;
+/*! [Snipet__comment__open_std__] */
+
+
+/*! [Snipet__comment__close_std__] */
+close_std =
+ str_p("*/")
+;
+/*! [Snipet__comment__close_std__] */
+
+
+/*! [Snipet__comment__comment_std__] */
+comment_std =
+ (
+   open_std
+  >>
+    *
+     (
+       anychar_p
+      -
+       close_std
+     )
+  >>
+   close_std
+ )
+;
+/*! [Snipet__comment__comment_std__] */
+
+
+/*! [Snipet__comment__comment__] */
+comment =
+ (
+   comment_cpp
+  |
+   comment_std
+  |
+   directive
+ )
+;
+/*! [Snipet__comment__comment__] */
+
+
+/*! [Snipet__comment__command__] */
+command =
+ mrtz_cmd
+;
+/*! [Snipet__comment__command__] */
+
+
+/*! [Snipet__comment__skip__] */
+skip =
+ space_p
+;
+/*! [Snipet__comment__skip__] */
+
+
+/*! [Snipet__comment__pass__] */
+pass =
+ (
+    *
+     preComment
+  >>
+   comment
+ )
+;
+/*! [Snipet__comment__pass__] */
+
+
+/*! [Snipet__comment__reserved__] */
+reserved =
+  str_p("*/")
+ |
+  str_p("/*")
+ |
+  str_p("//")
+ |
+  str_p("//-")
+ |
+  str_p("@ENDMARKER")
+ |
+  str_p("@MRTZ_Condition")
+ |
+  str_p("@MRTZ_automaticLink")
+ |
+  str_p("@MRTZ_beginBlock")
+ |
+  str_p("@MRTZ_changeSwitch")
+ |
+  str_p("@MRTZ_checkCompilerSwitch")
+ |
+  str_p("@MRTZ_commentModel")
+ |
+  str_p("@MRTZ_defineCondition")
+ |
+  str_p("@MRTZ_describe")
+ |
+  str_p("@MRTZ_endBlock")
+ |
+  str_p("@MRTZ_errorResponse")
+ |
+  str_p("@MRTZ_exclude")
+ |
+  str_p("@MRTZ_hideCommands")
+ |
+  str_p("@MRTZ_hideComments")
+ |
+  str_p("@MRTZ_ifElseChain")
+ |
+  str_p("@MRTZ_include")
+ |
+  str_p("@MRTZ_independent")
+ |
+  str_p("@MRTZ_insertLink")
+ |
+  str_p("@MRTZ_pointOut")
+ |
+  str_p("@MRTZ_printCommands")
+ |
+  str_p("@MRTZ_printComments")
+ |
+  str_p("@MRTZ_showSource")
+ |
+  str_p("@MRTZ_skip")
+ |
+  str_p("@MRTZ_undefineCondition")
+ |
+  str_p("CommentBefore")
+ |
+  str_p("CommentBehind")
+ |
+  str_p("CommentDefault")
+ |
+  str_p("LineNumber")
+ |
+  str_p("List")
+ |
+  str_p("NoLineNumber")
+ |
+  str_p("Off")
+ |
+  str_p("On")
+ |
+  str_p("SolveOff_TableOff")
+ |
+  str_p("SolveOff_TableOn")
+ |
+  str_p("SolveOn_TableOff")
+ |
+  str_p("SolveOn_TableOn")
+ |
+  str_p("SwitchTableOnly")
+ |
+  str_p("Table")
+ |
+  str_p("Variant")
+ |
+  str_p("WaitOff_ScriptOffOff")
+ |
+  str_p("WaitOff_ScriptOffOn")
+ |
+  str_p("WaitOn_ScriptOffOff")
+ |
+  str_p("WaitOn_ScriptOffOn")
+ |
+  str_p("\MRTZ_Condition")
+ |
+  str_p("\MRTZ_automaticLink")
+ |
+  str_p("\MRTZ_beginBlock")
+ |
+  str_p("\MRTZ_changeSwitch")
+ |
+  str_p("\MRTZ_checkCompilerSwitch")
+ |
+  str_p("\MRTZ_commentModel")
+ |
+  str_p("\MRTZ_defineCondition")
+ |
+  str_p("\MRTZ_describe")
+ |
+  str_p("\MRTZ_endBlock")
+ |
+  str_p("\MRTZ_errorResponse")
+ |
+  str_p("\MRTZ_exclude")
+ |
+  str_p("\MRTZ_hideCommands")
+ |
+  str_p("\MRTZ_hideComments")
+ |
+  str_p("\MRTZ_ifElseChain")
+ |
+  str_p("\MRTZ_include")
+ |
+  str_p("\MRTZ_independent")
+ |
+  str_p("\MRTZ_insertLink")
+ |
+  str_p("\MRTZ_pointOut")
+ |
+  str_p("\MRTZ_printCommands")
+ |
+  str_p("\MRTZ_printComments")
+ |
+  str_p("\MRTZ_showSource")
+ |
+  str_p("\MRTZ_skip")
+ |
+  str_p("\MRTZ_undefineCondition")
+ |
+  str_p("horizontal")
+ |
+  str_p("vertical")
+;
+/*! [Snipet__comment__reserved__] */
+
+

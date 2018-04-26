@@ -1,0 +1,152 @@
+/*! [Snipet__Context__Ignor__] */
+Ignor =
+  (
+    ch_p(''')
+   >>
+    ch_p('\')
+   >>
+    ch_p('"')
+   >>
+    ch_p(''')
+  )
+ |
+  (
+    ch_p('"')
+   >>
+    ch_p('\')
+   >>
+    ch_p('"')
+   >>
+    ch_p('"')
+  )
+ |
+  (
+    ch_p('"')
+   >>
+    ch_p('\')
+   >>
+    ch_p('\')
+   >>
+    ch_p('"')
+  )
+ |
+  (
+    ch_p(''')
+   >>
+    ch_p('"')
+   >>
+    ch_p(''')
+  )
+ |
+  str_p("\\\\")
+ |
+  (
+    ch_p('\')
+   >>
+    ch_p('"')
+  )
+;
+/*! [Snipet__Context__Ignor__] */
+
+
+/*! [Snipet__Context__String_onOff__] */
+String_onOff =
+ ch_p('"')
+;
+/*! [Snipet__Context__String_onOff__] */
+
+
+/*! [Snipet__Context__CommentC_on__] */
+CommentC_on =
+ str_p("/*")
+;
+/*! [Snipet__Context__CommentC_on__] */
+
+
+/*! [Snipet__Context__CommentC_off__] */
+CommentC_off =
+ str_p("*/")
+;
+/*! [Snipet__Context__CommentC_off__] */
+
+
+/*! [Snipet__Context__CommentCpp_on__] */
+CommentCpp_on =
+ str_p("//")
+;
+/*! [Snipet__Context__CommentCpp_on__] */
+
+
+/*! [Snipet__Context__CommentCpp_off__] */
+CommentCpp_off =
+ (
+   (
+     ch_p('\r')
+    >>
+      !
+       ch_p('\n')
+   )
+  |
+   ch_p('\n')
+ )
+;
+/*! [Snipet__Context__CommentCpp_off__] */
+
+
+/*! [Snipet__Context__Default__] */
+Default =
+ anychar_p
+;
+/*! [Snipet__Context__Default__] */
+
+
+/*! [Snipet__Context__skip__] */
+skip =
+  space_p
+ -
+  (
+    (
+      ch_p('\r')
+     >>
+       !
+        ch_p('\n')
+    )
+   |
+    ch_p('\n')
+  )
+;
+/*! [Snipet__Context__skip__] */
+
+
+/*! [Snipet__Context__pass__] */
+pass =
+ (
+   Ignor
+  |
+   String_onOff
+  |
+   CommentC_on
+  |
+   CommentC_off
+  |
+   CommentCpp_on
+  |
+   CommentCpp_off
+ )
+;
+/*! [Snipet__Context__pass__] */
+
+
+/*! [Snipet__Context__reserved__] */
+reserved =
+  str_p("*/")
+ |
+  str_p("/*")
+ |
+  str_p("//")
+ |
+  str_p("\\\\")
+;
+/*! [Snipet__Context__reserved__] */
+
+

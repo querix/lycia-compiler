@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://namespaces.querix.com/2011/fglForms">
+	<actions>
+		<action identifier="accept" text="OK">
+			<accelerator1 keyValue="Return"/>
+			<accelerator2 keyValue="Enter"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="cancel" text="Cancel" validate="false">
+			<accelerator1 keyValue="Escape"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="insert" text="Insert">
+			<accelerator1 keyValue="F3"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="append" text="Append">
+			<accelerator1 keyValue="F3" controlModifier="true"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="update" text="Update"/>
+		<action identifier="delete" text="Delete" validate="false">
+			<accelerator1 keyValue="F4"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="help" text="Help" validate="false">
+			<accelerator1 keyValue="F1"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="close" text="Close" validate="false">
+			<accelerator1 keyValue="F4" altModifier="true"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="interrupt" text="Interrupt">
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="next" text="Next" comment="Next record">
+			<actionimage uri="qx://embedded/goforw"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="previous" text="Previous" comment="Previous record">
+			<actionimage uri="qx://embedded/gorev"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="first" text="First" comment="First record">
+			<actionimage uri="qx://embedded/gobegin"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="last" text="Last" comment="Last record">
+			<actionimage uri="qx://embedded/goend"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="print" text="Print" comment="Print">
+			<actionimage uri="qx://embedded/printer"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="find" text="Find" comment="Search">
+			<actionimage uri="qx://embedded/find"/>
+			<accelerator1 keyValue="F" controlModifier="true"/>
+		</action>
+		<action identifier="findnext" text="Find Next" comment="Search">
+			<actionimage uri="qx://embedded/find"/>
+			<accelerator1 keyValue="G" controlModifier="true"/>
+		</action>
+		<action identifier="editcopy" text="Copy" comment="Copy">
+			<actionimage uri="qx://embedded/copy"/>
+			<accelerator1 keyValue="C" controlModifier="true"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="editcut" text="Cut" comment="Cut">
+			<actionimage uri="qx://embedded/cut"/>
+			<accelerator1 keyValue="X" controlModifier="true"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="editpaste" text="Paste" comment="Paste">
+			<actionimage uri="qx://embedded/paste"/>
+			<accelerator1 keyValue="V" controlModifier="true"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="nextfield" text="Next Field">
+			<accelerator1 keyValue="Tab"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="prevfield" text="Previous Field">
+			<accelerator1 keyValue="Tab" shiftModifier="true"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="nextrow" text="Next">
+			<actionimage uri="qx://embedded/goforw"/>
+			<accelerator1 keyValue="Down"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="prevrow" text="Previous">
+			<actionimage uri="qx://embedded/gorev"/>
+			<accelerator1 keyValue="Up"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="firstrow" text="First">
+			<actionimage uri="qx://embedded/gobegin"/>
+			<accelerator1 keyValue="Home"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="lastrow" text="Last">
+			<actionimage uri="qx://embedded/goend"/>
+			<accelerator1 keyValue="End"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="nextpage" text="Next Page">
+			<accelerator1 keyValue="Next"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="prevpage" text="Previous Page">
+			<accelerator1 keyValue="Prior"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="nexttab" text="Next Folder Tab">
+			<accelerator1 keyValue="Tab" controlModifier="true"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="prevtab" text="Previous Folder Tab">
+			<accelerator1 keyValue="Tab" controlModifier="true" shiftModifier="true"/>
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+		<action identifier="dialogtouched" validate="false">
+			<showincontextmenu>No</showincontextmenu>
+		</action>
+	</actions>
+	<screenrecords/>
+	<phantomfields/>
+	<imageid uri=""/>
+</form>
+

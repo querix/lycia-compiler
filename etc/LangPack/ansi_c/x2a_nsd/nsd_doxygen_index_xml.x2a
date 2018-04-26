@@ -1,0 +1,327 @@
+
+/*[@useForSnipet(doxygenindex,doxygenindex_read),
+                   @xmlCreate(DoxygenIndex,__SELF__)
+                 ][@xmlCreate(DoxygenIndex,compound)
+                 ]*/
+doxygenindex2File:[@useForSnipet(doxygenindex,doxygenindexFileName),
+                   @stackPush(__DESTINATION__,__SELF__)
+                 ][@useForSnipet(doxygenindex,doxygenindex_call),
+                   @stackPush(FileContent,__SELF__)
+                 ][@stackPop(__DESTINATION__, FileContent)]|
+
+doxygenindexFileName:[@stackRead("",__DestinationPath__)]DoxygenIndex.xml|
+
+doxygenindex_read:[@stackRead("", FileContent)]|
+
+
+
+
+doxygenindex_call:
+[<N0>]<DoxygenIndex>
+[<I1>] [@snipet(compound)] 
+[<D1>]</DoxygenIndex>|
+
+
+/*[@xmlCreate(Test/subtest/subsubtest,Test)]
+Test:<i><Test><o>Test</o></Test><Test><u>Test</u></Test></i>|
+*/
+
+/*@useForSnipet(name,doxygenIndexTag),*/
+compound:[@useForSnipet(compound,doxygenCompoundID),     @stackPush(_DoxygenCompoundID_,__SELF__)
+        ][@useForSnipet(compound,doxygenCompoundDetail), @xmlCreate(_DoxygenCompoundID_,__SELF__)
+        ][@useForSnipet(compound,doxygenCompoundCreate), @snipet(__SELF__)
+        ][@snipet(member)
+        ][@stackClear(_DoxygenCompoundID_)
+        ]|
+doxygenCompoundID:[@attribute(refid)]|
+
+doxygenCompoundCreate:
+[<N0>] <[@attribute(refid)] kind="[@attribute(kind)]" >
+[<I1>]  [%doxygenCompoundDetail%]
+[<D1>] </[@attribute(refid)]>
+|
+
+
+doxygenCompoundDetail:
+[<N0>] <Name   id="[@text(name)]" />
+[<N0>] <File   id="[@stackRead("",_DoxygenCompoundID_)]" />
+[<N0>] <Anchor id="[@attribute(refid)]" />
+|
+
+
+/*@useForSnipet(name,doxygenIndexTag),*/
+member:[@useForSnipet(member, doxygenMemberID),     @stackPush(_DoxygenMemberID_,__SELF__)
+      ][@useForSnipet(member, doxygenMemberDetail), @xmlCreate(_DoxygenMemberID_,__SELF__)
+      ][@useForSnipet(member, doxygenMemberCreate), @snipet(__SELF__)
+      ][@stackClear(_DoxygenMemberID_)
+      ]|
+      
+doxygenMemberID:[@attribute(refid)]|
+
+doxygenMemberDetail:
+[<N0>]    <Name   id="[@text(name)]" />
+[<N0>]    <File   id="[@stackRead("",_DoxygenCompoundID_)]" />
+[<N0>]    <Anchor id="[@replace(_DoxygenCompoundID_,""),@replace("_1",""), @attribute(refid)]" />
+|
+
+doxygenMemberCreate:
+[<N0>]   <[@attribute(refid)] kind="[@attribute(kind)]" parent="[@stackRead("",_DoxygenCompoundID_)]">
+[<N0>]    [%doxygenMemberDetail%]
+[<N0>]   </[@attribute(refid)]>
+|
+
+
+
+
+/*replace most of operators by a name to get valide tag-names*/
+doxygenSrcNameTag:_[
+
+                 @replace("@",    "__UNKNOWN__"),
+
+                 @replace("()",    "-Para-"),
+                 @replace(",",     "-Komma-"),
+                 @replace(".*",    "-DotStar-"),
+                 @replace(".",     "-Dot-"),
+                 @replace("?:",    "-Cond-"),
+                 @replace("::",    "-QuadDot-"),
+                 @replace(":",     "-Init-"),
+                 @replace("~",     "__TILDE__"),
+                 @replace(ARRAY,   "-Array-"),
+                 
+                 @replace("+=",    "-PlusAssign-"),
+                 @replace("++",    "-Inc-"),
+                 @replace("+",     "-Plus-"),
+                 @replace("-=",    "-MinusAssign-"),
+                 @replace("--",    "-Dec-"),
+                 @replace("->*",   "-PointerStar-"),
+                 @replace("->",    "-Pointer-"),
+
+                 @replace("*=",    "-MulAssign-"),
+                 @replace("*",     "-Star-"),
+                 @replace("/=",    "-DivAssign-"),
+                 @replace("/",     "-Div-"),
+                 @replace("%=",    "-ModAssign-"),
+                 @replace("%",     "-Mod-"),
+                 @replace("!=",    "-NotEqual-"),
+                 @replace("!",     "-Not-"),
+                 @replace("&=",    "-AndAssign-"),
+                 @replace("&&",    "-AndLog-"),
+                 @replace("&",     "-And-"),
+                 @replace(OrAssign,"-OrAssign-"),
+                 @replace(OrLog,   "-OrLog-"),
+                 @replace(Or,      "-Or-"),
+                 @replace("^=",    "-XorAssign-"),
+                 @replace("^",     "-XorLog-"),
+
+
+                 @replace("==","-Equal-"),
+                 @replace("=", "-Assign-"),
+
+                 @replace(">>=","-ShiftRightAssign-"),
+                 @replace(">>", "-ShiftRight-"),
+                 @replace(">=", "-GreaterEqual-"),
+                 @replace(">=", "-Greater-"),
+
+                 @replace("<<=","-ShiftLeftAssign-"),
+                 @replace("<<", "-ShiftLeft-"),
+                 @replace("<=", "-LessEqual-"),
+                 @replace("<=", "-Less-"),
+
+
+                 @text(__SELF__)]_|
+                
+
+
+
+
+
+compounddef:[@useForSnipet(compounddef,compoundKind),@stackPush(_CompoundKind_,__SELF__)
+           ][@ifStackEqual(file,_CompoundKind_),   @stackPush(_CompoundName_,compoundname)
+           ][@ifStackEqual(file,_CompoundKind_),   @stackPush(_ProgramListing_,programlisting)
+           ][@ifStackEqual(file,_CompoundKind_),   @useForSnipet(compounddef,compoundAssemble), 
+                                                   @xmlCreate(DoxygenSource,__SELF__)
+           ][@stackClear(_CompoundKind_,_CompoundName_,_ProgramListing_)]|
+
+compoundKind:[@attribute(kind)]|
+
+
+compoundname:[@text(__SELF__)]|
+
+
+programlisting:[@snipet(codeline)]|
+
+/*[@stackClear(_RefFlag_)][@stackClear(_LineParts_,_RefFlag_])[@stackPush(_LineParts_,highlight)
+        ],@stackReadAll(__LIVEOUT__,_RefRead_)[@useForSnipet(codeline,printLine),@stackPush(_line_,__SELF__),@stackRead(__LIVEOUT__,_line_)
+        ][@stackRead(__LIVEOUT__,_Counter_)
+        ]*/
+codeline:[@stackClear(_RefRead_)
+        ][@useForSnipet(highlight,highlightTest),@snipet(highlight)
+        ][@stackPushSize(_RefRead_,_Counter_)
+        ][@ifStackUnequal("-1",_Counter_),@useForSnipet(codeline,codelineWraper),
+                                          @snipet(__SELF__),
+        ][@stackClear(_Counter_,_RefRead_)
+        ]|
+
+/*_[@text(__SELF__)]_*/
+highlightTest:[@useForSnipet(ref,refFlag),@stackPush(_RefRead_,ref)]|
+refFlag:[@text(__SELF__)]|
+
+printLine:-[@text(__SELF__)]-|
+
+/* [@stackRead("",_RefRead_)][@stackRead(__LIVEOUT__,_LineParts_)]
+*/
+codelineWraper:
+[<N0>] <CL_[@attribute(lineno)]>
+[<I1>]  [@snipet(highlight)]
+[<D1>] </CL_[@attribute(lineno)]>
+|
+
+
+highlight:[@useForSnipet(ref,ref_Read),@snipet(ref)]|
+
+ref_Read:[@useForSnipet(ref, ref_ID),     @stackPush(_RefID_,__SELF__)
+        ][@useForSnipet(ref, ref_Create), @snipet(__SELF__)
+        ][@stackClear(_RefID_)
+        ]|
+
+ref_ID:[@attribute(refid)]|
+
+/**/
+ref_Create:
+[<N0>] <[@useForSnipet(ref,doxygenSrcNameTag),@snipet(__SELF__)
+       ] refid="[@attribute(refid)
+       ]" kindref="[@attribute(kindref)
+       ]" external="[@attribute(external)
+       ]" tooltip="[@attribute(tooltip)]">
+[<I1>]  [@useForSnipet(_RefID_,doxygenRef),@xmlSnipet(_RefID_)]
+[<D1>] </[@useForSnipet(ref,doxygenSrcNameTag),@snipet(__SELF__)]>|
+
+doxygenRef:
+[@useForSnipet(Name,  ref_Name),  @snipet(Name)] 
+[@useForSnipet(File,  ref_File),  @snipet(File)] 
+[@useForSnipet(Anchor,ref_Anchor),@snipet(Anchor)] 
+|
+
+ref_Name:
+[<N0>] <Name   id="[@attribute(id)]" />
+|
+ref_File:
+[<N0>] <File   id="[@attribute(id)]" />
+|
+ref_Anchor:
+[<N0>] <Anchor   id="[@attribute(id)]" />
+|
+
+
+compoundAssemble:
+[<N0>] <[@stackRead("",_CompoundName_)]>
+[<I1>]  [@stackRead("",_ProgramListing_)]
+[<D1>] </[@stackRead("",_CompoundName_)]>
+|
+
+
+
+
+printInternalID:[%ID_Macro%]|
+
+
+
+
+
+
+ID_print:<font color="#000000"><b><i>[%ID_Macro%]</i></b></font>|useAlsoFor(ID)
+
+/**/
+ID_Macro:[@replace(__RESET__),@useForSnipet(ID,doxygenSrcNameTag),  @stackPush(_XmlTag_,__SELF__)
+        ][@replace(__RESET__),@useForSnipet(ID,getIdPath),          @stackPush(_XmlPath_,__SELF__)
+        ][@replace(__RESET__),@useForSnipet(ID,getIdLink),          @stackPush(_IdLink_,__SELF__)
+        ][@ifStackUnequal("",_IdLink_),@replace(__RESET__),@useForSnipet(ID,getLinkedID),@snipet(__SELF__)
+        ][@ifStackEqual("",_IdLink_),@text(__SELF__)
+        ][@stackClear(_XmlTag_,_XmlPath_,_IdLink_,)
+        ]|
+
+
+owned_ID_print:<font color="#000000"><b><i>[%owned_ID_Macro%]</i></b></font>|useAlsoFor(owned_ID)
+
+/**/
+owned_ID_Macro:[@replace(__RESET__),@useForSnipet(owned_ID,doxygenSrcNameTag),
+                @stackPush(_XmlTag_,__SELF__)
+              ][@replace(__RESET__),@useForSnipet(owned_ID,getIdPath),  
+                @stackPush(_XmlPath_,__SELF__)
+              ][@replace(__RESET__),@useForSnipet(owned_ID,getIdLink), 
+                @stackPush(_IdLink_,__SELF__)
+              ][@ifStackUnequal("",_IdLink_),@replace(__RESET__),
+                @useForSnipet(owned_ID,getLinkedID),@snipet(__SELF__)
+              ][@ifStackEqual("",_IdLink_),@text(__SELF__)
+              ][@stackClear(_XmlTag_,_XmlPath_,_IdLink_,)
+              ]|
+
+
+
+
+
+
+
+getIdPath:DoxygenSource/[@replace("_cpp.xml",".cpp"),@replace("_c.xml",".c"),@stackRead("",__SOURCENAME__)
+                   ]/CL_[@attribute(L)
+                      ]/[@stackRead("",_XmlTag_)]|
+                      
+/**/
+getIdLink:[@useForSnipet(_XmlTag_,getDoxygenLink), @xmlSnipet(_XmlPath_,__TOLERANT__)]|
+
+ 
+/*<a href="FILE#ANCHOR"></a>*/
+getLinkedID:<a href="[@useForSnipet(_XmlTag_,getDoxygenLink),
+                      @xmlSnipet(_XmlPath_)
+                  ]">[@text(__SELF__)]</a>|
+                  
+/*@useAlsoFor(getLinkedID)*/
+getLinkedID_Restore:<a href="[@useForSnipet(_XmlTag_,getDoxygenLink),
+                      @xmlSnipet(_XmlPath_)
+                  ]">[@text(__SELF__)]</a>|
+                                            
+
+
+/* 
+getDoxygenLink:[@useForSnipet(File,  getDoxygenLink_File),  @snipet(File)
+             ].html#[@useForSnipet(Anchor,getDoxygenLink_Anchor),@snipet(Anchor)]|
+*/
+getDoxygenLink:[@useForSnipet(File,  getDoxygenLink_File),  @stackPush(_LinkFile_,   File)
+              ][@useForSnipet(Anchor,getDoxygenLink_Anchor),@stackPush(_LinkAnchor_,Anchor)
+              ][@stackRead("",_LinkFile_)].html#[@stackRead("",_LinkAnchor_)
+              ][@stackClear(_LinkFile_,_LinkAnchor_)]|
+
+
+getDoxygenLink_File:[@attribute(id)]|
+getDoxygenLink_Anchor:[@attribute(id)]|
+
+
+getUnLinkedID:[@text(__SELF__)]|     
+mrtz_automaticLink:[@useForSnipet(mrtz_automaticLink,mrtz_automaticLink_OnOff),
+                    @stackPush(__AutomatikLinkOnOff__,__SELF__)
+                  ][@ifStackEqual(On,__AutomatikLinkOnOff__),
+                    @useForSnipetDownwards(getLinkedID,getLinkedID_Restore),
+                    @snipet(__block__)                      
+                  ][@ifStackEqual(Off,__AutomatikLinkOnOff__),
+                    @useForSnipetDownwards(getLinkedID,getUnLinkedID),
+                    @snipet(__block__)                      
+                  ]|
+
+mrtz_automaticLink_OnOff:[@attribute(onOff)]|
+
+mrtz_insertLink:
+[<N0>] <TR>
+[<I1>]  <TD>
+[<I1>]   <a href="[@replace(" ",""),@attribute(file_name)]#[@replace(" ",""),@attribute(destinationAnchor)]">
+[<I1>]    <b>See also:</b> [@attribute(titel)]
+[<D1>]   </a>
+[<D1>]  </TD>
+[<D1>] </TR>
+[<N0>] [@snipet(__block__)]|
+
+
+
+/*
+                      @xmlDelete(DoxygenSource/action.cpp/CL_34/action-Dot-h/File),
+                      @xmlSave(Excluded,nsd/Excluded.xml)*/
+__LastSnippetOfAll__:[@xmlSave(DoxygenSource,nsd/DoxygenSource.xml),]|

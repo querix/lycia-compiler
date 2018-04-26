@@ -1,0 +1,204 @@
+<Content>
+    <Rule value="CommentC_off" uses="" usedBy=",pass,">
+        <Expression>
+            <String value="*/" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="1" characterLevel="not phrased">
+            <UsedBy_Terminated value="pass" />
+        </Properties>
+        <Called />
+        <Caller>
+            <T v="pass" />
+        </Caller>
+    </Rule>
+    <Rule value="CommentC_on" uses="" usedBy=",pass,">
+        <Expression>
+            <String value="/*" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="1" characterLevel="not phrased">
+            <UsedBy_Terminated value="pass" />
+        </Properties>
+        <Called />
+        <Caller>
+            <T v="pass" />
+        </Caller>
+    </Rule>
+    <Rule value="CommentCpp_off" uses="" usedBy=",pass,">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <Sub>
+                        <Sequence>
+                            <Character_Single value="\r" />
+                            <ZeroOrOneOf>
+                                <Character_Single value="\n" />
+                            </ZeroOrOneOf>
+                        </Sequence>
+                    </Sub>
+                    <Character_Single value="\n" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="1" characterLevel="not phrased">
+            <UsedBy_Terminated value="pass" />
+        </Properties>
+        <Called />
+        <Caller>
+            <T v="pass" />
+        </Caller>
+    </Rule>
+    <Rule value="CommentCpp_on" uses="" usedBy=",pass,">
+        <Expression>
+            <String value="//" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="1" characterLevel="not phrased">
+            <UsedBy_Terminated value="pass" />
+        </Properties>
+        <Called />
+        <Caller>
+            <T v="pass" />
+        </Caller>
+    </Rule>
+    <Rule value="Default" uses="" usedBy="">
+        <Expression>
+            <Primitive value="anychar_p" />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="0" characterLevel="phrased" />
+        <Called />
+        <Caller />
+    </Rule>
+    <Rule value="Ignor" uses="" usedBy=",pass,">
+        <Expression>
+            <OrInclusive>
+                <Sub>
+                    <Sequence>
+                        <Character_Single value="\&apos;" />
+                        <Character_Single value="\\" />
+                        <Character_Single value='\&quot;' />
+                        <Character_Single value="\&apos;" />
+                    </Sequence>
+                </Sub>
+                <Sub>
+                    <Sequence>
+                        <Character_Single value='\&quot;' />
+                        <Character_Single value="\\" />
+                        <Character_Single value='\&quot;' />
+                        <Character_Single value='\&quot;' />
+                    </Sequence>
+                </Sub>
+                <Sub>
+                    <Sequence>
+                        <Character_Single value='\&quot;' />
+                        <Character_Single value="\\" />
+                        <Character_Single value="\\" />
+                        <Character_Single value='\&quot;' />
+                    </Sequence>
+                </Sub>
+                <Sub>
+                    <Sequence>
+                        <Character_Single value="\&apos;" />
+                        <Character_Single value='\&quot;' />
+                        <Character_Single value="\&apos;" />
+                    </Sequence>
+                </Sub>
+                <String value="\\\\" />
+                <Sub>
+                    <Sequence>
+                        <Character_Single value="\\" />
+                        <Character_Single value='\&quot;' />
+                    </Sequence>
+                </Sub>
+            </OrInclusive>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="1" characterLevel="not phrased">
+            <UsedBy_Terminated value="pass" />
+        </Properties>
+        <Called />
+        <Caller>
+            <T v="pass" />
+        </Caller>
+    </Rule>
+    <Rule value="pass" uses="CommentC_off,CommentC_on,CommentCpp_off,CommentCpp_on,Ignor,String_onOff" usedBy="">
+        <Expression>
+            <Sub>
+                <OrInclusive>
+                    <Terminating_Rule value="Ignor" />
+                    <Terminating_Rule value="String_onOff" />
+                    <Terminating_Rule value="CommentC_on" />
+                    <Terminating_Rule value="CommentC_off" />
+                    <Terminating_Rule value="CommentCpp_on" />
+                    <Terminating_Rule value="CommentCpp_off" />
+                </OrInclusive>
+            </Sub>
+        </Expression>
+        <Properties leafLevel="1" rootLevel="0" characterLevel="not phrased">
+            <Uses_Terminated value="CommentC_off" />
+            <Uses_Terminated value="CommentC_on" />
+            <Uses_Terminated value="CommentCpp_off" />
+            <Uses_Terminated value="CommentCpp_on" />
+            <Uses_Terminated value="Ignor" />
+            <Uses_Terminated value="String_onOff" />
+        </Properties>
+        <Called>
+            <T v="CommentC_off" />
+            <T v="CommentC_on" />
+            <T v="CommentCpp_off" />
+            <T v="CommentCpp_on" />
+            <T v="Ignor" />
+            <T v="String_onOff" />
+        </Called>
+        <Caller />
+    </Rule>
+    <Rule value="reserved" usedBy="" uses="">
+        <Expression>
+            <OrInclusive>
+                <String value="*/" />
+                <String value="/*" />
+                <String value="//" />
+                <String value="\\\\" />
+            </OrInclusive>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="0" characterLevel="not phrased" />
+        <Called />
+        <Caller />
+    </Rule>
+    <Rule value="skip" uses="" usedBy="">
+        <Expression>
+            <Exclusion>
+                <First>
+                    <Primitive value="space_p" />
+                </First>
+                <Second>
+                    <Sub>
+                        <OrInclusive>
+                            <Sub>
+                                <Sequence>
+                                    <Character_Single value="\r" />
+                                    <ZeroOrOneOf>
+                                        <Character_Single value="\n" />
+                                    </ZeroOrOneOf>
+                                </Sequence>
+                            </Sub>
+                            <Character_Single value="\n" />
+                        </OrInclusive>
+                    </Sub>
+                </Second>
+            </Exclusion>
+        </Expression>
+        <Properties leafLevel="0" rootLevel="0" characterLevel="not phrased" />
+        <Called />
+        <Caller />
+    </Rule>
+    <Rule value="String_onOff" uses="" usedBy=",pass,">
+        <Expression>
+            <Character_Single value='\&quot;' />
+        </Expression>
+        <Properties leafLevel="0" rootLevel="1" characterLevel="not phrased">
+            <UsedBy_Terminated value="pass" />
+        </Properties>
+        <Called />
+        <Caller>
+            <T v="pass" />
+        </Caller>
+    </Rule>
+</Content>

@@ -1,0 +1,206 @@
+
+
+
+
+
+
+
+
+
+preprocedure:
+[<N0>] <TR>
+[<I1>]  <TD bgcolor="#EFEFEF">
+[<I1>]         [@snipet(p_include,
+                                 p_pragma,
+                                 p_line,
+                                 p_error,
+                                 p_warning,
+                                 p_define,
+                                 p_undefine,
+                                 compilerSwitch,)]
+[<D1>]  </TD>
+[<D1>] </TR>|
+
+
+p_define_local:<font color="#8FAA0F"><i>[@text(Chr),@text(Str)]</i></font>
+[<N0>]               [@snipet(p_declarator)]
+[<N0>]               <TABLE border="0" width="100%">
+[<I1>]                [@useForSnipet(assignment_expression,p_assignment_expression),
+                       @snipet(declaration,if_stmt,switch_stmt,case_stmt,default_stmt,
+                               while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                               continue_stmt,break_stmt,return_stmt,
+                               expr_stmt,assignment_expression,compound_statement,
+                               p_text,p_stringize_literal,p_pasting_literal,)]
+[<N0>]                <TR>
+[<I1>]                 <TD align="right">[@snipet(Comment)]</TD>
+[<D1>]                </TR>
+[<D1>]               </TABLE>|
+
+
+independent_define:[ @useForSnipet(Variant,p_Variant_inddefine),@snipet(Variant)
+                  ][ @ifAbsent(Variant,p_NoVariant_inddefine)
+                  ]|useAlsoFor(p_define)
+
+p_Variant_inddefine:[@useForSnipet(Variant,p_VariantName),
+                     @stackPush(__VARIANTNAME__,__SELF__)
+                   ][@useForSnipet(Variant,independent_define_Data),@snipet(__SELF__)
+                   ][@stackClear(__VARIANTNAME__)]|
+/*@snipet(__SELF__),*/
+
+p_VariantName:<font color="#8FAA0F"><i>Variant: [@attribute(name)]</i></font>|
+
+
+
+p_NoVariant_inddefine:[@useForSnipet(p_define,p_NoVariantName),
+                       @stackPush(__VARIANTNAME__,__SELF__)
+                     ][@useForSnipet(p_define,independent_define_Data),@snipet(__SELF__)
+                     ][@stackClear(__VARIANTNAME__)]|
+/*@snipet(__SELF__),*/
+
+p_NoVariantName: |
+
+
+
+
+
+independent_define_Data:
+  [@useForSnipet(p_declarator,print_pdef_name),
+   @stackPush(DefineName,p_declarator),
+  ][@stackRead(__LIVEOUT__,DefineName)]
+[<N0>]   <TR>
+[<I1>]    <TD>
+[<I1>]     <br>
+[<N0>]     <br><a name="[@text(Chr),@text(Str)]"></a><br>
+[<N0>]     <br><h2><font color="#8FAA0F"><i>[@replace("_"," "),@text(Chr),@text(Str)] [@snipet(p_declarator)]</i></font> [@stackRead("",__VARIANTNAME__)]</h2><br>
+[<N0>]     <TABLE  border="2" cellspacing="0" cellpadding="0" width="100%" bgcolor="#EFEFEF">
+[<I1>]      <TR>
+[<I1>]       <TD>
+[<I1>]        <font color="#8FAA0F"><i>[@text(Chr),@text(Str)]</i></font>
+[<I1>]        [@text(p_declarator)]
+[<D1>]        <br><div align="right">[@snipet(Comment)]</div>
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<I1>]      [@useForSnipet(assignment_expression,p_assignment_expression),
+             @snipet(declaration,if_stmt,switch_stmt,case_stmt,default_stmt,
+                     while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                     continue_stmt,break_stmt,return_stmt,
+                     expr_stmt,assignment_expression,compound_statement,
+                     p_text,p_stringize_literal,p_pasting_literal,)]
+[<D1>]     </TABLE>
+[<N0>]     <br>
+[<D1>]    </TD>
+[<D1>]   </TR>|
+
+print_pdef_name0:[@useForSnipet(p_declarator,print_pdef_name2), @snipet(p_declarator)]|
+print_pdef_name: define  : [@text(Owner),@text(KeyChr),@text(ID),@text(operator_id)]|
+
+
+
+
+
+
+p_declarator:<font color="#0F3F8F"><i>[@text(ID)]</i></font>
+             <font color="#3F3F3F"><i>[@text(p_parameterlist)]</i></font>|
+
+
+p_defined:<font color="#0F3F8F"><i>[@text(__SELF__)]</i></font>|
+
+
+p_include:
+[<N0>]          <font color="#8FAA0F"><i>[@text(Chr),@text(Str)]</i></font>
+[<N0>]          <TABLE border="0" width="100%">
+[<I1>]           [@snipet(p_text)]
+[<D1>]          </TABLE>| useAlsoFor(p_pragma,p_line,p_error,p_warning,p_undefine)
+
+p_text:
+[<N0>]   <TR>
+[<I1>]    <TD width= "100%">
+[<I1>]     <font color="#3F3F3F"><i>[@text(__SELF__)]</i></font>
+[<D1>]    </TD>
+[<D1>]   </TR>| useAlsoFor(p_stringize_literal,p_pasting_literal)
+
+
+p_assignment_expression:
+[<N0>]   <TR>
+[<I1>]    <TD width= "100%">
+[<I1>]     [@snipet(cast_expression,unary_expression,assignment_expression,assignment_operator,KeyChr,)]
+[<D1>]    </TD>
+[<D1>]   </TR>
+|
+
+
+
+
+compilerSwitch:
+[<N0>]   <TR>
+[<I1>]    <TD width= "100%">
+[<I1>]     <TABLE  align="left" border="1" rules="rows" cellspacing="0" cellpadding="0" width="100%" bgcolor="#EFEFEF">
+[<I1>]       <TR>
+[<I1>]        <TD height="20" colspan="1">
+[<I1>]         PREPROSESSOR ALTERNATIVES
+[<D1>]        </TD>
+[<N0>]        <TD height="20" colspan="1">
+[<I1>]         PREPROSESSOR DEFAULTS
+[<D1>]        </TD>
+[<D1>]       </TR>
+[<N0>]       <TR>
+[<I1>]        <TD>
+[<I1>]         <TABLE  align="left" border="1" rules="none" cellspacing="0" cellpadding="0" width="100%" >
+[<I1>]          <TR>
+[<I1>]           [@snipet(p_if,p_ifdef,p_ifndef,)]
+[<N0>]           [@snipet(p_elif)]
+[<D1>]          </TR>
+[<D1>]         </TABLE>
+[<D1>]        </TD>
+[<N0>]        <TD>
+[<I1>]         <TABLE  align="left" border="1" rules="none" cellspacing="0" cellpadding="0" width="100%" >
+[<I1>]          <TR>
+[<I1>]           [ @snipet(p_else),@ifAbsent(p_else, p_if_empty_else)]
+[<D1>]          </TR>
+[<D1>]         </TABLE>
+[<D1>]        </TD>
+[<D1>]       </TR>
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+[<D1>]   </TR>
+|
+
+p_if_expr:
+[<N0>]        <font color="#8FAA0F"><i>[@text(Keyword), @text(KeyChr),@text(Chr),@text(Str)]</i></font>
+[<N0>]        [@snipet(assignment_expression)]
+[<N0>]        <br><div align="right">[@snipet(Comment)]</div>
+|useAlsoFor(p_ifdef_expr,p_ifndef_expr,p_elif_expr,p_else_expr)
+
+p_if:
+[<N0>]    <TD height="100%">
+[<I1>]     <TABLE  align="left" border="0" cellspacing="0" cellpadding="0" width="100%" >
+[<I1>]      <TR>
+[<I1>]       <TD height="100%">
+[<I1>]       [@snipet(p_if_expr,p_ifdef_expr,p_ifndef_expr,p_elif_expr,p_else_expr)]
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<N0>]      <TR>
+[<I1>]       <TD width="100%">
+[<I1>]        <TABLE border="1" width="100%">
+[<I1>]         [% suiteAndMore %]
+[<D1>]        </TABLE>
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+|useAlsoFor(p_ifdef,p_ifndef,p_elif,p_else)
+
+
+
+p_if_empty_else:
+[<N0>]    <TD height="100%">
+[<I1>]     <TABLE  align="center" border="0" cellspacing="0" cellpadding="0" width="100%" >
+[<I1>]      <TR>
+[<I1>]       <TD width="100%" align="center">
+[<I1>]        <h1>%</H1>
+[<D1>]       </TD>
+[<D1>]      </TR>
+[<D1>]     </TABLE>
+[<D1>]    </TD>
+|
+

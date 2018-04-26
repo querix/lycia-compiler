@@ -1,0 +1,3565 @@
+
+/*!
+ @defgroup GRAMMAR_SPECIFIC Grammar Cpp
+ @ingroup GRAMMAR_HIW
+*/
+
+
+
+/*!
+ @defgroup GRAMMAR_Source  Active Source-Code of Cpp
+ @ingroup GRAMMAR_SPECIFIC
+ @brief used for @ref PROCESS_SOURCE
+ 
+This c-grammar was created out of a yacc-grammar found in the internet
+
+This is the original introduction-comment:
+
+ ANSI C grammar (Yacc)ANSI C Yacc grammar
+ In 1985, Jeff Lee published his Yacc grammar (which is accompanied by a
+ matching Lex specification) for the April 30, 1985 draft version of the ANSI C
+ standard. Tom Stockfisch reposted it to net.sources in 1987; that original, as
+ mentioned in the answer to question 17.25 of the comp.lang.c FAQ, can be ftp'ed
+ from ftp.uu.net, file usenet/net.sources/ansi.c.grammar.Z.
+ Jutta Degener, 1995
+
+The original grammar was placed in two files one lexer-description for tokens
+and one syntax-specification of grammar-rules. Many lexer-rules are now not
+necessary anymore since their job will be done by spirit-parsers directly in the
+higher grammar-rules. Some rules like the expression-rules are now reconstructed
+to avoid lef-recursion-errors. Other rules the higher grammar-rules (especialy
+the flow-statements) are now redesigned to get a better xml-result
+Eckard Klotz, 2010/2011
+
+*/
+
+
+
+
+
+
+
+
+/*!
+ @defgroup GRAMMAR_Source_ABC2XML abc2xml
+ @ingroup GRAMMAR_Source
+ 
+ this parsers contain language depending definitions but they are used from 
+ abc2xml for tool-specific purposes.  
+*/
+
+
+/*! 
+ @ingroup GRAMMAR_Source_ABC2XML
+ @defgroup GRAMMAR_Source_pass pass
+ 
+ will be used from abc2xml as root-parser
+ 
+ <h2>Grammar</h2>
+  @dotfile "Source_R_pass.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_pass_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_pass_Caller.dt"
+*/
+
+/*! 
+ @ingroup GRAMMAR_Source_ABC2XML
+ @defgroup GRAMMAR_Source_skip skip
+
+ will be used from abc2xml to define a phrased parser
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_skip.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_skip_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_skip_Caller.dt"
+*/
+
+
+/*! 
+ @ingroup GRAMMAR_Source_ABC2XML
+ @defgroup GRAMMAR_Source_reserved reserved
+
+ this parser will be generated automaticly and contains all strings used in all other parsers
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_reserved.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_reserved_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_reserved_Caller.dt"
+*/
+
+
+
+/*!
+ @defgroup GRAMMAR_Source_Token Token
+ @ingroup GRAMMAR_Source
+*/
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_BLOCK_OPEN BLOCK_OPEN
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_BLOCK_OPEN.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_BLOCK_OPEN_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_BLOCK_OPEN_Caller.dt"
+*/
+BLOCK_OPEN = ("{" | "<%");
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_BLOCK_CLOSE BLOCK_CLOSE
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_BLOCK_CLOSE.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_BLOCK_CLOSE_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_BLOCK_CLOSE_Caller.dt"
+*/
+
+BLOCK_CLOSE = ("}" | "%>");
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_ARRAY_OPEN ARRAY_OPEN
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_ARRAY_OPEN.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_ARRAY_OPEN_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_ARRAY_OPEN_Caller.dt"
+*/
+ARRAY_OPEN = "[" | "<:";
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_ARRAY_CLOSE ARRAY_CLOSE
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_ARRAY_CLOSE.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_ARRAY_CLOSE_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_ARRAY_CLOSE_Caller.dt"
+*/
+ARRAY_CLOSE = "]" | ":>";
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_ELLIPSIS ELLIPSIS
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_ELLIPSIS.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_ELLIPSIS_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_ELLIPSIS_Caller.dt"
+*/
+ELLIPSIS = "...";
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_RIGHT_ASSIGN RIGHT_ASSIGN
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_RIGHT_ASSIGN.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_RIGHT_ASSIGN_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_RIGHT_ASSIGN_Caller.dt"
+*/
+RIGHT_ASSIGN = ">>=";
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_LEFT_ASSIGN LEFT_ASSIGN
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_LEFT_ASSIGN.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_LEFT_ASSIGN_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_LEFT_ASSIGN_Caller.dt"
+*/
+LEFT_ASSIGN = "<<=";
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_ADD_ASSIGN ADD_ASSIGN
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_ADD_ASSIGN.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_ADD_ASSIGN_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_ADD_ASSIGN_Caller.dt"
+*/
+ADD_ASSIGN = "+=";
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_SUB_ASSIGN SUB_ASSIGN
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_SUB_ASSIGN.dt"
+ 
+ <h2>Uses</h2>
+  @dotfile "Source_R_SUB_ASSIGN_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_SUB_ASSIGN_Caller.dt"
+*/
+SUB_ASSIGN = "-=";
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_MUL_ASSIGN MUL_ASSIGN
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_MUL_ASSIGN.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_MUL_ASSIGN_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_MUL_ASSIGN_Caller.dt"
+*/
+MUL_ASSIGN = "*=";
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_R_DIV_ASSIGN R_DIV_ASSIGN
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_DIV_ASSIGN.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_DIV_ASSIGN_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_DIV_ASSIGN_Caller.dt"
+*/
+DIV_ASSIGN = "/=";
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_MOD_ASSIGN MOD_ASSIGN
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_MOD_ASSIGN.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_MOD_ASSIGN_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_MOD_ASSIGN_Caller.dt"
+*/
+MOD_ASSIGN = "%=";
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_AND_ASSIGN AND_ASSIGN
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_AND_ASSIGN.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_AND_ASSIGN_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_AND_ASSIGN_Caller.dt"
+*/
+AND_ASSIGN = "&=";
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_XOR_ASSIGN XOR_ASSIGN
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_XOR_ASSIGN.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_XOR_ASSIGN_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_XOR_ASSIGN_Caller.dt"
+*/
+XOR_ASSIGN = "^=";
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_OR_ASSIGN OR_ASSIGN
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_OR_ASSIGN.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_OR_ASSIGN_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_OR_ASSIGN_Caller.dt"
+*/
+OR_ASSIGN = "|=";
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_D D
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_D.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_D_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_D_Caller.dt"
+*/
+D = range_p('0','9');
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_L L
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_L.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_L_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_L_Caller.dt"
+*/
+L = range_p('a','z') | range_p('A','Z');
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_H H
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_H.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_H_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_H_Caller.dt"
+*/
+H	=	range_p('a','f') | range_p('A','F') | range_p('0','9');
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_E E
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_E.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_E_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_E_Caller.dt"
+*/
+E	= (ch_p('E') | ch_p('e')) >> !(ch_p('+') | ch_p('-')) >> +D;
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_FS FS
+
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_FS.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_FS_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_FS_Caller.dt"
+*/
+FS =			(ch_p('f') | ch_p('F') | ch_p('l') | ch_p('L'));
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_IS IS
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_IS.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_IS_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_IS_Caller.dt"
+*/
+IS =			*(ch_p('u') | ch_p('U') | ch_p('l') | ch_p('L'));
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_CONSTANT_HEX CONSTANT_HEX
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_CONSTANT_HEX.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_CONSTANT_HEX_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_CONSTANT_HEX_Caller.dt"
+*/
+CONSTANT_HEX = '0' >> ('x'|'X') >> +H >>!IS;
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_CONSTANT_INT0 CONSTANT_INT0
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_CONSTANT_INT0.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_CONSTANT_INT0_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_CONSTANT_INT0_Caller.dt"
+*/
+CONSTANT_INT0 = ('0' >> +D >> !IS);/*-(CONSTANT_FLT1 | CONSTANT_FLT2 | CONSTANT_FLT3);*/
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_CONSTANT_INT1 CONSTANT_INT1
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_CONSTANT_INT1.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_CONSTANT_INT1_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_CONSTANT_INT1_Caller.dt"
+*/
+CONSTANT_INT1 = (+D >> !IS);
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_CONSTANT_CHAR CONSTANT_CHAR
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_CONSTANT_CHAR.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_CONSTANT_CHAR_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_CONSTANT_CHAR_Caller.dt"
+*/
+CONSTANT_CHAR = !'L' >> '\''
+                     >> +(  (  '\\'
+                              >>(anychar_p-('\r'|'\n'))
+                            )
+                          |(anychar_p - ('\\'|'\'') )
+                         )
+                     >> '\'';
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_CONSTANT_FLT1 CONSTANT_FLT1
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_CONSTANT_FLT1.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_CONSTANT_FLT1_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_CONSTANT_FLT1_Caller.dt"
+*/
+CONSTANT_FLT1 = +D >> E >> !FS;
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_CONSTANT_FLT2 CONSTANT_FLT2
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_CONSTANT_FLT2.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_CONSTANT_FLT2_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_CONSTANT_FLT2_Caller.dt"
+*/
+CONSTANT_FLT2 = *D >> '.' >> +D >> !(E) >> !FS;
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_CONSTANT_FLT3 CONSTANT_FLT3
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_CONSTANT_FLT3.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_CONSTANT_FLT3_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_CONSTANT_FLT3_Caller.dt"
+*/
+CONSTANT_FLT3 = +D >> '.' >> *D >> !(E) >> !FS;
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_Number Number
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_Number.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_Number_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_Number_Caller.dt"
+*/
+Number =     CONSTANT_HEX
+           | CONSTANT_FLT1
+           | CONSTANT_FLT2
+           | CONSTANT_FLT3
+           | CONSTANT_INT0
+           | CONSTANT_INT1
+           | CONSTANT_CHAR;
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_String String
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_String.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_String_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_String_Caller.dt"
+*/ 
+String = !'L' >> '\"' >> *( (  '\\' 
+                             >>(anychar_p-('\r'|'\n'))
+                            ) 
+                           |(anychar_p - ('\\'|'\"') )  
+                          )
+                       >> '\"';
+
+
+
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_not_reseved not_reseved
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_not_reseved.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_not_reseved_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_not_reseved_Caller.dt"
+*/
+not_reseved =   "ifdef"
+              | "ifndef"
+              | "elif"
+              | "endif"
+              | "define"
+              | "undef"
+              | "include"
+              | "pragma"
+              | "line"
+              | "error"
+              | "warning"
+              | "#preproend";
+
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_NON_ID NON_ID
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_NON_ID.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_NON_ID_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_NON_ID_Caller.dt"
+*/
+NON_ID = (reserved - not_reseved);
+
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_ID ID
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_ID.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_ID_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_ID_Caller.dt"
+*/
+ID = (( L | '_' ) >> *( L  |  D  | '_' )) - NON_ID;
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_USER_TYPE USER_TYPE
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_USER_TYPE.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_USER_TYPE_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_USER_TYPE_Caller.dt"
+*/
+USER_TYPE = ID;
+
+
+
+/*!
+ @defgroup GRAMMAR_Source_Expressions Expressions
+ @ingroup GRAMMAR_Source
+*/
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_primary_expression primary_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_primary_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_primary_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_primary_expression_Caller.dt"
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    01.09.2014   @I  Eckard Klotz
+ @I bug more than one owner in a chain will not be parsed 
+ @I sequence of Owner and :: may nor occure more than once
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+*/
+primary_expression =  p_defined
+                    | template_type
+                    | (*(Owner >> ':' >> ':') >> ID)
+                    | Number
+                    | (String >> *String)
+                    | type_specifier
+                    | ("(" >> expression >>  ")");
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_postfix_expression postfix_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_postfix_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_postfix_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_postfix_expression_Caller.dt"
+*/
+postfix_expression =  (primary_expression >> +(postfix_expression_second))
+                     | primary_expression;
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_postfix_expression_second postfix_expression_second
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_postfix_expression_second.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_postfix_expression_second_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_postfix_expression_second_Caller.dt"
+*/
+postfix_expression_second = 
+   ( ARRAY_OPEN >> expression               >> ARRAY_CLOSE )
+ | ( "("        >> argument_expression_list >> ")"         )
+ | ( "("                                    >> ")"         )
+ | ( "."        >> ID                              )
+ | ( "->"       >> ID                              )
+ |   "++"
+ |   "--"
+ ;
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_argument_expression_list argument_expression_list
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_argument_expression_list.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_argument_expression_list_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_argument_expression_list_Caller.dt"
+*/
+argument_expression_list =               assignment_expression
+                           >> *((",") >> assignment_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_unary_expression unary_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_unary_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_unary_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_unary_expression_Caller.dt"
+*/
+unary_expression = 
+   postfix_expression
+ | ("++"           >> unary_expression)
+ | ("--"           >> unary_expression)
+ | (unary_operator >> cast_expression)
+ | ("sizeof"       >> unary_expression)
+ | ("sizeof"       >> "(" >> type_name >> ")")
+ ;
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_unary_operator unary_operator
+
+ changed 19.02.2011 "new" added
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_unary_operator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_unary_operator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_unary_operator_Caller.dt"
+*/
+unary_operator = 
+   ('&'-("&&"))
+ | "*"
+ | "+"
+ | "-"
+ | "~"
+ | "!"  | "not"
+ | ("new"    >> !("[" >> "]"))
+ | ("delete" >> !("[" >> "]"))
+ ;
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_cast_expression cast_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_cast_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_cast_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_cast_expression_Caller.dt"
+*/
+cast_expression = 
+    ("(" >> type_name >> !'*' >> ")" >> cast_expression)
+  | unary_expression 
+ ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_multiplicative_expression multiplicative_expression
+
+ <h2>Grammar</h2>
+ @dotfile "Source_R_multiplicative_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_multiplicative_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_multiplicative_expression_Caller.dt"
+*/
+multiplicative_expression =                           cast_expression
+                            >> *(("*" | "/" | "%") >> cast_expression) ;
+
+
+/*!  
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_additive_expression additive_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_additive_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_additive_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_additive_expression_Caller.dt"
+*/
+additive_expression =                     multiplicative_expression
+                      >> *(("+" | "-") >> multiplicative_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_shift_expression shift_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_shift_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_shift_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_shift_expression_Caller.dt"
+*/
+shift_expression =                     additive_expression
+                   >> *(("<<"|">>") >> additive_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_relational_expression relational_expression
+
+ <h2>Grammar</h2>
+ @dotfile "Source_R_relational_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_relational_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_relational_expression_Caller.dt"
+*/
+relational_expression =                                    shift_expression
+                        >> *( ("<=" | ">=" | "<" | ">") >> shift_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_equality_expression equality_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_equality_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_equality_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_equality_expression_Caller.dt"
+*/
+equality_expression =                     relational_expression
+                      >> *(("=="|"!=") >> relational_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_and_expression and_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_and_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_and_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_and_expression_Caller.dt"
+*/
+and_expression =                    equality_expression
+                      >> *(("&"-("&&"|"&=")) >> equality_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_exclusive_or_expression exclusive_or_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_exclusive_or_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_exclusive_or_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_exclusive_or_expression_Caller.dt"
+*/
+exclusive_or_expression =               and_expression
+                          >> *(("^") >> and_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_inclusive_or_expression inclusive_or_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_inclusive_or_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_inclusive_or_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_inclusive_or_expression_Caller.dt"
+*/
+inclusive_or_expression =               exclusive_or_expression
+                          >> *(('|' | "||") >> exclusive_or_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_logical_and_expression logical_and_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_logical_and_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_logical_and_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_logical_and_expression_Caller.dt"
+*/
+logical_and_expression =                inclusive_or_expression
+                         >> *(("&&" | "and" ) >> inclusive_or_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_logical_or_expression logical_or_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_logical_or_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_logical_or_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_logical_or_expression_Caller.dt"
+*/
+logical_or_expression =                logical_and_expression
+                        >> *(("||" | "or") >> logical_and_expression);
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_conditional_expression conditional_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_conditional_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_conditional_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_conditional_expression_Caller.dt"
+*/
+conditional_expression = 
+  (logical_or_expression >> "?" >> expression >> ":" >> conditional_expression)
+ | logical_or_expression
+ ;
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_assignment_expression assignment_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_assignment_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_assignment_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_assignment_expression_Caller.dt"
+*/
+assignment_expression = 
+   (   (unary_expression | cast_expression) 
+     >> assignment_operator 
+     >> assignment_expression
+    )
+   | conditional_expression;
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_assignment_operator assignment_operator
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_assignment_operator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_assignment_operator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_assignment_operator_Caller.dt"
+*/
+assignment_operator = 
+   MUL_ASSIGN
+ | DIV_ASSIGN
+ | MOD_ASSIGN
+ | ADD_ASSIGN
+ | SUB_ASSIGN
+ | LEFT_ASSIGN
+ | RIGHT_ASSIGN
+ | AND_ASSIGN
+ | XOR_ASSIGN
+ | OR_ASSIGN
+ | "="
+ ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_expression expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_expression_Caller.dt"
+*/
+expression =               assignment_expression
+             >> *((",") >> assignment_expression);
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_constant_expression constant_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_constant_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_constant_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_constant_expression_Caller.dt"
+*/
+constant_expression = conditional_expression ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_declaration declaration
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_declaration.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_declaration_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_declaration_Caller.dt"
+*/
+declaration = (declaration_specifier >> init_declarator >> *("," >> init_declarator) >> semikolon) ;
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_declaration_specifier declaration_specifier
+
+ changed 20.02.2011 second type_qualifier and &|* 
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_declaration_specifier.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_declaration_specifier_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_declaration_specifier_Caller.dt"
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    01.09.2014   @I  Eckard Klotz
+ @I bug more than one owner in a chain will not be parsed 
+ @I sequence of Owner and :: may nor occure more than once
+ @I_______________________________________________________
+    01.09.2014   @I  Eckard Klotz
+ @I bug more than one pointer * in a chain will not be parsed 
+ @I the pointer * may nor occure more than once
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+*/
+declaration_specifier = (    ! storage_class_specifier 
+                          >> * type_qualifier
+                          >> *(Owner >> ':' >> ':')
+                          >> (template_type|type_specifier|USER_TYPE)
+                          >> * type_qualifier
+                          >> * ('&' | '*')
+                          >> * type_qualifier
+                         );
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_init_declarator init_declarator
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_init_declarator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_init_declarator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_init_declarator_Caller.dt"
+
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    16.08.2014   @I  Eckard Klotz
+ @I bug structs defining a bit-feald cterminates the parser
+ @I adding of optional (":" >> Number     )
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+
+
+*/
+init_declarator =     declarator 
+                 >> !(":" >> Number     )    
+                 >> !("=" >> initializer);
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_storage_class_specifier storage_class_specifier
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_storage_class_specifier.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_storage_class_specifier_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_storage_class_specifier_Caller.dt"
+*/
+storage_class_specifier = 
+   "typedef"
+ | "extern"
+ | "static"
+ | "auto"
+ | "register"
+ ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_type_specifier type_specifier
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_type_specifier.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_type_specifier_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_type_specifier_Caller.dt"
+*/
+type_specifier = 
+   "void"
+ |(  !(  "signed"
+       | "unsigned"
+      )
+    >>(  "char"
+       | "short"
+       | "int"
+       | "long"
+      )
+   )
+ | "float"
+ | "double"
+ | "signed"
+ | "unsigned"
+ | struct_or_union_specifier
+ | enum_specifier
+ ;
+
+
+
+/*!
+ @defgroup GRAMMAR_Source_Template Template
+ @ingroup GRAMMAR_Source
+*/
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Template
+ @defgroup GRAMMAR_Source_template_type template_type
+
+ implemented 19.02.2011
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_template_type.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_template_type_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_template_type_Caller.dt"
+*/
+template_type =    ID
+                >> '<' 
+                >> !(             (declaration_specifier) 
+                     >> *( ',' >> (declaration_specifier))
+                    )
+                >> '>';
+
+
+
+/*!
+ @defgroup GRAMMAR_Source_Struct Structure
+ @ingroup GRAMMAR_Source
+*/
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Struct
+ @defgroup GRAMMAR_Source_struct_or_union_specifier struct_or_union_specifier
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_struct_or_union_specifier.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_struct_or_union_specifier_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_struct_or_union_specifier_Caller.dt"
+struct_or_union_specifier =
+   (struct_or_union >> ID >> BLOCK_OPEN >> struct_declaration_list >> BLOCK_CLOSE)
+ | (struct_or_union       >> BLOCK_OPEN >> struct_declaration_list >> BLOCK_CLOSE)
+ | (struct_or_union >> ID)
+ ;
+*/
+struct_or_union_specifier = 
+   (struct_or_union >> !ID >> BLOCK_OPEN >> declaration >> BLOCK_CLOSE)
+ | (struct_or_union >> ID)
+ ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Struct
+ @defgroup GRAMMAR_Source_struct_or_union struct_or_union
+
+ <h2>Grammar</h2>
+ @dotfile "Source_R_struct_or_union.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_struct_or_union_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_struct_or_union_Caller.dt"
+*/
+struct_or_union = 
+   "struct"
+ | "union"
+ ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Struct
+ @defgroup GRAMMAR_Source_struct_declaration_list struct_declaration_list
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_struct_declaration_list.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_struct_declaration_list_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_struct_declaration_list_Caller.dt"
+*/
+struct_declaration_list = +struct_declaration ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Struct
+ @defgroup GRAMMAR_Source_struct_declaration struct_declaration
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_struct_declaration.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_struct_declaration_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_struct_declaration_Caller.dt"
+*/
+struct_declaration = (template_type|specifier_qualifier_list|USER_TYPE) >> struct_declarator_list >> semikolon ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_specifier_qualifier_list specifier_qualifier_list
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_specifier_qualifier_list.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_specifier_qualifier_list_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_specifier_qualifier_list_Caller.dt"
+*/
+specifier_qualifier_list =  
+   (type_specifier >> specifier_qualifier_list)
+ |  type_specifier
+ | (type_qualifier >> specifier_qualifier_list)
+ |  type_qualifier
+ | (USER_TYPE      >> specifier_qualifier_list)
+ ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Struct
+ @defgroup GRAMMAR_Source_struct_declarator_list struct_declarator_list
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_struct_declarator_list.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_struct_declarator_list_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_struct_declarator_list_Caller.dt"
+*/
+struct_declarator_list =               struct_declarator
+                         >> *((",") >> struct_declarator);
+
+/*! 
+ @ingroup GRAMMAR_Source_Struct
+ @defgroup GRAMMAR_Source_struct_declarator struct_declarator
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_struct_declarator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_struct_declarator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_struct_declarator_Caller.dt"
+*/
+struct_declarator =
+                 (":" >> constant_expression)
+ | (declarator >> ":" >> constant_expression)
+ |  declarator
+ ;
+
+
+
+
+/*!
+ @defgroup GRAMMAR_Source_Enum Enumeration
+ @ingroup GRAMMAR_Source
+*/
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Enum
+ @defgroup GRAMMAR_Source_enum_specifier enum_specifier
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_enum_specifier.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_enum_specifier_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_enum_specifier_Caller.dt"
+*/
+enum_specifier =
+   ("enum"       >> BLOCK_OPEN >> +enumerator >> BLOCK_CLOSE)
+ | ("enum" >> ID >> BLOCK_OPEN >> +enumerator >> BLOCK_CLOSE)
+ | ("enum" >> ID)
+ ;
+
+/*! 
+ @ingroup GRAMMAR_Source_Enum
+ @defgroup GRAMMAR_Source_enumerator enumerator
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_enumerator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_enumerator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_enumerator_Caller.dt"
+*/
+enumerator =
+  ( (ID >> "=" >> constant_expression)
+   | ID
+  ) >>!(',');
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_type_qualifier type_qualifier
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_type_qualifier.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_type_qualifier_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_type_qualifier_Caller.dt"
+*/
+type_qualifier =
+   "const"
+ | "volatile"
+ ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_declarator declarator
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_declarator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_declarator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_declarator_Caller.dt"
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    26.07.2014   @I  Eckard Klotz
+ @I bug function-pointer result in parser-crash
+ @I first implementation of funcPoint_declarator
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+
+*/
+declarator =
+    funcPoint_declarator
+ | (pointer >> direct_declarator)
+ |             direct_declarator
+ ;
+
+
+
+
+
+
+
+ /*!
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_funcPoint_declarator funcPoint_declarator
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_funcPoint_declarator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_funcPoint_declarator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_funcPoint_declarator_Caller.dt"
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    26.07.2014   @I  Eckard Klotz
+ @I bug function-pointer result in parser-crash
+ @I first implementation of funcPoint_declarator
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+
+*/
+funcPoint_declarator =    '(' >> ( '*'  |'&' )
+                              >> !type_qualifier
+                              >> direct_declarator
+                       >> ')'
+                       >> prototype_parameter_list;
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*!
+ @defgroup GRAMMAR_Source_Class Class
+ @ingroup GRAMMAR_Source
+*/
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_Owner Owner
+
+ Implemented 19.02.2011 for class-methodes
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_Owner.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_Owner_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_Owner_Caller.dt"
+*/
+Owner =(template_type|type_specifier|ID);
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_direct_declarator direct_declarator
+
+ Change 19.02.2011 for class-methodes
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_direct_declarator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_direct_declarator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_direct_declarator_Caller.dt"
+*/
+direct_declarator =    (   ( ( operator_id)
+                            | owned_ID
+                            | ID
+                           )
+                        >> *(direct_declarator_second)
+                       )
+                    >> !type_qualifier;
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_owned_ID owned_ID
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_owned_ID.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_owned_ID_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_owned_ID_Caller.dt"
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    01.09.2014   @I  Eckard Klotz
+ @I bug more than one owner in a chain will not be parsed 
+ @I sequence of Owner and :: may nor occure more than once
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+*/
+owned_ID = (    +( Owner >> ':' >> ':')
+             >> !'~'
+             >> ( operator_id | ID)
+           );
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_direct_declarator_second direct_declarator_second
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_direct_declarator_second.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_direct_declarator_second_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_direct_declarator_second_Caller.dt"
+*/
+direct_declarator_second =
+     direct_parameter_declarator
+ | ( ARRAY_OPEN                         >> ARRAY_CLOSE)
+ | ( ARRAY_OPEN >> constant_expression  >> ARRAY_CLOSE)
+ ;
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_direct_parameter_declarator direct_parameter_declarator
+
+ changed 20.02.2011 expression added
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_direct_parameter_declarator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_direct_parameter_declarator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_direct_parameter_declarator_Caller.dt"
+*/
+direct_parameter_declarator =
+   ( "(" >> expression           >> ")" )
+ | ( "(" >> identifier_list      >> ")" )
+ | ( "(" >> parameter_type_list  >> ")" )
+ | ( "("                         >> ")" )
+ | ( "(" >> declarator           >> ")" )
+ ;
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_pointer pointer
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_pointer.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_pointer_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_pointer_Caller.dt"
+*/
+pointer =
+    "*"
+ | ("*" >> pointer)
+ | ("*" >> type_qualifier_list)
+ | ("*" >> type_qualifier_list >> pointer)
+ ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_type_qualifier_list type_qualifier_list
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_type_qualifier_list.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_type_qualifier_list_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_type_qualifier_list_Caller.dt"
+*/
+type_qualifier_list = +type_qualifier;
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_parameter_type_list parameter_type_list
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_parameter_type_list.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_parameter_type_list_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_parameter_type_list_Caller.dt"
+*/
+parameter_type_list = (parameter_list >> !( "," >> ELLIPSIS));
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_parameter_list parameter_list
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_parameter_list.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_parameter_list_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_parameter_list_Caller.dt"
+*/
+parameter_list = parameter_declaration >> *("," >> parameter_declaration);
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_parameter_declaration parameter_declaration
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_parameter_declaration.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_parameter_declaration_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_parameter_declaration_Caller.dt"
+
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    07.07.2013   @I  Eckard Klotz
+ @I bug a function-pointer in the parameter-interface of a function
+    leads to a wrong parsing-result
+ @I establishing of the parser parameter-function 
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+*/
+parameter_declaration =
+   ((declaration_specifier) >> declarator >> !(assignment_operator >>(unary_expression | cast_expression)))
+ | ((declaration_specifier) >> abstract_declarator >> !(assignment_operator >>(unary_expression | cast_expression)))
+ | ((declaration_specifier) >> parameter_function )
+ | ((declaration_specifier))
+ ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_parameter_function parameter_function
+
+ detect a function-pointer as parameter of a function
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_parameter_function.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_parameter_function_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_parameter_function_Caller.dt"
+*/
+parameter_function = direct_parameter_declarator >> direct_parameter_declarator  ;
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_identifier_list identifier_list
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_identifier_list.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_identifier_list_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_identifier_list_Caller.dt"
+*/
+identifier_list =                ID
+                   >> *((",") >> ID);
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_type_name type_name
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_type_name.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_type_name_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_type_name_Caller.dt"
+*/
+type_name =
+   (specifier_qualifier_list >> abstract_declarator)
+ |  specifier_qualifier_list
+ |  USER_TYPE
+ ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_abstract_declarator abstract_declarator
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_abstract_declarator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_abstract_declarator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_abstract_declarator_Caller.dt"
+*/
+abstract_declarator =
+   direct_abstract_declarator
+ | (pointer >> direct_abstract_declarator)
+ |  pointer
+ ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_direct_abstract_declarator direct_abstract_declarator
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_direct_abstract_declarator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_direct_abstract_declarator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_direct_abstract_declarator_Caller.dt"
+*/
+direct_abstract_declarator =
+  +( ("("        >> abstract_declarator >> ")")
+    | (ARRAY_OPEN >> constant_expression >> ARRAY_CLOSE)
+    | (ARRAY_OPEN                        >> ARRAY_CLOSE)
+    | ("("        >> parameter_type_list >> ")")
+    | ("("                               >> ")")
+   ) ;
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_initializer initializer
+ @dotfile "Source_R_initializer.dt"
+ <h2>Grammar</h2>
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_initializer_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_initializer_Caller.dt"
+*/
+initializer =
+   assignment_expression
+ | (BLOCK_OPEN >> initializer_list >> !(",") >> BLOCK_CLOSE) ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_initializer_list initializer_list
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_initializer_list.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_initializer_list_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_initializer_list_Caller.dt"
+*/
+initializer_list = initializer >> *("," >> initializer);
+
+
+
+
+
+
+
+/*!
+ @defgroup GRAMMAR_Source_FloWord Flow Words
+ @ingroup GRAMMAR_Source
+*/
+
+
+ 
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_statement statement
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_statement.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_statement_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_statement_Caller.dt"
+*/
+statement =
+     (  case_stmt  | default_stmt
+      | if_stmt    | switch_stmt
+      | while_stmt | do_stmt       | for_stmt
+      | goto_stmt  | continue_stmt | break_stmt | return_stmt
+      | compound_statement | lable_stmt
+      | expr_stmt
+      | preprocedure
+     )
+ ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_compound_statement compound_statement
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_compound_statement.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_compound_statement_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_compound_statement_Caller.dt"
+*/
+compound_statement = BLOCK_OPEN >> *(declaration | statement | preprocedure) >> BLOCK_CLOSE;
+
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_lable_stmt lable_stmt
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_lable_stmt.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_lable_stmt_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_lable_stmt_Caller.dt"
+*/
+lable_stmt    = ID >> (":" - "::");
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_case_stmt case_stmt
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_case_stmt.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_case_stmt_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_case_stmt_Caller.dt"
+*/
+case_stmt     = +case_part >> ! (!semikolon >> break_stmt );
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_case_part case_part
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_case_part.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_case_part_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_case_part_Caller.dt"
+*/
+case_part     = +case_expr >> !default_expr >> statement;
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_case_expr case_expr
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_case_expr.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_case_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_case_expr_Caller.dt"
+*/
+case_expr     = "case" >> constant_expression >> ":";
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_default_stmt default_stmt
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_default_stmt.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_default_stmt_Called.dt"
+                     
+ <h2>Used by</h2>
+  @dotfile "Source_R_default_stmt_Caller.dt"
+*/
+default_stmt  = default_part >> !(!semikolon >> break_stmt);
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_default_part default_part
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_default_part.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_default_part_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_default_part_Caller.dt"
+*/
+default_part  = default_expr >> statement;
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_default_expr default_expr
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_default_expr.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_default_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_default_expr_Caller.dt"
+*/
+default_expr  = "default" >> ":";
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_expr_stmt expr_stmt
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_expr_stmt.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_expr_stmt_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_expr_stmt_Caller.dt"
+*/
+expr_stmt = (expression >> !(semikolon))  | empty_expression ;
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_empty_expression empty_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_empty_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_empty_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_empty_expression_Caller.dt"
+*/
+empty_expression     = ";"   ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_selection_statement selection_statement
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_selection_statement.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_selection_statement_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_selection_statement_Caller.dt"
+*/
+selection_statement = if_stmt | switch_stmt;
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_if_stmt if_stmt
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_if_stmt.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_if_stmt_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_if_stmt_Caller.dt"
+*/
+if_stmt   = if_part >> *elif_part >> !else_part;
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_if_part if_part
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_if_part.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_if_part_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_if_part_Caller.dt"
+*/
+if_part   = if_expr >> statement;
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_if_expr if_expr
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_if_expr.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_if_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_if_expr_Caller.dt"
+*/
+if_expr   = "if"    >>         "(" >> expression >> ")";
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_elif_expr elif_expr
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_elif_expr.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_elif_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_elif_expr_Caller.dt"
+*/
+elif_expr = "else"  >> "if" >> "(" >> expression >> ")";
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_elif_part elif_part
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_elif_part.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_elif_part_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_elif_part_Caller.dt"
+*/
+elif_part = elif_expr >> statement;
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_else_part else_part
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_else_part.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_else_part_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_else_part_Caller.dt"
+*/
+else_part = "else"  >> (statement - if_stmt);
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_switch_stmt switch_stmt
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_switch_stmt.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_switch_stmt_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_switch_stmt_Caller.dt"
+*/
+switch_stmt = switch_expr >> statement ;
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_switch_expr switch_expr
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_switch_expr.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_switch_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_switch_expr_Caller.dt"
+*/
+switch_expr = "switch" >> "(" >> expression >> ")";
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_iteration_statement iteration_statement
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_iteration_statement.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_iteration_statement_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_iteration_statement_Caller.dt"
+*/
+iteration_statement = while_stmt | do_stmt | for_stmt;
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_while_stmt while_stmt
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_while_stmt.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_while_stmt_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_while_stmt_Caller.dt"
+*/
+while_stmt = while_expr >> statement;
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_while_expr while_expr
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_while_expr.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_while_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_while_expr_Caller.dt"
+*/
+while_expr = "while" >> "(" >> expression >> ")";
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_do_stmt do_stmt
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_do_stmt.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_do_stmt_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_do_stmt_Caller.dt"
+*/
+do_stmt    = "do" >> statement >> while_expr >> semikolon;
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_for_stmt for_stmt
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_for_stmt.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_for_stmt_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_for_stmt_Caller.dt"
+*/
+for_stmt   = for_expr >> statement;
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_for_expr for_expr
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_for_expr.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_for_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_for_expr_Caller.dt"
+*/
+for_expr   = "for"    >> "(" >> (declaration | expr_stmt)
+                             >>  expr_stmt
+                             >> !expression          >> ")";
+
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_jump_statement jump_statement
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_jump_statement.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_jump_statement_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_jump_statement_Caller.dt"
+*/
+jump_statement = goto_stmt | continue_stmt | break_stmt | return_stmt;
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_goto_stmt goto_stmt
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_goto_stmt.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_goto_stmt_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_goto_stmt_Caller.dt"
+*/
+goto_stmt      = "goto"     >> ID  >> semikolon;
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_continue_stmt continue_stmt
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_continue_stmt.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_continue_stmt_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_continue_stmt_Caller.dt"
+*/
+continue_stmt  = "continue"                >> semikolon;
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_break_stmt break_stmt
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_break_stmt.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_break_stmt_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_break_stmt_Caller.dt"
+*/
+break_stmt     = "break"                   >> semikolon;
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_return_stmt return_stmt
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_return_stmt.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_return_stmt_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_return_stmt_Caller.dt"
+*/
+return_stmt    = "return"   >> !expression >> semikolon;
+
+
+
+
+
+
+/*!
+ @defgroup GRAMMAR_Source_PrePro Preprocessor
+ @ingroup GRAMMAR_Source
+*/
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_ifdef p_ifdef
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_ifdef.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_ifdef_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_ifdef_Caller.dt"
+*/
+p_ifdef      = p_ifdef_expr >> ! p_Block;
+
+/*! 
+ @ingroup GRAMMAR_p_ifdef
+ @defgroup GRAMMAR_Source_p_ifdef_expr p_ifdef_expr
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_ifdef_expr.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_ifdef_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_ifdef_expr_Caller.dt"
+*/
+p_ifdef_expr = '#' >> "ifdef"    >> (expression);
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_ifndef p_ifndef
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_ifndef.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_ifndef_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_ifndef_Caller.dt"
+*/
+p_ifndef        = p_ifndef_expr >> ! p_Block;
+
+/*! 
+ @ingroup GRAMMAR_p_ifndef
+ @defgroup GRAMMAR_Source_p_ifndef_expr p_ifndef_expr
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_ifndef_expr.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_ifndef_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_ifndef_expr_Caller.dt"
+*/
+p_ifndef_expr   = '#' >> "ifndef"   >> (expression);
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_if p_if
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_if.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_if_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_if_Caller.dt"
+*/
+p_if        = p_if_expr >> ! p_Block;
+
+/*! 
+ @ingroup GRAMMAR_p_if
+ @defgroup GRAMMAR_Source_p_if_expr p_if_expr
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_if_expr.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_if_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_if_expr_Caller.dt"
+*/
+p_if_expr   = '#' >> ("if" - ("ifdef" | "ifndef")) >> (expression );
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_elif p_elif_
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_elif.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_elif_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_elif_Caller.dt"
+*/
+p_elif      = p_elif_expr >> ! p_Block;
+
+/*! 
+ @ingroup GRAMMAR_p_elif
+ @defgroup GRAMMAR_Source_p_elif_expr p_elif_expr
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_elif_expr.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_elif_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_elif_expr_Caller.dt"
+*/
+p_elif_expr = '#' >> "elif"     >> (expression );
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_else p_else
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_else.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_else_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_else_Caller.dt"
+*/
+p_else      = p_else_expr >> ! p_Block;
+
+/*! 
+ @ingroup GRAMMAR_Source_p_else
+ @defgroup GRAMMAR_Source_p_else_expr p_else_expr_
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_else_expr.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_else_expr_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_else_expr_Caller.dt"
+*/
+p_else_expr = '#' >> "else";
+
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_preproend p_preproend
+ this token will be generated by the directive-process of abc2xml and is not
+ original part of the programming-language c/c++
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_preproend.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_preproend_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_preproend_Caller.dt"
+*/               
+p_preproend   = "#preproend";
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_endif p_endif
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_endif.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_endif_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_endif_Caller.dt"
+*/
+p_endif    = '#' >> "endif"
+                 >> p_preproend;
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_define p_define
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_define.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_define_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_define_Caller.dt"
+*/
+p_define   = '#' >> "define"   >> p_declarator
+                 >> *(!'\\'>>(statement|expression|p_text)) 
+                 >> !semikolon
+                 >> p_preproend;
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_undefine p_undefine
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_undefine.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_undefine_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_undefine_Caller.dt"
+*/
+p_undefine = '#' >> "undef" >> ID
+                 >> p_preproend;
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_include GRAMMAR_Source_p_include
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_include.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_include_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_include_Caller.dt"
+*/
+p_include  = '#' >> "include"  >> p_text
+                 >> p_preproend;
+
+/*! 
+ @ingroup GRAMMAR_Source_PreProPragma
+ @defgroup GRAMMAR_Source_p_pragma p_pragma
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_pragma.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_pragma_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_pragma_Caller.dt"
+*/
+p_pragma   = '#' >> "pragma"   >> p_text
+                 >> p_preproend;
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_line p_line
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_line.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_line_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_line_Caller.dt"
+*/
+p_line     = '#' >> "line"     >> p_text
+                 >> p_preproend;
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_error p_error
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_error.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_error_Called.dt"
+                     
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_error_Caller.dt"
+*/
+p_error    = '#' >> "error"    >> p_text
+                 >> p_preproend;
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_warning p_warning
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_warning.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_warning_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_warning_Caller.dt"
+*/
+p_warning  = '#' >> "warning"  >> p_text
+                 >> p_preproend;
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_compilerSwitch compilerSwitch
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_compilerSwitch.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_compilerSwitch_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_compilerSwitch_Caller.dt"
+*/
+compilerSwitch = (p_ifdef | p_ifndef | p_if) >> *p_elif >> !p_else >> p_endif;            
+
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_preprocedure preprocedure
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_preprocedure.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_preprocedure_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_preprocedure_Caller.dt"
+*/
+preprocedure = (  compilerSwitch
+                | p_include
+                | p_define
+                | p_undefine
+                | p_pragma 
+                | p_line
+                | p_error
+                | p_warning
+               );
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_Block p_Block
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_Block.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_Block_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_Block_Caller.dt"
+*/
+p_Block = + (  class_definition
+             | function_prototype
+             | function_definition
+             | declaration
+             | statement
+             | preprocedure
+             | using_namespace
+             |( p_text -(  statement
+                         | using_namespace
+                         | preprocedure
+                         | class_definition
+                         | function_prototype
+                         | declaration
+                         | function_definition
+                        )
+              )
+            );
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_endOfTextLine endOfTextLine
+
+ <h2>Grammar</h2>
+   @dotfile "Source_R_endOfTextLine.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_endOfTextLine_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_endOfTextLine_Caller.dt"
+*/
+endOfTextLine = (('\r' >> !'\n' ) | '\n' );
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_text p_text
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_text.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_text_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_text_Caller.dt"
+*/
+p_text =    +(    +(anychar_p - ('\r' | '\n' | '#') )
+               >>!endOfTextLine
+             )
+           ;
+
+
+
+/*
+! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_parameterlist p_parameterlist
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_parameterlist.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_parameterlist_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_parameterlist_Caller.dt"
+p_parameterlist = "("  >> *space_p >> ID >> *space_p >> *("," >> *space_p >> ID >> *space_p)  >> ")";
+*/
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_declarator p_declarator
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_declarator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_declarator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_declarator_Caller.dt"
+p_declarator    = ID >> !p_parameterlist;
+*/
+p_declarator    = ID >> !direct_parameter_declarator;
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_statement p_statement
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_statement.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_statement_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_statement_Caller.dt"
+*/                
+p_statement    =      !( '\\' >> eol_p)
+                   >>  (   +(  (anychar_p - ('\\'|'\r' | '\n') )
+                              |('\\' >> (anychar_p - ('\r' | '\n')))
+                            )
+                   >> *(    ('\\' >> eol_p) 
+                        >> *(  (anychar_p - ('\\'|'\r' | '\n') )
+                              |('\\' >> (anychar_p - ('\r' | '\n')))
+                            )
+                       )
+                   >> eol_p
+                  ) ;
+
+
+
+
+
+/*!
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_defined p_defined
+
+
+ <h2>Grammar</h2>
+  @dotfile "Directive_R_p_defined.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Directive_R_p_defined_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Directive_R_p_defined_Caller.dt"
+*/
+p_defined = "defined"  >>( (       ID       )
+                          |("(" >> ID >> ")")
+                         );
+
+
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Token
+ @defgroup GRAMMAR_Source_semikolon semikolon
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_semikolon.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_semikolon_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_semikolon_Caller.dt"
+*/
+semikolon = ";" | "#;" ;
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_function_definition function_definition
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_function_definition.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_function_definition_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_function_definition_Caller.dt"
+*/
+function_definition  =  (     declarator
+                         >> * declaration
+                         >> ! element_initializer
+                         >>   compound_statement
+                        )
+                       |( 
+                            ! declaration_specifier
+                         >>   declarator
+                         >> * declaration
+                         >> ! element_initializer
+                         >>   compound_statement
+                        );
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_element_initializer element_initializer
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_element_initializer.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_element_initializer_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_element_initializer_Caller.dt"
+*/
+element_initializer = ":" >> unary_expression >> *("," >> unary_expression);
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_prototype_parameter prototype_parameter
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_prototype_parameter.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_prototype_parameter_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_prototype_parameter_Caller.dt"
+*/
+prototype_parameter =  (declaration_specifier >> parameter_function )
+                     | (declaration_specifier >> !init_declarator ) ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_prototype_parameter_list prototype_parameter_list
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_prototype_parameter_list.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_prototype_parameter_list_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_prototype_parameter_list_Caller.dt"
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    07.07.2013   @I  Eckard Klotz
+ @I bug a function-pointer in the parameter-interface of a function
+    leads to a wrong parsing-result
+ @I establishing of the parser parameter-function 
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+
+*/
+prototype_parameter_list =    '('
+                           >> !(            prototype_parameter
+                                >> *(',' >> prototype_parameter)
+                               )
+                           >> ')';
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_function_prototype function_prototype
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_function_prototype.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_function_prototype_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_function_prototype_Caller.dt"
+*/
+function_prototype =    declaration_specifier
+                    >>  ID
+                    >>  prototype_parameter_list
+                    >> ! type_qualifier
+                    >> semikolon ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_class_declaration class_declaration
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_class_declaration.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_class_declaration_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_class_declaration_Caller.dt"
+*/
+class_declaration  =    "class"
+                    >> ID
+                    >> semikolon  ;
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_class_definition class_definition
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_class_definition.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_class_definition_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_class_definition_Caller.dt"
+*/
+class_definition  =    "class"
+                    >> ID
+                    >> !calss_parent
+                    >> class_content
+                    >> semikolon  ;
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_calss_parent calss_parent
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_calss_parent.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_calss_parent_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_calss_parent_Caller.dt"
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    01.09.2014   @I  Eckard Klotz
+ @I bug more than one owner in a chain will not be parsed 
+ @I sequence of Owner and :: may nor occure more than once
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+*/
+calss_parent =    ':'
+              >>  ("public"|"protected"|"private")
+              >>          ((+(Owner >> ':' >>) ':'  >> ID) | (template_type|type_specifier|ID))
+              >> *(',' >> ((+(Owner >> ':' >>) ':'  >> ID) | (template_type|type_specifier|ID)));
+                        
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_class_content class_content
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_class_content.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_class_content_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_class_content_Caller.dt"
+*/
+class_content   =    BLOCK_OPEN 
+                  >> +(public|protected|private)
+                  >> BLOCK_CLOSE;
+                  
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_public public
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_public.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_public_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_public_Caller.dt"
+*/
+public    =  ("public"    >> ':'  >> *(methode_definition | methode | property | preprocedure | friend))
+            |(                       +(methode_definition | methode | property | preprocedure | friend));
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_protected protected
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_protected.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_protected_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_protected_Caller.dt"
+*/
+protected = "protected" >> ':'  >> *(methode_definition | methode | property | preprocedure);
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_private private
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_private.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_private_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_private_Caller.dt"
+*/
+private   = "private"   >> ':'  >> *(methode_definition | methode | property | preprocedure);
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_methode methode
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_methode.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_methode_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_methode_Caller.dt"
+*/
+methode            =    (operator | constructor | destructor | service)
+                     >>  semikolon;
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_methode_definition methode_definition
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_methode_definition.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_methode_definition_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_methode_definition_Caller.dt"
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    07.07.2013   @I  Eckard Klotz
+ @I bug the call of class-constructors to initialize attributes
+    leads to a wrong parsing-result
+ @I call of expresions to initialize attributes is possible now 
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+
+
+*/
+methode_definition =   (operator | constructor | destructor | service)
+                    >> !( ':' >> expression >> * (',' >> expression) )
+                    >>  compound_statement
+                    >> !semikolon;
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_operator operator
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_operator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_operator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_operator_Caller.dt"
+*/
+operator          =    !("virtual"|"static")
+                    >>  declaration_specifier  
+                    >>  operator_id
+                    >>  prototype_parameter_list
+                    >> !type_qualifier
+                    >> !('=' >> '0')  ;
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_operator_id operator_id
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_operator_id.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_operator_id_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_operator_id_Caller.dt"
+*/
+operator_id =   "operator"
+             >> (  ( "(" >> ")" )
+                 | ( ("new" >> !("[" >> "]"))| ("delete" >> !("[" >> "]")) | "sizeof" )
+                 | ( "&" | "*" | "+" | "-" | "~" | "!"   )
+                 | ("=" | ">>=" | "<<=" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "^=" | "|=")
+                 | ("." | "->" |  "++" |  "--" )
+                 | ("*" | "/" | "%")
+                 | ("<<" | ">>")
+                 | ("<=" | ">=" | "<" | ">")
+                 | ("=="|"!=")
+                 | ("^" | "|" | "&&" | "||")
+                ); /* | (+(anychar_p-'('))*/
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_constructor constructor
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_constructor.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_constructor_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_constructor_Caller.dt"
+*/
+constructor       =    !("virtual"|"static")
+                    >>  ID
+                    >>  prototype_parameter_list
+                    >> !type_qualifier
+                    >> !('=' >> '0');
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_destructor destructor
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_destructor.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_destructor_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_destructor_Caller.dt"
+*/
+destructor        =    !("virtual"|"static")
+                    >>  "~"
+                    >>  ID
+                    >>  direct_parameter_declarator
+                    >> !type_qualifier
+                    >> !('=' >> '0');
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_service service
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_service.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_service_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_service_Caller.dt"
+*/
+service           =    !("virtual"|"static")
+                    >>  declaration_specifier  
+                    >>  ID
+                    >>  prototype_parameter_list
+                    >> !type_qualifier
+                    >> !('=' >> '0');
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_property property
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_property.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_property_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_property_Caller.dt"
+*/
+property = ((  declaration_specifier
+                       >>            property_declarator
+                       >> *((",") >> property_declarator) >> semikolon
+                      )- methode
+                     )
+                    |(enum_specifier  >> semikolon);
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_property_declarator property_declarator
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_property_declarator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_property_declarator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_property_declarator_Caller.dt"
+*/
+property_declarator =
+   (                  ":" >> constant_expression)
+ | (declarator_prp >> ":" >> constant_expression)
+ |  declarator_prp
+ ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_declarator_prp declarator_prp
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_declarator_prp.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_declarator_prp_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_declarator_prp_Caller.dt"
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    01.09.2014   @I  Eckard Klotz
+ @I bug more than one owner in a chain will not be parsed 
+ @I sequence of Owner and :: may nor occure more than once
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+*/
+declarator_prp =
+    (   pointer 
+     >> ( (    ((+(Owner >> ':' >> ':') >> !'~' >> ID)|ID) 
+           >> +( ARRAY_OPEN >> !constant_expression  >> ARRAY_CLOSE)
+          )
+         | ID
+        )
+    )
+   |(   ( (    ((+(Owner >> ':' >> ':') >> !'~' >> ID)|ID) 
+           >> +( ARRAY_OPEN >> !constant_expression  >> ARRAY_CLOSE)
+          )
+         | ID
+        )
+    );
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_friend friend
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_friend.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_friend_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_friend_Caller.dt"
+*/
+friend = "friend" >> (class_declaration | function_prototype);
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_translation_unit translation_unit
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_translation_unit.dt"
+ 
+ <h2>Uses</h2>
+  @dotfile "Source_R_translation_unit_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_translation_unit_Caller.dt"
+*/
+translation_unit = +external_declaration ;
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_external_declaration external_declaration
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_external_declaration.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_external_declaration_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_external_declaration_Caller.dt"
+*/
+external_declaration = preprocedure | function_prototype | declaration | class_definition | function_definition;
+
+
+
+
+/*!
+ @defgroup GRAMMAR_Source_NameSpace Namespace
+ @ingroup GRAMMAR_Source
+*/
+
+ 
+/*! 
+ @ingroup GRAMMAR_Source_NameSpace
+ @defgroup GRAMMAR_Source_namespace namespace
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_namespace.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_namespace_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_namespace_Caller.dt"
+*/
+namespace =     "namespace"
+            >> ID
+            >> "{"
+            >> +(  namespace
+                 | using_namespace
+                 | preprocedure
+                 | class_definition
+                 | function_prototype
+                 | declaration
+                 | function_definition
+                 | statement
+                 | extern_compiled
+                )
+            >> "}"
+            >> !semikolon;
+
+/*! 
+ @ingroup GRAMMAR_Source_NameSpace
+ @defgroup GRAMMAR_Source_using_namespace using_namespace
+
+ <h2>Grammar</h2>
+ @dotfile "Source_R_using_namespace.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_using_namespace_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_using_namespace_Caller.dt"
+
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    07.07.2013   @I  Eckard Klotz
+ @I bug a missing "namespace" and a "::" coupled id-list 
+    leads to a wrong parsing-result
+ @I "namespace" is optional now and a "::" coupled id-list is possible now
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+
+
+*/
+using_namespace = "using" >> !("namespace") >> ID >> *( ':' >> ':' >> ID)  >> semikolon;
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source
+ @defgroup GRAMMAR_Source_extern_compiled extern_compiled
+
+ <h2>Grammar</h2>
+ @dotfile "Source_R_extern_compiled.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_extern_compiled_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_extern_compiled_Caller.dt"
+
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    07.07.2013   @I  Eckard Klotz
+ @I using a extern-declaration of elements written in an other programming-language 
+    leads to a wrong parsing-result
+ @I new parser extern_compiled defined
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+
+"extern"
+*/
+extern_compiled =    storage_class_specifier
+                  >> String
+                  >> '{'
+                  >> *(
+                        (  namespace
+                         | using_namespace
+                         | preprocedure
+                         | class_definition
+                         | function_prototype
+                         | declaration
+                         | function_definition
+                         | statement
+                         ) >> !(',' |';')
+                      )
+                  >> '}'
+                  >> !semikolon;
+

@@ -1,0 +1,954 @@
+
+/*!
+ @defgroup GRAMMAR_SPECIFIC Grammar Cpp
+ @ingroup GRAMMAR_HIW
+*/
+
+
+
+/*!
+ @defgroup GRAMMAR_Source  Active Source-Code of Cpp
+ @ingroup GRAMMAR_SPECIFIC
+ @brief used for @ref PROCESS_SOURCE
+ 
+This c-grammar was created out of a yacc-grammar found in the internet
+
+This is the original introduction-comment:
+
+ ANSI C grammar (Yacc)ANSI C Yacc grammar
+ In 1985, Jeff Lee published his Yacc grammar (which is accompanied by a
+ matching Lex specification) for the April 30, 1985 draft version of the ANSI C
+ standard. Tom Stockfisch reposted it to net.sources in 1987; that original, as
+ mentioned in the answer to question 17.25 of the comp.lang.c FAQ, can be ftp'ed
+ from ftp.uu.net, file usenet/net.sources/ansi.c.grammar.Z.
+ Jutta Degener, 1995
+
+The original grammar was placed in two files one lexer-description for tokens
+and one syntax-specification of grammar-rules. Many lexer-rules are now not
+necessary anymore since their job will be done by spirit-parsers directly in the
+higher grammar-rules. Some rules like the expression-rules are now reconstructed
+to avoid lef-recursion-errors. Other rules the higher grammar-rules (especialy
+the flow-statements) are now redesigned to get a better xml-result
+Eckard Klotz, 2010/2011
+
+*/
+
+
+
+
+
+
+
+
+
+
+/*!
+ @defgroup GRAMMAR_Source_Token Token
+ @ingroup GRAMMAR_Source
+*/
+
+
+
+
+
+
+
+
+
+
+/*!
+ @defgroup GRAMMAR_Source_Expressions Expressions
+ @ingroup GRAMMAR_Source
+*/
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_primary_expression primary_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_primary_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_primary_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_primary_expression_Caller.dt"
+
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    18.07.2014   @I  Eckard Klotz
+ @I bug preprocessor keyword defined was not parsed correctly
+ @I associated rule added
+ @I_______________________________________________________
+    01.09.2014   @I  Eckard Klotz
+ @I bug more than one owner in a chain will not be parsed 
+ @I sequence of Owner and :: may nor occure more than once
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+
+
+*/
+primary_expression =  p_defined
+                    | template_type
+                    | (*(Owner >> ':' >> ':') >> ID)
+                    | Number
+                    | (String >> *String)
+                    | type_specifier
+                    | ("(" >> expression >>  ")");
+
+
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Expressions
+ @defgroup GRAMMAR_Source_unary_expression unary_expression
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_unary_expression.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_unary_expression_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_unary_expression_Caller.dt"
+*/
+unary_expression = 
+   postfix_expression
+ | ("++"           >> unary_expression)
+ | ("--"           >> unary_expression)
+ | (unary_operator >> cast_expression)
+ | ("sizeof"       >> unary_expression)
+ | ("sizeof"       >> "(" >> type_name >> ")")
+ ;
+
+/*! 
+ @ingroup GRAMMAR_Source_Diverse 
+ @defgroup GRAMMAR_Source_unary_operator unary_operator
+
+ changed 19.02.2011 "new" added
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_unary_operator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_unary_operator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_unary_operator_Caller.dt"
+*/
+unary_operator = 
+   ('&'-("&&"))
+ | "*"
+ | "+"
+ | "-"
+ | "~"
+ | "!"  | "not"
+ | ("new"    >> !("[" >> "]"))
+ | ("delete" >> !("[" >> "]"))
+ ;
+
+
+
+
+
+
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Diverse 
+ @defgroup GRAMMAR_Source_declaration_specifier declaration_specifier
+
+ changed 20.02.2011 second type_qualifier and &|* 
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_declaration_specifier.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_declaration_specifier_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_declaration_specifier_Caller.dt"
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    01.09.2014   @I  Eckard Klotz
+ @I bug more than one owner in a chain will not be parsed 
+ @I sequence of Owner and :: may nor occure more than once
+ @I_______________________________________________________
+    01.09.2014   @I  Eckard Klotz
+ @I bug more than one pointer * in a chain will not be parsed 
+ @I the pointer * may nor occure more than once
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+*/
+declaration_specifier = (    !storage_class_specifier 
+                          >> *type_qualifier
+                          >> *(Owner >> ':' >> ':')
+                          >> (template_type|type_specifier|USER_TYPE)
+                          >> *type_qualifier
+                          >> *('&' | '*')
+                          >> *type_qualifier
+                         );
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Diverse 
+ @defgroup GRAMMAR_Source_direct_declarator Grammar_direct_declarator
+
+ Change 19.02.2011 for class-methodes
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_direct_declarator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_direct_declarator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_direct_declarator_Caller.dt"
+*/
+direct_declarator =    (   ( ( operator_id)
+                            | owned_ID
+                            | ID
+                           )
+                        >> *(direct_declarator_second)
+                       )
+                    >> *type_qualifier;
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Struct
+ @defgroup GRAMMAR_Source_struct_declaration struct_declaration
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_struct_declaration.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_struct_declaration_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_struct_declaration_Caller.dt"
+*/
+struct_declaration = (template_type|specifier_qualifier_list|USER_TYPE) >> struct_declarator_list >> semikolon ;
+
+
+
+/*!
+ @defgroup GRAMMAR_Source_Template Template
+ @ingroup GRAMMAR_Source 
+*/
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Template
+ @defgroup GRAMMAR_Source_template_type template_type
+
+ implemented 19.02.2011
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_template_type.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_template_type_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_template_type_Caller.dt"
+*/
+template_type =    ID
+                >> '<' 
+                >> !(             (declaration_specifier) 
+                     >> *( ',' >> (declaration_specifier))
+                    )
+                >> '>';
+
+
+
+
+
+
+
+/*!
+ @defgroup GRAMMAR_Source_Class Class
+ @ingroup GRAMMAR_Source
+*/
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_Owner Owner
+
+ Implemented 19.02.2011 for class-methodes
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_Owner.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_Owner_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_Owner_Caller.dt"
+*/
+Owner =(template_type|type_specifier|ID);
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Diverse 
+ @defgroup GRAMMAR_Source_owned_ID Grammar_owned_ID
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_owned_ID.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_owned_ID_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_owned_ID_Caller.dt"
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    01.09.2014   @I  Eckard Klotz
+ @I bug more than one owner in a chain will not be parsed 
+ @I sequence of Owner and :: may nor occure more than once
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+*/
+owned_ID = (    +(Owner >> ':' >> ':')
+              >> !'~'
+             >> ( operator_id | ID)
+           );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_FloWord
+ @defgroup GRAMMAR_Source_lable_stmt Grammar_lable_stmt
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_lable_stmt.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_lable_stmt_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_lable_stmt_Caller.dt"
+*/
+lable_stmt    = ID >> (":" - "::");
+
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_PrePro
+ @defgroup GRAMMAR_Source_p_Block p_Block
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_p_Block.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_p_Block_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_p_Block_Caller.dt"
+*/
+p_Block = + (  class_definition
+             | function_prototype
+             | function_definition
+             | declaration
+             | statement
+             | preprocedure
+             | using_namespace
+             |( p_text -(  statement
+                         | using_namespace
+                         | preprocedure
+                         | class_definition
+                         | function_prototype
+                         | declaration
+                         | function_definition
+                        )
+              )
+            );
+
+
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_class_declaration class_declaration
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_class_declaration.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_class_declaration_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_class_declaration_Caller.dt"
+*/
+class_declaration  =    "class"
+                    >> ID
+                    >> semikolon  ;
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_class_definition class_definition
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_class_definition.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_class_definition_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_class_definition_Caller.dt"
+*/
+class_definition  =    "class"
+                    >> ID
+                    >> !calss_parent
+                    >> class_content
+                    >> semikolon  ;
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_calss_parent calss_parent
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_calss_parent.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_calss_parent_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_calss_parent_Caller.dt"
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    01.09.2014   @I  Eckard Klotz
+ @I bug more than one owner in a chain will not be parsed 
+ @I sequence of Owner and :: may nor occure more than once
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+
+
+*/
+calss_parent =    ':'
+              >>  ("public"|"protected"|"private")
+              >>          ((+(Owner >> ':' >> ':')  >> ID) | (template_type|type_specifier|ID))
+              >> *(',' >> ((+(Owner >> ':' >> ':')  >> ID) | (template_type|type_specifier|ID)));
+                        
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_class_content class_content
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_class_content.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_class_content_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_class_content_Caller.dt"
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    10.11.2013   @I  Eckard Klotz
+ @I refactoring to decreas runtime
+ @I replace call of sub-token rules by using their content directly
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+
+class_content   =    BLOCK_OPEN 
+                  >> +(public|protected|private)
+                  >> BLOCK_CLOSE;
+*/
+class_content   =    ("{" | "<%") 
+                  >> +(public|protected|private)
+                  >> ("}" | "%>");
+                  
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_public public
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_public.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_public_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_public_Caller.dt"
+*/
+public    =  ("public"    >> ':'  >> *(methode_definition | methode | property | preprocedure | friend))
+            |(                       +(methode_definition | methode | property | preprocedure | friend));
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_protected protected
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_protected.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_protected_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_protected_Caller.dt"
+*/
+protected = "protected" >> ':'  >> *(methode_definition | methode | property | preprocedure);
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_private private
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_private.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_private_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_private_Caller.dt"
+*/
+private   = "private"   >> ':'  >> *(methode_definition | methode | property | preprocedure);
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_methode methode
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_methode.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_methode_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_methode_Caller.dt"
+*/
+methode            =    (operator | constructor | destructor | service)
+                     >>  semikolon;
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_methode_definition methode_definition
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_methode_definition.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_methode_definition_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_methode_definition_Caller.dt"
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    07.07.2013   @I  Eckard Klotz
+ @I bug the call of class-constructors to initialize attributes
+    leads to a wrong parsing-result
+ @I call of expresions to initialize attributes is possible now 
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+
+
+*/
+methode_definition =   (operator | constructor | destructor | service)
+                    >> !( ':' >> expression >> * (',' >> expression) )
+                    >>  compound_statement
+                    >> !semikolon;
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Source
+ @defgroup GRAMMAR_Source_operator operator
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_operator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_operator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_operator_Caller.dt"
+*/
+operator          =    !("virtual"|"static")
+                    >>  declaration_specifier  
+                    >>  operator_id
+                    >>  prototype_parameter_list
+                    >> *type_qualifier
+                    >> !('=' >> '0')  ;
+
+/*! 
+ @ingroup GRAMMAR_Source_Diverse 
+ @defgroup GRAMMAR_Source_operator_id operator_id
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_operator_id.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_operator_id_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_operator_id_Caller.dt"
+*/
+operator_id =   "operator"
+             >> (  ( "(" >> ")" )
+                 | ( ("new" >> !("[" >> "]"))| ("delete" >> !("[" >> "]")) | "sizeof" )
+                 | ( "&" | "*" | "+" | "-" | "~" | "!"   )
+                 | ("=" | ">>=" | "<<=" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "^=" | "|=")
+                 | ("." | "->" |  "++" |  "--" )
+                 | ("*" | "/" | "%")
+                 | ("<<" | ">>")
+                 | ("<=" | ">=" | "<" | ">")
+                 | ("=="|"!=")
+                 | ("^" | "|" | "&&" | "||")
+                ); /* | (+(anychar_p-'('))*/
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_constructor constructor
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_constructor.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_constructor_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_constructor_Caller.dt"
+*/
+constructor       =    !("virtual"|"static")
+                    >>  ID
+                    >>  prototype_parameter_list
+                    >> *type_qualifier
+                    >> !('=' >> '0');
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_destructor destructor
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_destructor.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_destructor_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_destructor_Caller.dt"
+*/
+destructor        =    !("virtual"|"static")
+                    >>  "~"
+                    >>  ID
+                    >>  direct_parameter_declarator
+                    >> *type_qualifier
+                    >> !('=' >> '0');
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_service service
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_service.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_service_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_service_Caller.dt"
+*/
+service           =    !("virtual"|"static")
+                    >>  declaration_specifier  
+                    >>  ID
+                    >>  prototype_parameter_list
+                    >> *type_qualifier
+                    >> !('=' >> '0');
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_property property
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_property.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_property_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_property_Caller.dt"
+*/
+property = ((  declaration_specifier
+                       >>            property_declarator
+                       >> *((",") >> property_declarator) >> semikolon
+                      )- methode
+                     )
+                    |(enum_specifier  >> semikolon);
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_property_declarator property_declarator
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_property_declarator.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_property_declarator_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_property_declarator_Caller.dt"
+*/
+property_declarator =
+   (                  ":" >> constant_expression)
+ | (declarator_prp >> ":" >> constant_expression)
+ |  declarator_prp
+ ;
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Diverse 
+ @defgroup GRAMMAR_Source_declarator_prp declarator_prp
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_declarator_prp.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_declarator_prp_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_declarator_prp_Caller.dt"
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    10.11.2013   @I  Eckard Klotz
+ @I refactoring to decreas runtime
+ @I replace call of sub-token rules by using their content directly
+ @I_______________________________________________________
+    01.09.2014   @I  Eckard Klotz
+ @I bug more than one owner in a chain will not be parsed 
+ @I sequence of Owner and :: may nor occure more than once
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+
+declarator_prp =
+    (   pointer 
+     >> ( (    ((Owner >> ':' >> ':' >> !'~' >> ID)|ID) 
+           >> +( ARRAY_OPEN >> !constant_expression  >> ARRAY_CLOSE)
+          )
+         | ID
+        )
+    )
+   |(   ( (    ((Owner >> ':' >> ':' >> !'~' >> ID)|ID) 
+           >> +( ARRAY_OPEN >> !constant_expression  >> ARRAY_CLOSE)
+          )
+         | ID
+        )
+    );
+*/
+declarator_prp =
+    (   pointer 
+     >> ( (    ((+(Owner >> ':' >> ':') >> !'~' >> ID)|ID) 
+           >> +( ("[" | "<:") >> !constant_expression  >> ("]" | ":>"))
+          )
+         | ID
+        )
+    )
+   |(   ( (    ((+(Owner >> ':' >> ':') >> !'~' >> ID)|ID) 
+           >> +( ("[" | "<:") >> !constant_expression  >> ("]" | ":>"))
+          )
+         | ID
+        )
+    );
+
+/*! 
+ @ingroup GRAMMAR_Source_Class
+ @defgroup GRAMMAR_Source_friend friend
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_friend.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_friend_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_friend_Caller.dt"
+*/
+friend = "friend" >> (class_declaration | function_prototype);
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Diverse 
+ @defgroup GRAMMAR_Source_external_declaration external_declaration
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_external_declaration.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_external_declaration_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_external_declaration_Caller.dt"
+*/
+external_declaration = preprocedure | function_prototype | declaration | class_definition | function_definition;
+
+
+
+
+/*!
+ @defgroup GRAMMAR_Source_NameSpace Namespace
+ @ingroup GRAMMAR_Source
+*/
+
+ 
+/*! 
+ @ingroup GRAMMAR_Source_NameSpace
+ @defgroup GRAMMAR_Source_namespace namespace
+
+ <h2>Grammar</h2>
+  @dotfile "Source_R_namespace.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_namespace_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_namespace_Caller.dt"
+*/
+namespace =     "namespace"
+            >> ID
+            >> "{"
+            >> +(  namespace
+                 | using_namespace
+                 | preprocedure
+                 | class_definition
+                 | function_prototype
+                 | declaration
+                 | function_definition
+                 | statement
+                 | extern_compiled
+                )
+            >> "}"
+            >> !semikolon;
+
+/*! 
+ @ingroup GRAMMAR_Source_NameSpace
+ @defgroup GRAMMAR_Source_using_namespace using_namespace
+
+ <h2>Grammar</h2>
+ @dotfile "Source_R_using_namespace.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_using_namespace_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_using_namespace_Caller.dt"
+
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    07.07.2013   @I  Eckard Klotz
+ @I bug a missing "namespace" and a "::" coupled id-list 
+    leads to a wrong parsing-result
+ @I "namespace" is optional now and a "::" coupled id-list is possible now
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+
+
+*/
+using_namespace = "using" >> !("namespace") >> ID >> *( ':' >> ':' >> ID)  >> semikolon;
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_Source_Diverse 
+ @defgroup GRAMMAR_Source_extern_compiled extern_compiled
+
+ <h2>Grammar</h2>
+ @dotfile "Source_R_extern_compiled.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Source_R_extern_compiled_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Source_R_extern_compiled_Caller.dt"
+
+
+ @TabBegin
+  <b>date</b>    @I <b>author</b> @I <b>cause</b> @I <b>change</b>
+ @I_______________________________________________________
+    07.07.2013   @I  Eckard Klotz
+ @I using a extern-declaration of elements written in an other programming-language 
+    leads to a wrong parsing-result
+ @I new parser extern_compiled defined
+ @I_______________________________________________________
+                 @I               @I              @I
+ @TabEnd
+
+"extern"
+*/
+extern_compiled =    storage_class_specifier
+                  >> String
+                  >> '{'
+                  >> *(
+                        (  namespace
+                         | using_namespace
+                         | preprocedure
+                         | class_definition
+                         | function_prototype
+                         | declaration
+                         | function_definition
+                         | statement
+                         ) >> !(',' |';')
+                      )
+                  >> '}'
+                  >> !semikolon;
+

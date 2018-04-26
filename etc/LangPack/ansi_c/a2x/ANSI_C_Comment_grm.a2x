@@ -1,0 +1,197 @@
+
+
+/*!
+ @defgroup GRAMMAR_Comment Comment
+ @ingroup GRAMMAR_SPECIFIC
+ @brief used for @ref PROCESS_COMMENT
+*/
+
+
+/*! 
+ @ingroup GRAMMAR_COMMENT
+ @defgroup GRAMMAR_COMMENT_pass pass
+ 
+ will be used from abc2xml as root-parser
+ 
+ <h2>Grammar</h2>
+  @dotfile "Comment_R_pass.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Comment_R_pass_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Comment_R_pass_Caller.dt"
+*/
+
+/*! 
+ @ingroup GRAMMAR_COMMENT
+ @defgroup GRAMMAR_COMMENT_skip skip
+
+ will be used from abc2xml to define a phrased parser
+
+ <h2>Grammar</h2>
+  @dotfile "Comment_R_skip.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Comment_R_skip_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Comment_R_skip_Caller.dt"
+*/
+
+
+/*! 
+ @ingroup GRAMMAR_Comment
+ @defgroup GRAMMAR_Comment_reserved reserved
+
+ this parser will be generated automaticly and contains all strings used in all other parsers
+
+ <h2>Grammar</h2>
+  @dotfile "Comment_R_reserved.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Comment_R_reserved_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Comment_R_reserved_Caller.dt"
+*/
+
+
+/*! 
+ @ingroup GRAMMAR_COMMENT
+ @defgroup GRAMMAR_COMMENT_command command
+
+
+ <h2>Grammar</h2>
+  @dotfile "Comment_R_command.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Comment_R_command_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Comment_R_command_Caller.dt"
+*/
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_COMMENT
+ @defgroup GRAMMAR_COMMENT_preComment preComment
+
+
+ <h2>Grammar</h2>
+  @dotfile "Comment_R_preComment.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Comment_R_preComment_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Comment_R_preComment_Caller.dt"
+*/
+preComment = space_p - (ch_p('\n') | ch_p('\r'));
+
+/*! 
+ @ingroup GRAMMAR_COMMENT
+ @defgroup GRAMMAR_COMMENT_directive directive
+
+
+ <h2>Grammar</h2>
+  @dotfile "Comment_R_directive.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Comment_R_directive_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Comment_R_directive_Caller.dt"
+*/
+directive     =  +(   "//-"
+                   >> *(anychar_p - ('\n'|'\r'))
+                   >> eol_p );
+
+/*! 
+ @ingroup GRAMMAR_COMMENT
+ @defgroup GRAMMAR_COMMENT_comment_cpp comment_cpp
+
+
+ <h2>Grammar</h2>
+  @dotfile "Comment_R_comment_cpp.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Comment_R_comment_cpp_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Comment_R_comment_cpp_Caller.dt"
+*/
+comment_cpp   =  +(  (   "//"
+                       >> (anychar_p - ('-' |'\n'|'\r'))
+                       >> *(anychar_p - ('\n'|'\r'))
+                       >> eol_p
+                     )
+                   |  ( "//" >> eol_p)
+                  );
+
+/*! 
+ @ingroup GRAMMAR_COMMENT
+ @defgroup GRAMMAR_COMMENT_open_std open_std
+
+
+ <h2>Grammar</h2>
+  @dotfile "Comment_R_open_std.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Comment_R_open_std_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Comment_R_open_std_Caller.dt"
+*/
+open_std  = "/*";
+
+/*! 
+ @ingroup GRAMMAR_COMMENT
+ @defgroup GRAMMAR_COMMENT_close_std close_std
+
+
+ <h2>Grammar</h2>
+  @dotfile "Comment_R_close_std.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Comment_R_close_std_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Comment_R_close_std_Caller.dt"
+*/
+close_std = "*/";
+
+/*! 
+ @ingroup GRAMMAR_COMMENT
+ @defgroup GRAMMAR_COMMENT_comment_std comment_std
+
+
+ <h2>Grammar</h2>
+  @dotfile "Comment_R_comment_std.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Comment_R_comment_std_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Comment_R_comment_std_Caller.dt"
+*/
+comment_std   =  (open_std >> *(anychar_p - close_std)  >> close_std );
+
+/*! 
+ @ingroup GRAMMAR_COMMENT
+ @defgroup GRAMMAR_COMMENT_comment comment
+
+
+ <h2>Grammar</h2>
+  @dotfile "Comment_R_comment.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Comment_R_comment_Called.dt"
+                     
+ <h2>Used by</h2>
+  @dotfile "Comment_R_comment_Caller.dt"
+*/
+comment = (comment_cpp|comment_std|directive);

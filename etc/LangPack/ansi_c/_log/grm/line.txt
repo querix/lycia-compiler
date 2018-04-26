@@ -1,0 +1,80 @@
+/*! [Snipet__line__precut__] */
+precut =
+ (
+   ch_p('\')
+  >>
+   eol_p
+ )
+;
+/*! [Snipet__line__precut__] */
+
+
+/*! [Snipet__line__process_on__] */
+process_on =
+ (
+   ch_p('{')
+  |
+   ch_p('[')
+  |
+   ch_p('(')
+ )
+;
+/*! [Snipet__line__process_on__] */
+
+
+/*! [Snipet__line__process_off__] */
+process_off =
+ (
+   ch_p(')')
+  |
+   ch_p(']')
+  |
+   ch_p('}')
+ )
+;
+/*! [Snipet__line__process_off__] */
+
+
+/*! [Snipet__line__process_swt__] */
+process_swt =
+ (
+   ch_p(''')
+  |
+   ch_p('"')
+ )
+;
+/*! [Snipet__line__process_swt__] */
+
+
+/*! [Snipet__line__process_do__] */
+process_do =
+ (
+   eol_p
+  >>
+    *
+     blank_p
+ )
+;
+/*! [Snipet__line__process_do__] */
+
+
+/*! [Snipet__line__skip__] */
+skip =
+ space_p
+;
+/*! [Snipet__line__skip__] */
+
+
+/*! [Snipet__line__pass__] */
+pass =
+  process_do
+ |
+  (
+    ch_p('\')
+   >>
+    anychar_p
+  )
+;
+/*! [Snipet__line__pass__] */
+
+

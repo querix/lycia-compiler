@@ -1,0 +1,992 @@
+ /* GeneratorNSD configuration */
+
+
+
+comp_op:[@text(__SELF__)]|
+
+Keyword: [@text(__SELF__)] |
+
+KeyChr:[@text(__SELF__)]|
+
+Str:[@text(__SELF__)]|
+
+ID:[@text(__SELF__)]|useAlsoFor(ID_std)
+
+Owner:[@text(__SELF__)]|
+
+String:[@replace(DQ,"''"),@text(__SELF__)]|
+
+testlist1:[@text(__SELF__)]|
+
+Number:[@text(__SELF__)]|
+
+Comment:\n[@replace(DQ,"''"),@replace(__Pb__,"<"),@replace(__Pe__,">"),@replace(NL,""),@replace("/*",""),@replace("*/",""),@replace("//",""),@text(__SELF__)]\n|
+Comment_:|
+
+USER_TYPE:[@text(ID)]|
+
+
+enum_specifier:[@text(ID)]|
+
+type_qualifier:[@text(__SELF__)] |
+
+storage_class_specifier:[@text(__SELF__)]|
+
+
+struct_specifier:[@snipet(Keyword)
+               ] [@replace(DQ,"''"),@replace(__Pb__,"<"),@replace(__Pe__,">"),@replace(NL,""),@replace("/*",""),@replace("*/",""),@replace("//",""),
+                  @text(Comment)
+              ]\n[@useForSnipet(declaration,struct_internDeclaration), @snipet(declaration)]|useAlsoFor(union_specifier),
+struct_internDeclaration:[@snipet(declaration_specifier,init_declarator,KeyChr)
+                        ][@replace(DQ,"''"),@replace(__Pb__,"<"),@replace(__Pe__,">"),@replace(NL,""),@replace("/*",""),@replace("*/",""),@replace("//",""),
+                          @text(Comment)]\n|
+
+
+declaration:[% setNodeStyle , @replace(TAG_NAME, declaration)
+          %]
+           [@tag()]_[% node_ID %];
+[<N0>]     [@tag()]_[% node_ID %][@stackRead("",_PstFix_)]|
+
+declaration_Style:
+[<N0>]     [@tag()]_[% node_ID %] [@stackRead("",__Pb__)]label="[@snipet(declaration_specifier,init_declarator,KeyChr)][@snipet(Comment)]", shape=box, style="rounded, filled", height=0.1, width=0.1 [@stackRead("",__Pe__)];
+|
+
+
+init_declarator:[@snipet(declarator,KeyChr,initializer)]|
+
+initializer:[@snipet(KeyChr,assignment_expression,initializer_list)]|
+
+initializer_list:[@snipet(KeyChr,initializer)]|
+
+declaration_specifier:[@replace(__RESET__),
+                       @snipet(USER_TYPE, 
+                               Owner,
+                               KeyChr,
+                               template_type,
+                               storage_class_specifier,
+                               type_qualifier,
+                               type_specifier)]|
+
+
+type_name:[@snipet(specifier_qualifier_list,abstract_declarator,USER_TYPE,)]|
+
+specifier_qualifier_list:[@snipet(type_specifier,type_qualifier,specifier_qualifier_list,USER_TYPE,)]|
+
+type_specifier:[@useForSnipet(type_specifier,Number),@snipet(_SELF_)
+              ][@snipet(struct_specifier,union_specifier,enum_specifier,Keyword,KeyChr,Str,)]|
+
+abstract_declarator:[@snipet(pointer,direct_abstract_declarator)]|
+
+pointer:[@snipet(direct_declarator)]|
+
+direct_abstract_declarator:[@snipet(parameter_type_list,constant_expression,KeyChr)]|
+
+template_type:[@snipet(ID, KeyChr, declaration_specifier)]|
+
+declarator:[@snipet(direct_declarator, pointer ,funcPoint_declarator)]|
+
+funcPoint_declarator:[@snipet(KeyChr, type_qualifier, direct_declarator, prototype_parameter_list)]|
+
+
+
+
+
+direct_declarator:
+ [@replace("_"," "),@snipet(KeyChr,owned_ID,ID,direct_declarator_second)]
+|
+
+
+
+
+
+
+owned_ID:[@replace("_"," "),@snipet(KeyChr,Owner,ID,)]|useAlsoFor(owned_ID_std)
+
+direct_declarator_second:[@snipet(KeyChr,direct_parameter_declarator,constant_expression)]|
+
+direct_parameter_declarator:[@snipet(KeyChr,parameter_type_list,assignment_expression)]|
+
+parameter_type_list:[@snipet(parameter_list)]|
+
+parameter_list:[@snipet(parameter_declaration)]|
+
+parameter_declaration:[@snipet(declaration_specifier,declarator)]|
+
+assignment_expression:[@snipet(cast_expression,unary_expression,assignment_expression,assignment_operator,KeyChr,)]|
+
+assignment_operator:[@snipet(KeyChr),@snipet(Str)]|
+
+cast_expression:[@snipet(unary_expression,cast_expression,type_name,KeyChr,)]|
+
+unary_expression:[@snipet(ID,
+                          KeyChr,
+                          Number,
+                          argument_expression_list,
+                          unary_operator,
+                          cast_expression,
+                          unary_expression,
+                          assignment_expression,
+                          String,Str)]|
+
+unary_operator:[@snipet(KeyChr,Keyword)]|
+
+argument_expression_list:[@snipet(assignment_expression,KeyChr)]|
+
+constant_expression:[@snipet(cast_expression)]|
+
+
+
+File_HeadText:
+digraph activity
+{
+|
+
+File_FootText:
+}
+|
+/*@ifOlderAs(__DESTINATION__),@ifOlderAs(__DESTINATION__),*/
+/*
+              @replace("->  }","}"), 
+              @replace("->  ","-> "), 
+              @replace("-> ->","-> "),
+              @replace("  -> "," -> "),
+              @replace("; ",";"),
+              @replace(";->",";"),
+              @replace("} ","}"),
+              @replace("}->","}"),
+[@stackRead(__LIVEOUT__,__DESTINATION__)]             
+[@stackRead(__LIVEOUT__,FileContent)]             
+              */
+Content2File:[@useForSnipet(Content,Content_Data)   , @snipet(__SELF__)]
+             [@useForSnipet(Content,ContentFileName), @stackPush(__DESTINATION__,__SELF__)]
+             [@useForSnipet(Content,Content_OverView)   , @stackPush(FileContent,__SELF__)]
+             [@stackPop(__DESTINATION__, FileContent)]|
+
+
+Content_Data:[@useForSnipetDownwards(p_define,independent_define),
+              @snipet(function_definition),@snipet(preprocedure),@snipet(namespace)]
+ 
+|useAlsoFor(namespace)
+
+
+/*
+@snipet(preprocedure),
+*/
+Content_OverView:
+[<N0>][@stackRead("",CmntBgn)]!
+[<13>][<10>]
+[<13>][<10>]  @page   DIAGRAMS Activity Diagrams
+[<13>][<10>]
+[<13>][<10>]  @subpage diagrams_[@replace(".xml",""),@stackRead("",__SOURCENAME__)] 
+[<13>][<10>]
+[<N0>][@stackRead("",CmntEnd)]
+[<13>][<10>]
+[<13>][<10>]
+[<N0>][@stackRead("",CmntBgn)]!
+[<13>][<10>]  @page diagrams_[@replace(".xml",""),@stackRead("",__SOURCENAME__)] [@attribute(sourceFile)] 
+[<13>][<10>]
+[<13>][<10>]
+[<13>][<10>]
+[<N0>][@useForSnipet(DotFiles,DotFile_OverView),@xmlSnipet(DotFiles)]
+[<13>][<10>]
+[<13>][<10>]
+[<N0>][@stackRead("",CmntEnd)]
+/*[@xmlSave(DotFiles,dot/DotFiles.xml)]*/
+[@xmlDelete(DotFiles)]
+|useAlsoFor(namespace)
+
+
+/*
+logCall:<Call/>|
+
+   [@useForSnipet(function_definition,logCall),@xmlCreate(DotFiles,__SELF__)]
+*/
+
+
+
+DotFile_OverView:[@snipet(File)
+                ]|
+/*
+[@useForSnipet(File,deleteFromSectionID),@stackPush(_DeleteFromSectionID_,File)
+                ]@replace(_DeleteFromSectionID_,""),            
+deleteFromSectionID:[% DescribeFileOwner %][@stackClear(_DeleteFromSectionID_)]|
+*/
+File:[@snipet(Function,Exclude)]|
+
+Function:
+[<13>][<10>]
+[<13>][<10>]
+[<13>][<10>]  @section uad_[@attribute(link)]
+[<13>][<10>]
+[<13>][<10>]  @dotfile [@attribute(name)].dt
+[<13>][<10>]
+[<13>][<10>]
+[<13>][<10>]
+
+|
+
+Exclude:
+[<13>][<10>]
+[<13>][<10>]
+[<13>][<10>]  @subsection uad_[@attribute(link)]
+[<13>][<10>]
+[<13>][<10>]  @dotfile [@attribute(name)].dt
+[<13>][<10>]
+[<13>][<10>]
+[<13>][<10>]
+|
+
+
+                               
+
+
+
+
+
+
+
+
+/*
+function_OverView:
+[<13>][<10>]
+[<13>][<10>]
+[<13>][<10>] @section [@useForSnipet(declarator,declarator_text), @snipet(declarator)]
+[<13>][<10>]
+[<13>][<10>] @dotfile [@replace(".xml",""),@stackRead("",__SOURCENAME__)
+                  ]_F_[@replace(" ","_"),@replace(":",""),
+                       @useForSnipet(declarator,declarator_text),
+                       @snipet(declarator)].dt
+[<13>][<10>]
+[<13>][<10>]
+[<13>][<10>]
+[<13>][<10>]
+[<13>][<10>]
+|
+
+*/
+
+
+
+
+
+
+
+
+classdef2File:[@useForSnipet(classdef,classdefFileName), @stackPush(__DESTINATION__,__SELF__)]
+              [@ifOlderAs(__DESTINATION__),@useForSnipet(classdef,classdef_Data)   , @stackPush(classdefContent,__SELF__)]
+              [@ifOlderAs(__DESTINATION__),@stackPop(__DESTINATION__, classdefContent)]|
+
+
+classdef_Data:
+[@snipet(ID)]
+[!@snipet(suite)!]
+|
+
+ClassFileName:[@stackRead("",__SOURCENAME__)][@text(ID)]|
+
+
+
+suiteAndMore:[@useForSnipetDownwards(p_define,p_define_local),
+              @snipet(preprocedure,declaration,
+                      function_definition,
+                      if_stmt,switch_stmt,case_stmt,default_stmt,
+                      while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                      continue_stmt,break_stmt,return_stmt,
+                      expr_stmt,compound_statement,)]|
+
+/**/            
+funcdef2File:[@useForSnipet(function_definition,funcdefFileName), @stackPush(__DESTINATION__,__SELF__)] 
+             [@ifOlderAs(__DESTINATION__),@useForSnipet(function_definition,funcdef_Data)   , @stackPush(funcdefContent,__SELF__)]
+             [@ifOlderAs(__DESTINATION__),
+              @replace("->  }","}"), 
+              @replace("->  ","-> "), 
+              @replace("-> -> ","-> "),
+              @replace("  -> "," -> "),
+              @replace("; ",";"),
+              @replace(";->",";"),
+              @replace("} ","}"),
+              @replace("}->","}"),
+              @stackPop(__DESTINATION__, funcdefContent)]
+             [@useForSnipet(function_definition,funcdefIncludeName),   @stackPush(__DESTINATION__,__SELF__)] 
+             [@ifOlderAs(__DESTINATION__), @useForSnipet(function_definition,createDotFileInclude), @stackPush(funcdefContent,__SELF__)]
+             [@ifOlderAs(__DESTINATION__), @stackPop(__DESTINATION__, funcdefContent)]
+             [@xmlDelete(DotFileSingleFunction)]
+             |
+
+/*funcdefLogFileName:<File><Function name="[@stackRead("",__DESTINATION__)]"/></File>|*/
+funcdefLogFileName:<File><Function name="[@replace(".xml",""),@stackRead("",__SOURCENAME__)
+                                     ]_F_[@replace(" ","_"),@replace(":",""),
+                                          @useForSnipet(declarator,declarator_text),
+                                          @snipet(declarator)
+                                    ]" link="[@stackRead("",_FunctionID_)]" /></File>|
+
+declarator_text:[@useForSnipet(direct_declarator,direct_declarator_text),@snipet(direct_declarator)]|
+direct_declarator_text:[@text(ID),@text(owned_ID)]|
+
+
+
+/*[ @useForSnipet(Variant,Variant_Funcdef),@snipet(Variant)
+                   ][ @ifAbsent(Variant,NoVariant_Funcdef)
+                   */
+funcdef_VariantData:][%funcdef2File%]|
+
+Variant_Funcdef:[@useForSnipet(Variant,VariantName),
+                 @stackPush(__VARIANTNAME__,__SELF__)
+               ][@useForSnipet(Variant,function_definition_Pre),     @stackPush(_PreFix_,__SELF__)
+               ][@useForSnipet(Variant,function_definition_Pst),     @stackPush(_PstFix_,__SELF__)
+               ][@useForSnipetDownwards(Variant,funcdef_Data),@snipet(__SELF__)
+               ][@stackClear(__VARIANTNAME__)]| /**/
+
+VariantName:Variant: [@attribute(name)]|
+
+
+NoVariant_Funcdef:[@useForSnipet(function_definition,NoVariantName),
+                   @stackPush(__VARIANTNAME__,__SELF__)
+                 ][@useForSnipet(function_definition,function_definition_Pre),     @stackPush(_PreFix_,function_definition)
+                 ][@useForSnipet(function_definition,function_definition_Pst),     @stackPush(_PstFix_,function_definition)
+                 ][@useForSnipetDownwards(function_definition,funcdef_Data),@snipet(__SELF__)
+                 ][@stackClear(__VARIANTNAME__)]| /**/
+
+NoVariantName: |
+
+function_definition_Pre: |
+function_definition_Pst: -> |
+
+
+
+createDotFileInclude:[@xmlSnipet(DotFileSingleFunction)]|
+
+DotFileSingleFunction:
+[<13>][<10>] [@stackRead("",CmntBgn)]!
+[<13>][<10>] @file  [@replace(__DESTINATIONPATH__,""),@stackRead("",__DESTINATION__)]
+[<I1>] [@useForSnipetDownwards(Function,Function2), @useForSnipetDownwards(Exclude,Exclude2), @snipet(File)]
+[<13>][<10>] [@stackRead("",CmntEnd)]
+|
+
+
+Function2:
+[<13>][<10>]
+[<13>][<10>]  <H1> [@replace("_"," "), @attribute(link)]   </H1>
+[<13>][<10>]
+[<13>][<10>]  @dotfile [@attribute(name)].dt
+[<13>][<10>]
+
+|
+
+Exclude2:
+[<13>][<10>]
+[<13>][<10>]  <H1> [@replace("_"," "), @attribute(link)] </H1>
+[<13>][<10>]
+[<13>][<10>]  @dotfile [@attribute(name)].dt
+[<13>][<10>]
+|
+
+
+
+
+
+
+/*@ifStackEqual("-",_ReturnOccured_),
+        */
+
+funcdef_Data:
+
+             [@useForSnipet(function_definition,funcdefLogFileName),@xmlCreate(DotFiles,__SELF__)] 
+             [@useForSnipet(function_definition,funcdefLogFileName),@xmlCreate(DotFileSingleFunction,__SELF__)] 
+
+[ @useForSnipet(declarator,print_func_name), @stackPush(FunctionName,declarator),
+][@stackRead(__LIVEOUT__,FunctionName)
+][@stackClear(_Style_)
+][@useForSnipet(declarator,init_stack),           @stackPush(_ReturnOccured_,declarator)
+][@stackPush(_FunctionComment_,Comment)]
+
+[<N0>] digraph activity
+[<N0>] {
+[<I1>] node [@stackRead("",__Pb__)]fixedsize=false, height=.01, shape=circle, fontname="Arial", fontsize=10, fillcolor="#FFFFFF" [@stackRead("",__Pe__)];
+[<I1>] edge [@stackRead("",__Pb__)]arrowsize=.5, fontname="Arial", fontsize=10][@stackRead("",__Pe__)];
+[<N0>] nodesep=0.1;
+[<N0>] ranksep=0.05;
+ 
+[<N0>] [@useForSnipet(declarator,funcdef_declarator) @snipet(declarator)] -> [% suiteAndMore %]
+[<N0>] [@useForSnipet(declaration_specifier,funcdef_specifier), @snipet(declaration_specifier)]
+       [@ifAbsent(declaration_specifier,funcdef_specifier_Empty)]
+       [@ifAbsent(declaration_specifier,funcdef_specifier_Empty_Style)]
+
+[<N1>]
+[<N0>] [/*@replace("$","__"),*/@stackPopAll("",_Style_)][@stackClear(_ReturnOccured_)]
+[<D1>]}
+|
+
+
+
+funcdef_declarator:[@useForSnipet(direct_declarator,funcdef_declarator_Style),@stackPush(_Style_,direct_declarator)
+                  ]direct_declarator_[% node_ID %]_Intro -> direct_declarator_[% node_ID %]_Start[@stackRead("",__Pb__)]  color=white,  [@stackRead("",__Pe__)];
+[<N0>]             direct_declarator_[% node_ID %]_Start[
+                    @useForSnipet(direct_declarator,funcdef_declarator_Pre),  @stackPush(_PreFix_,direct_declarator)
+                  ][@useForSnipet(direct_declarator,funcdef_declarator_Pst),  @stackPush(_PstFix_,direct_declarator)
+                  ]|
+
+
+funcdef_declarator_Style:
+[<N0>] direct_declarator_[% node_ID %]_Intro [@stackRead("",__Pb__)]label="[@useForSnipet(owned_ID,owned_ID_std), @useForSnipet(ID,ID_std), @snipet(KeyChr,owned_ID,ID,direct_declarator_second)][@snipet(Comment)
+                                                                    ][@stackRead("",_FunctionComment_)]",  shape=note, height=0.1 [@stackRead("",__Pe__)];
+[<N0>] direct_declarator_[% node_ID %]_Start [@stackRead("",__Pb__)]label="", shape=circle, fillcolor=black, style="filled", height=0.25[@stackRead("",__Pe__)];
+|
+funcdef_declarator_Pre: -> |
+funcdef_declarator_Pst: -> |
+
+/**/
+funcdef_specifier:[@ifStackEqual("-",_ReturnOccured_),@useForSnipet(declaration_specifier,funcdef_specifier_Style),@stackPush(_Style_,__SELF__)
+                 ][@ifStackUnequal("-",_ReturnOccured_),@useForSnipet(declaration_specifier,funcdef_specifier_Hiden_Style),@stackPush(_Style_,__SELF__)
+                 ]declaration_specifier_[% node_ID %]_End;|
+
+
+
+                 
+funcdef_specifier_Style: 
+[<N0>] declaration_specifier_[% node_ID %]_End   [@stackRead("",__Pb__)]label="[@snipet(KeyChr,owned_ID,ID,direct_declarator_second)]" ,  shape=doublecircle, fillcolor=black, style="filled",  height=0.25[@stackRead("",__Pe__)];
+|
+funcdef_specifier_Hiden_Style:
+[<N0>] declaration_specifier_[% node_ID %]_End   [@stackRead("",__Pb__)]label="",  shape=none, fillcolor=white, style="filled",  height=0.1 [@stackRead("",__Pe__)];
+|
+                 
+funcdef_specifier_Empty:
+[<N0>] declaration_specifier_[% node_ID %]_End  ;
+|
+
+funcdef_specifier_Empty_Style:
+[<N0>] declaration_specifier_[% node_ID %]_End   [@stackRead("",__Pb__)]label="", shape=doublecircle, fillcolor=black, style="filled",  height=0.25 [@stackRead("",__Pe__)];
+|
+
+/*
+funcdef_specifier_empty:[@useForSnipet(declaration_specifier,funcdef_specifier_Style),@stackPush(_Style_,__SELF__)
+                 ]declaration_specifier_[% node_ID %]_End;|
+                 
+funcdef_specifier_Style:
+[<N0>] declaration_specifier_[% node_ID %]_End   [@stackRead("",__Pb__)]label="[@snipet(KeyChr,owned_ID,ID,direct_declarator_second)]" ,  shape=doublecircle, fillcolor=black, style="filled",  height=0.25[@stackRead("",__Pe__)];
+|
+*/
+
+
+
+
+
+
+print_func_name:[@useForSnipet(direct_declarator,print_func_name2), @snipet(direct_declarator)]|
+print_func_name2: function: [@text(owned_ID),@text(KeyChr),@text(ID),@text(operator_id)]|
+
+
+
+
+
+FunctionFileName:[@stackRead("",__SOURCENAME__)][@text(ID)]|
+
+parameters:[@snipet(varargslist), @snipet(KeyChr)]|
+
+varargslist:[@snipet(ID), @snipet(KeyChr), @snipet(power), @snipet(fpdef)]|
+
+fpdef:[@snipet(ID), @snipet(KeyChr), @snipet(fplist)]|
+
+fplist:[@snipet(fpdef), @snipet(KeyChr)]|
+
+
+
+
+stmt:[@snipet( compound_stmt, simple_stmt)]|
+
+
+assignment:[@snipet(KeyChr, ID, comment)]|
+
+
+compound_statement:[@snipet(preprocedure,declaration,
+                            if_stmt,switch_stmt,case_stmt,default_stmt,
+                            while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                            continue_stmt,break_stmt,return_stmt,
+                            expr_stmt,compound_statement,)
+                  ][@ifEmpty(emptyCompound)]|
+
+emptyCompound: |
+
+
+statement:[@snipet(preprocedure,declaration,
+                   if_stmt,switch_stmt,case_stmt,default_stmt,
+                   while_stmt,do_stmt,for_stmt,goto_stmt,lable_stmt,
+                   continue_stmt,break_stmt,return_stmt,
+                   expr_stmt,compound_statement,)]|
+
+
+
+
+
+
+
+simple_stmt:[@snipet(small_stmt)]|
+
+small_stmt:[@snipet(expr_stmt,
+                    print_stmt,
+                    del_stmt,
+                    pass_stmt,
+                    flow_stmt,
+                    import_stmt,
+                    global_stmt,
+                    exec_stmt,
+                    assert_stmt,)]|
+
+
+
+exprlist:[@snipet(KeyChr), @snipet(power)]|
+
+
+
+
+expr_stmt:[@useForSnipet(expr_stmt,init_stack), @stackPush(_EMPTYEXPRESSION_,__SELF__)
+         ][@stackPush(_EMPTYEXPRESSION_,empty_expression)
+         ][@ifStackEqual("-",_EMPTYEXPRESSION_),
+           @useForSnipet(expr_stmt, expr_stmt_2), @snipet(__SELF__)
+         ][@stackClear(_EMPTEXPRESSION_)]|
+           
+empty_expression:[@text(__SELF__)]|
+
+
+
+
+expr_stmt_2:[% setNodeStyle , @replace(TAG_NAME, expr_stmt)
+          %][@tag()]_[% node_ID %];
+[<N0>]      [@tag()]_[% node_ID %][@stackRead("",_PstFix_)
+         ]|
+expr_stmt_Style:
+[<N0>] [@tag()]_[% node_ID %] [@stackRead("",__Pb__)]label="[@snipet(KeyChr,assignment_expression)][@snipet(Comment)]", shape=box, style="rounded, filled", height=0.01, width=0.01 [@stackRead("",__Pe__)];
+|
+
+
+expr_stmt_lable:[ @text(KeyChr), @text(assignment_expression)]|
+
+
+
+
+power:[@snipet(ID), @snipet(KeyChr), @snipet(testlist_gexp), @snipet(testlist1), @snipet(Number), @snipet(STtring), @snipet(trailer), @snipet(dictmaker)]|
+
+testlist_gexp:[@snipet(power), @snipet(KeyChr), @snipet(Keyword), @snipet(comp_op)]|
+
+trailer:    [@snipet(KeyChr),  @snipet(arglist), @text(subscriptlist), @snipet(ID)]|
+
+arglist: [@snipet(KeyChr), @snipet(argument), @text(test)]|
+
+argument:[@snipet(power),@snipet(KeyChr)]|
+
+dictmaker:[@snipet(power),@snipet(KeyChr)]|
+
+
+
+
+break_stmt:[% setNodeStyle , @replace(TAG_NAME, break_stmt)
+         %][@tag()]_[% node_ID %];
+[<N0>]     [@tag()]_[% node_ID %][@stackRead("",_BrkDst_)][@stackRead("",__Pb__)]  headport=nw,  [@stackRead("",__Pe__)];
+|
+
+break_stmt_Style:
+[<N0>] [@tag()]_[% node_ID %] [@stackRead("",__Pb__)]label="[@snipet(Keyword)][@snipet(Comment)]", shape=box, style="rounded, filled", height=0.1, width=0.1 [@stackRead("",__Pe__)];
+|
+
+
+
+
+
+
+continue_stmt:[% setCaseSink  , @replace(TAG_NAME, continue_stmt)
+            %][% setNodeStyle , @replace(TAG_NAME, continue_stmt)
+            %][@tag()]_[% node_ID %];
+[<N0>]        [@tag()]_[% node_ID %][@stackRead("",_CntDst_)][@stackRead("",__Pb__)]  headport=sw,  [@stackRead("",__Pe__)];
+|
+
+continue_stmt_Style:
+[<N0>] [@tag()]_[% node_ID %] [@stackRead("",__Pb__)]label="[@snipet(Keyword)][@snipet(Comment)]", shape=box, style="rounded, filled", height=0.1, width=0.1 [@stackRead("",__Pe__)];
+|
+
+
+
+
+return_stmt:[% setNodeStyle , @replace(TAG_NAME, return_stmt)
+          %][@useForSnipet(return_stmt,return_stmt_Style), @stackPush(_ReturnOccured_,__SELF__)
+           ][@tag()]_[% node_ID %];
+[<N0>]      [@tag()]_[% node_ID %]->[@tag()]_[% node_ID %]_End|
+           
+return_stmt_Style:
+[<N0>] [@tag()]_[% node_ID %] [@stackRead("",__Pb__)]label="[@snipet(Keyword,assignment_expression)][@snipet(Comment)]", shape=box, style=rounded, height=0.1, width=0.1 [@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_End   [@stackRead("",__Pb__)]label="" ,  shape=doublecircle, fillcolor=black, style="filled",  height=0.25[@stackRead("",__Pe__)];
+|
+
+
+goto_stmt:[% setNodeStyle , @replace(TAG_NAME, goto_stmt)
+        %][@tag()]_[% node_ID %] [                         @stackRead("",__Pb__)]tailport=s, headport=e [@stackRead("",__Pe__)];
+[<N0>]    [@tag()]_[% node_ID %] -> lable_stmt_[@text(ID)][@stackRead("",__Pb__)]tailport=w, headport=w [@stackRead("",__Pe__)];
+|
+goto_stmt_Style:
+[<N0>] [@tag()]_[% node_ID %] [@stackRead("",__Pb__)]label="[@snipet(Keyword,ID)][@snipet(Comment)]", shape=box, style="rounded, filled", height=0.1, width=0.1 [@stackRead("",__Pe__)];
+|
+
+
+
+
+lable_stmt:[% setNodeStyle , @replace(TAG_NAME, lable_stmt)
+         %] lable_stmt_[@text(ID)];
+ lable_stmt_[@text(ID)][@stackRead("",_PstFix_)]|
+ 
+lable_stmt_Style:
+[<N0>] lable_stmt_[@text(ID)] [@stackRead("",__Pb__)]label="[@snipet(Keyword,ID)][@snipet(Comment)]", shape=box, style="rounded, filled", height=0.1, width=0.1 [@stackRead("",__Pe__)];
+|
+
+
+expr_parameter:[@snipet(KeyChr), @snipet(assignment_expression,)]|
+
+
+for_expr:[@useForSnipet(expr_stmt,expr_parameter),@snipet(expr_stmt)][@snipet(Comment)]|
+
+
+
+for_stmt:  [% setNodeStyle,  @replace(TAG_NAME, for_stmt)
+         %][% setPreAndPost, @replace(TAG_NAME, for_stmt)
+         %][% setBrkAndCnt,  @replace(TAG_NAME, for_stmt)
+         %][@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] headport=n [@stackRead("",__Pe__)];
+           
+[<N0>] [@tag()]_[% node_ID %]_Start ->[@tag()]_[% node_ID %]_End [@stackRead("",__Pb__)]  label="else" headport=w tailport=w [@stackRead("",__Pe__)];
+[<N0>] subgraph [@tag()]_[% node_ID %]
+[<N0>] {
+[<I1>] [@tag()]_[% node_ID %]_Start -> [@tag()]_[% node_ID %]_Intro [@stackRead("",__Pb__)]  headport=n, tailport=s [@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_Intro -> [% suiteAndMore %][@tag()]_[% node_ID %]_End [@stackRead("",__Pb__)]headport=n, tailport=s [@stackRead("",__Pe__)];
+[<D1>] }
+[<N0>] [@tag()]_[% node_ID %]_End -> [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] label="[@text(for_expr/assignment_expression)]" headport=e tailport=e [@stackRead("",__Pe__)];
+[%            clrPreAndPost, @replace(TAG_NAME, for_stmt)
+         %][% clrBrkAndCnt,  @replace(TAG_NAME, for_stmt)
+         %][@tag()]_[% node_ID %]_End -> [@tag()]_[% node_ID %]_Else [@stackRead("",_PstFix_)
+          ]
+|
+for_stmt_Style:
+[<N0>] [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)]label="[@text(for_expr/Keyword)]", shape=diamond, [@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_End   [@stackRead("",__Pb__)]label="[@text(for_expr/Keyword)]", shape=diamond, [@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_Intro [@stackRead("",__Pb__)]label="[@snipet(for_expr)]", shape=none, height=0.01, [@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_Else  [@stackRead("",__Pb__)]label="else", shape=none, height=0.01, [@stackRead("",__Pe__)];
+|
+
+for_stmt_Pre: |
+for_stmt_Pst: -> |
+for_stmt_Brk: -> [@tag()]_[% node_ID %]_End   |
+for_stmt_Cnt: -> [@tag()]_[% node_ID %]_Start |
+
+
+
+
+
+
+
+
+
+while_expr:[@snipet(assignment_expression)][@snipet(Comment)]|
+
+
+while_stmt:[% setNodeStyle,  @replace(TAG_NAME, while_stmt)
+         %][% setPreAndPost, @replace(TAG_NAME, while_stmt)
+         %][% setBrkAndCnt,  @replace(TAG_NAME, while_stmt)
+         %][ @tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] headport=n [@stackRead("",__Pe__)];
+           
+[<N0>] [@tag()]_[% node_ID %]_Start ->[@tag()]_[% node_ID %]_End [@stackRead("",__Pb__)]  label="else" headport=w tailport=w [@stackRead("",__Pe__)];
+[<N0>] subgraph [@tag()]_[% node_ID %]
+[<N0>] {
+[<I1>] [@tag()]_[% node_ID %]_Start -> [@tag()]_[% node_ID %]_Intro[@stackRead("",__Pb__)]  headport=n, tailport=s [@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_Intro -> [% suiteAndMore %][@tag()]_[% node_ID %]_End [@stackRead("",__Pb__)] tailport=s [@stackRead("",__Pe__)];
+[<D1>] }
+[<N0>] [@tag()]_[% node_ID %]_End -> [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] label="loop" headport=e tailport=e [@stackRead("",__Pe__)];
+[%            clrPreAndPost, @replace(TAG_NAME, while_stmt)
+         %][% clrBrkAndCnt,  @replace(TAG_NAME, while_stmt)
+         %][@tag()]_[% node_ID %]_End [        @stackRead("",_PstFix_)
+          ]
+|
+while_stmt_Style:
+[<N0>] [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)]label="[@snipet(while_expr/Keyword)]", shape=diamond, [@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_End   [@stackRead("",__Pb__)]label="[@snipet(while_expr/Keyword)]", shape=diamond, [@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_Intro [@stackRead("",__Pb__)]label="[@snipet(while_expr)]", shape=none, height=0.01, [@stackRead("",__Pe__)];
+|
+
+while_stmt_Pre: |
+while_stmt_Pst: -> |
+while_stmt_Brk: -> [@tag()]_[% node_ID %]_End   |
+while_stmt_Cnt: -> [@tag()]_[% node_ID %]_Start |
+
+
+
+
+
+
+
+
+
+do_stmt:   [% setNodeStyle,  @replace(TAG_NAME, do_stmt)
+         %][% setPreAndPost, @replace(TAG_NAME, do_stmt)
+         %][% setBrkAndCnt,  @replace(TAG_NAME, do_stmt)
+         %][@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] headport=n [@stackRead("",__Pe__)];
+           
+[<N0>] subgraph [@tag()]_[% node_ID %]
+[<N0>] {
+[<I1>] [@tag()]_[% node_ID %]_Start -> [% suiteAndMore %][@tag()]_[% node_ID %]_End [@stackRead("",__Pb__)] tailport=s [@stackRead("",__Pe__)];
+[<D1>] }
+[<N0>] [@tag()]_[% node_ID %]_End -> [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] label="[@snipet(while_expr)][@snipet(Comment)]" headport=e tailport=e [@stackRead("",__Pe__)];
+[%            clrPreAndPost, @replace(TAG_NAME, do_stmt)
+         %][% clrBrkAndCnt,  @replace(TAG_NAME, do_stmt)
+         %][@tag()]_[% node_ID %]_End -> [@tag()]_[% node_ID %]_Else [@stackRead("",_PstFix_)
+          ]
+|
+do_stmt_Style:
+[<N0>] [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)]label="do", shape=diamond, [@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_End   [@stackRead("",__Pb__)]label="while", shape=diamond, [@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_Else [@stackRead("",__Pb__)]label="else", shape=none, height=0.01, [@stackRead("",__Pe__)];
+|
+
+do_stmt_Pre: |
+do_stmt_Pst: -> |
+do_stmt_Brk: -> [@tag()]_[% node_ID %]_End   |
+do_stmt_Cnt: -> [@tag()]_[% node_ID %]_Start |
+
+
+
+if_stmt:[% setNodeStyle,  @replace(TAG_NAME, if_stmt)%]
+        [% setPreAndPost, @replace(TAG_NAME, if_stmt)%]
+[<N0>]  [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] headport=n [@stackRead("",__Pe__)];
+[<N0>]  [% IfAndMore %]
+[<N0>]  [% ElseAndMore %]
+        [% clrPreAndPost, @replace(TAG_NAME, if_stmt)%]
+[<N0>]  [@tag()]_[% node_ID %]_End [  @stackRead("",_PstFix_)]|
+
+if_stmt_Style:
+[<N0>] [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)]label="[@text(if_part/if_expr/Keyword)]", shape=diamond, [@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_End   [@stackRead("",__Pb__)]label="[@text(if_part/if_expr/Keyword)]", shape=diamond, [@stackRead("",__Pe__)];
+|
+if_stmt_Pre:[<N0>] [@tag()]_[% node_ID %]_Start -> |
+if_stmt_Pst: [@tag()]_[% node_ID %]_End [@stackRead("",__Pb__)] tailport=s [@stackRead("",__Pe__)];
+|
+
+
+IfAndMore:[@snipet(if_part)]
+ [<N0>]   [@snipet(elif_part)]|
+
+ElseAndMore:[ @snipet(else_part),@ifAbsent(else_part, if_empty_else)]|
+
+
+
+
+
+
+
+
+if_expr:[@snipet(Keyword), @text(KeyChr), @snipet(assignment_expression)]
+        [@snipet(Comment)]|useAlsoFor(elif_expr)
+
+
+
+if_part:[% setNodeStyle , @replace(TAG_NAME, if_part)
+      %][@stackRead("",_PreFix_)][@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] tailport= w, headport=n [@stackRead("",__Pe__)];
+        [%setPreAndPost, @replace(TAG_NAME, if_part) %]
+[<N0>] subgraph [@tag()]_[% node_ID %]
+[<N0>] {
+[<I1>]  [@tag()]_[% node_ID %]_Start -> [% suiteAndMore %]
+        [% clrPreAndPost, @replace(TAG_NAME, if_part) %]
+        [ @stackRead("",_PstFix_)]
+[<D1>] }
+|
+
+
+if_part_Style:
+[<N0>] [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)]label="[@snipet(if_expr)]", shape=none, height=0.01, [@stackRead("",__Pe__)];
+|
+if_part_Pre: |
+if_part_Pst: -> |
+
+
+
+elif_part:[% setNodeStyle , @replace(TAG_NAME, elif_part)
+        %][@stackRead("",_PreFix_)][@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] headport=n [@stackRead("",__Pe__)];
+[%           setPreAndPost, @replace(TAG_NAME, elif_part) %]
+[<N0>] subgraph [@tag()]_[% node_ID %]
+[<N0>] {
+[<I1>]  [@tag()]_[% node_ID %]_Start -> [% suiteAndMore %]
+        [% clrPreAndPost, @replace(TAG_NAME, elif_part) %]
+        [@stackRead("",_PstFix_)]
+[<D1>] }
+|
+
+elif_part_Style:
+[<N0>] [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)]label="[@snipet(elif_expr)]", shape=none, height=0.01, [@stackRead("",__Pe__)];
+|
+elif_part_Pre: |
+elif_part_Pst: -> |
+
+
+
+
+else_part:[% setNodeStyle , @replace(TAG_NAME, else_part)
+        %][@stackRead("",_PreFix_)][@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)]tailport = e, headport=n [@stackRead("",__Pe__)];
+[%           setPreAndPost, @replace(TAG_NAME, else_part) %]
+[<N0>] subgraph [@tag()]_[% node_ID %]
+[<N0>] {
+[<I1>]  [@tag()]_[% node_ID %]_Start -> [% suiteAndMore %]
+        [% clrPreAndPost, @replace(TAG_NAME, else_part) %]
+        [@stackRead("",_PstFix_)]
+[<D1>] }
+|
+
+else_part_Style:
+[<N0>] [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)]label="[@text(Keyword)][@snipet(Comment)]", shape=none, height=0.01, [@stackRead("",__Pe__)];
+|
+else_part_Pre: |
+else_part_Pst: -> |
+
+
+
+
+
+if_empty_else:[@useForSnipet(if_stmt,if_empty_else_Style),@stackPush(_Style_,__SELF__)
+             ][@stackRead("",_PreFix_)] if_empty_else_[% node_ID %]_Start [@stackRead("",__Pb__)] headport=n [@stackRead("",__Pe__)];
+
+[<N0>] subgraph [@tag()]_[% node_ID %]
+[<N0>] {
+[<I1>]  if_empty_else_[% node_ID %]_Start -> if_empty_else_content_[% node_ID %] ->[@stackRead("",_PstFix_)]
+[<D1>] }
+|
+
+if_empty_else_Style:
+[<N0>] if_empty_else_[% node_ID %]_Start [@stackRead("",__Pb__)]label="else", shape=none, height=0.01, [@stackRead("",__Pe__)];
+[<N0>] if_empty_else_content_[% node_ID %] [@stackRead("",__Pb__)]label="%", shape=Msquare, height=0.01, [@stackRead("",__Pe__)];
+|
+if_empty_else_Pre: |
+if_empty_else_Pst: -> |
+
+
+
+
+switch_stmt:
+  
+            [% setNodeStyle,  @replace(TAG_NAME, switch_stmt)
+          %][% setPreAndPost, @replace(TAG_NAME, switch_stmt)
+          %]
+            
+            [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] headport=n [@stackRead("",__Pe__)];
+[<N0>]      [@useForSnipet(compound_statement,switch_compound),@snipet(compound_statement)]
+            
+            [% clrPreAndPost, @replace(TAG_NAME, switch_stmt)%]
+[<N0>]      [@tag()]_[% node_ID %]_End [          @stackRead("",_PstFix_)]
+
+
+|
+
+
+          
+          
+switch_stmt_Style:
+[<N0>] [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)]label="[@snipet(switch_expr/Keyword)]:[@text(switch_expr/assignment_expression)]", shape=diamond, [@stackRead("",__Pe__)];
+[<N0>] [@tag()]_[% node_ID %]_End   [@stackRead("",__Pb__)]label="[@snipet(switch_expr/Keyword)]:[@text(switch_expr/assignment_expression)]", shape=diamond, [@stackRead("",__Pe__)];
+|
+switch_stmt_Pre:[<N0>] [@tag()]_[% node_ID %]_Start -> |
+switch_stmt_Pst: [@tag()]_[% node_ID %]_End [@stackRead("",__Pb__)] tailport=s [@stackRead("",__Pe__)];
+|
+
+
+
+switch_compound:[% SwitchCaseAndMore %][% SwitchDefaultAndMore %]|
+
+SwitchCaseAndMore:[@snipet(case_stmt)]|
+
+SwitchDefaultAndMore:[@snipet(default_stmt/default_part),@ifAbsent(default_stmt, empty_default)]|
+
+
+/*
+[<N0>] subgraph [@tag()]_[% node_ID %]
+[<N0>] {
+[<I1>]  nslimit1=f; 
+[<N0>]  concentrate=true;
+[<D1>] }//[<S1>]
+
+*/
+case_stmt:
+//[@snipet(case_part)
+][ @stackRead("",_PstFix_)]|
+
+
+
+case_expr:[@snipet(Keyword), @snipet(KeyChr), @text(assignment_expression,constant_expression)][@snipet(Comment)]|
+
+
+case_part:[% setNodeStyle,  @replace(TAG_NAME, case_part)
+        %][@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] headport=sw [@stackRead("",__Pe__)];
+          [@stackRead("",_PreFix_)][@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] headport=n [@stackRead("",__Pe__)];
+          [% setPreAndPost, @replace(TAG_NAME, case_part) %]
+         
+
+[<N0>] [@tag()]_[% node_ID %]_Start -> [% suiteAndMore  
+                                     %][% clrPreAndPost, @replace(TAG_NAME, case_part) %]
+                                       
+|
+
+/*
+case_part:[% setNodeStyle,  @replace(TAG_NAME, case_part)
+        %][% suiteAndMore %] 
+          [@stackRead("",_PreFix_)][@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] headport=n [@stackRead("",__Pe__)];
+          [% setPreAndPost, @replace(TAG_NAME, case_part) %]
+         
+
+[<N0>] [@tag()]_[% node_ID %]_Start -> [% suiteAndMore %] 
+                                       [% clrPreAndPost, @replace(TAG_NAME, case_part) %]
+                                       
+|     
+*/
+
+
+
+case_part_Style:
+[<N0>] [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)]label="[@snipet(case_expr), @snipet(default_expr)]", shape=none, height=0.01, [@stackRead("",__Pe__)];
+|
+case_part_Pre: |
+case_part_Pst: -> |
+
+
+
+
+
+
+
+default_expr:[@snipet(Keyword), @snipet(KeyChr), ][@snipet(Comment)]|
+
+default_part:[% setNodeStyle,  @replace(TAG_NAME, default_part)
+           %][@stackRead("",_PreFix_)][@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)] headport=n [@stackRead("",__Pe__)];
+             [% setPreAndPost, @replace(TAG_NAME, default_part) %]
+[<N0>] subgraph [@tag()]_[% node_ID %]
+[<N0>] {
+[<I1>] concentrate=true;
+[<N0>] [@tag()]_[% node_ID %]_Start -> [% suiteAndMore %][%
+             clrPreAndPost, @replace(TAG_NAME, default_part)
+        %][ @stackRead("",_PstFix_)]
+[<D1>] }
+|
+
+
+default_part_Style:
+[<N0>] [@tag()]_[% node_ID %]_Start [@stackRead("",__Pb__)]label="[@snipet(default_expr)]", shape=none, height=0.01, [@stackRead("",__Pe__)];
+|
+default_part_Pre: |
+default_part_Pst: -> |
+
+
+empty_default:[@useForSnipet(compound_statement,empty_default_Style),@stackPush(_Style_,__SELF__)
+             ][@stackRead("",_PreFix_)] empty_default_[% node_ID %]_Start[@stackRead("",__Pb__)] headport=n [@stackRead("",__Pe__)];
+
+[<N0>] subgraph empty_default_[% node_ID %]
+[<N0>] {
+[<I1>]  empty_default_[% node_ID %]_Start -> empty_default_content_[% node_ID %] ->[@stackRead("",_PstFix_)]
+[<D1>] }
+|
+
+empty_default_Style:
+[<N0>] empty_default_[% node_ID %]_Start [@stackRead("",__Pb__)]label="default", shape=none, height=0.01, [@stackRead("",__Pe__)];
+[<N0>] empty_default_content_[% node_ID %] [@stackRead("",__Pb__)]label="%", shape=Msquare,  height=0.01, [@stackRead("",__Pe__)];
+|
+empty_default_Pre: |
+empty_default_Pst: -> |
+

@@ -1,0 +1,183 @@
+
+/*!
+ @defgroup GRAMMAR_Context Context
+ @ingroup GRAMMAR_SPECIFIC
+ @brief used for @ref PROCESS_CONTEXT
+*/
+
+
+/*! 
+ @ingroup GRAMMAR_CONTEXT
+ @defgroup GRAMMAR_Context_pass pass
+ 
+ will be used from abc2xml as root-parser
+ 
+ <h2>Grammar</h2>
+  @dotfile "Context_R_pass.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Context_R_pass_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Context_R_pass_Caller.dt"
+*/
+
+/*! 
+ @ingroup GRAMMAR_CONTEXT
+ @defgroup GRAMMAR_Context_skip skip
+
+ will be used from abc2xml to define a phrased parser
+
+ <h2>Grammar</h2>
+  @dotfile "Context_R_skip.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Context_R_skip_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Context_R_skip_Caller.dt"
+*/
+
+
+/*! 
+ @ingroup GRAMMAR_Context
+ @defgroup GRAMMAR_Context_reserved reserved
+
+ this parser will be generated automaticly and contains all strings used in all other parsers
+
+ <h2>Grammar</h2>
+  @dotfile "Context_R_reserved.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Context_R_reserved_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Context_R_reserved_Caller.dt"
+*/
+
+
+
+
+
+/*! 
+ @ingroup GRAMMAR_CONTEXT
+ @defgroup GRAMMAR_Context_Ignor Ignor
+
+
+ <h2>Grammar</h2>
+  @dotfile "Context_R_Ignor.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Context_R_Ignor_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Context_R_Ignor_Caller.dt"
+*/
+Ignor =  ('\'' >> '\\' >> '\"' >> '\'') 
+           | ('\"' >> '\\' >> '\"' >> '\"') 
+           | ('\"' >> '\\' >> '\\' >> '\"' ) 
+           | ('\'' >>         '\"' >> '\'') 
+           | "\\\\" 
+           | ('\\' >> '\"');    
+
+
+/*! 
+ @ingroup GRAMMAR_CONTEXT
+ @defgroup GRAMMAR_Context_String_onOff String_onOff
+
+
+ <h2>Grammar</h2>
+  @dotfile "Context_R_String_onOff.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Context_R_String_onOff_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Context_R_String_onOff_Caller.dt"
+*/
+
+
+String_onOff   =  '\"';
+/*! 
+ @ingroup GRAMMAR_CONTEXT
+ @defgroup GRAMMAR_Context_CommentC_on  CommentC_on
+
+
+ <h2>Grammar</h2>
+  @dotfile "Context_R_CommentC_on.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Context_R_CommentC_on_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Context_R_CommentC_on_Caller.dt"
+*/
+
+
+CommentC_on    =  "/*";
+/*! 
+ @ingroup GRAMMAR_CONTEXT
+ @defgroup GRAMMAR_Context_CommentC_off CommentC_off
+
+
+ <h2>Grammar</h2>
+  @dotfile "Context_R_CommentC_off.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Context_R_CommentC_off_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Context_R_CommentC_off_Caller.dt"
+*/
+CommentC_off   =  "*/";
+
+
+/*! 
+ @ingroup GRAMMAR_CONTEXT
+ @defgroup GRAMMAR_Context_CommentCpp_on CommentCpp_on
+
+
+ <h2>Grammar</h2>
+  @dotfile "Context_R_CommentCpp_on.dt"
+
+ <h2>Uses</h2>
+  @dotfile "Context_R_CommentCpp_on_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Context_R_CommentCpp_on_Caller.dt"
+*/
+CommentCpp_on  =  "//";
+
+
+/*! 
+ @ingroup GRAMMAR_CONTEXT
+ @defgroup GRAMMAR_Context_CommentCpp_off CommentCpp_off
+                   
+
+ <h2>Grammar</h2>
+  @dotfile "Context_R_CommentCpp_off.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Context_R_CommentCpp_off_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Context_R_CommentCpp_off_Caller.dt"
+*/
+CommentCpp_off =  (('\r' >> !'\n' ) | '\n' );
+
+    
+/*! 
+ @ingroup GRAMMAR_CONTEXT
+ @defgroup GRAMMAR_Context_Default Default
+
+
+ <h2>Grammar</h2>
+  @dotfile "Context_R_Default.dt"
+                     
+ <h2>Uses</h2>
+  @dotfile "Context_R_Default_Called.dt"
+
+ <h2>Used by</h2>
+  @dotfile "Context_R_Default_Caller.dt"
+*/
+Default        =  anychar_p;

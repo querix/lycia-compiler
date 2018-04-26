@@ -1,0 +1,15 @@
+
+
+ Character  =(  range_p('a','z')
+              | range_p('A','Z')
+             );
+             
+ Digit      =  range_p('0','9');
+ 
+ Underscore =  '_';
+
+ ID  = (    (Character         | Underscore)
+        >> *(Character | Digit | Underscore) 
+       );
+
+

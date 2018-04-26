@@ -1,0 +1,13 @@
+<Configuration project="fglap">
+ <Path>
+  <User> 
+   <SourcePath      value="" />
+   <!-- LangPackPath    value="/opt/Querix/Lycia/etc" /  -->
+   <LangPackPath    value="$LYCIA_DIR/etc" />
+  </User> 
+ </Path>
+ <Source>
+  <FolderName value="" root="SourcePath" fileAttachment=".xml" recursive="Yes"/>
+ </Source>
+ <GeneratorNSD includeFile="LangPack/ansi_c/x2a_uad/xml2abc_Process_ansi_c_uad.xml" root="LangPackPath" />
+</Configuration>
